@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 /Users/louiseduplaceau/Downloads/prospection.py --sirene-token \"4ab9e4a0-a10e-4627-8373-a9afd3a21332\" --pappers-token \"67b03b53-4d09-4d3a-b03b-534d094d3a3c\" --ape \"49.41A\" \"49.41B\" \"49.41C\" \"49.42Z\" \"52.10B\" \"52.29A\" \"52.29B\" --departements 16 17 19 23 24 33 40 47 64 79 86 87 --limit 50 --output \"/Users/louiseduplaceau/Downloads/Prospects_Fleeti_Transport_NouvelleAquitaine.xlsx\")",
+      "Bash(python3:*)",
+      "Bash(echo $PATH)",
+      "Read(//opt/**)",
+      "mcp__Claude_Preview__preview_start"
+    ]
+  }
+}

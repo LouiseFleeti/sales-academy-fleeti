@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --fleeti-blue: #0ca2c2;
+  --fleeti-orange: #fea706;
+}
+
+body {
+  font-family: 'Raleway', sans-serif;
+  @apply bg-gray-50 text-gray-900;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-gray-100;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 rounded-full;
+}
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-400;
+}
+
+/* Tag styles */
+.tag {
+  @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium cursor-pointer transition-colors;
+}
+.tag-blue {
+  @apply bg-fleeti-blue-light text-fleeti-blue hover:bg-fleeti-blue hover:text-white;
+}
+.tag-orange {
+  @apply bg-fleeti-orange-light text-amber-700 hover:bg-fleeti-orange hover:text-white;
+}
+.tag-gray {
+  @apply bg-gray-100 text-gray-600 hover:bg-gray-200;
+}

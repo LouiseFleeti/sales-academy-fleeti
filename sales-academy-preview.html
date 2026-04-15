@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sales Academy Fleeti — Preview</title>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Raleway', sans-serif; background: #f8f9fb; color: #1a1a1a; }
+
+    /* ── Navbar ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: white; border-bottom: 1px solid #f0f0f0;
+      box-shadow: 0 1px 0 #f0f0f0; height: 56px;
+      display: flex; align-items: center; padding: 0 32px; gap: 32px;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; margin-right: 8px; }
+    .logo-icon {
+      width: 28px; height: 28px; border-radius: 8px;
+      background: linear-gradient(135deg, #0ca2c2, #0887a3);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo-text { font-weight: 800; font-size: 14px; color: #1a1a1a; }
+    .logo-text span { color: #0ca2c2; }
+    .nav-tabs { display: flex; gap: 4px; flex: 1; }
+    .nav-tab {
+      padding: 6px 14px; border-radius: 8px; font-size: 13px; font-weight: 600;
+      color: #6b7280; cursor: pointer; border: none; background: none;
+      position: relative; transition: all .15s;
+    }
+    .nav-tab:hover { color: #1a1a1a; background: #f9fafb; }
+    .nav-tab.active { color: #1a1a1a; background: #f3f4f6; }
+    .nav-tab.active::after {
+      content: ''; position: absolute; bottom: 0; left: 14px; right: 14px;
+      height: 2px; border-radius: 99px; background: #0ca2c2;
+    }
+    .nav-chat {
+      display: flex; align-items: center; gap: 6px;
+      padding: 6px 16px; border-radius: 8px; font-size: 13px; font-weight: 700;
+      color: white; background: #fea706; border: none; cursor: pointer;
+      box-shadow: 0 1px 4px rgba(254,167,6,.3); transition: opacity .15s;
+    }
+    .nav-chat:hover { opacity: .9; }
+    .nav-chat.active { background: #0ca2c2; box-shadow: 0 1px 4px rgba(12,162,194,.3); }
+
+    /* ── Main ── */
+    main { margin-top: 56px; min-height: calc(100vh - 56px); }
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ── Page header ── */
+    .page-header { padding: 40px 40px 24px; }
+    .page-header h1 { font-size: 20px; font-weight: 800; color: #1a1a1a; }
+    .page-header p { font-size: 13px; color: #9ca3af; margin-top: 4px; }
+
+    /* ── Grid ── */
+    .grid { padding: 0 40px 48px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    @media (max-width: 900px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+
+    /* ── Category card ── */
+    .cat-card {
+      background: white; border-radius: 16px; border: 1px solid #e5e7eb;
+      overflow: hidden; cursor: pointer;
+      box-shadow: 0 1px 3px rgba(0,0,0,.05);
+      transition: transform .15s, box-shadow .15s;
+    }
+    .cat-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,.08); }
+    .cat-card-header { padding: 20px; display: flex; align-items: flex-start; gap: 14px; }
+    .cat-icon {
+      width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .cat-icon svg { width: 22px; height: 22px; stroke: white; fill: none; stroke-width: 1.8; }
+    .cat-title { font-weight: 800; font-size: 14px; color: #1a1a1a; line-height: 1.3; }
+    .cat-desc { font-size: 12px; color: #6b7280; margin-top: 4px; line-height: 1.5; }
+    .cat-footer {
+      padding: 10px 20px; background: white;
+      display: flex; align-items: center; justify-content: space-between; gap: 8px;
+    }
+    .cat-tags { display: flex; gap: 6px; flex-wrap: wrap; flex: 1; min-width: 0; }
+    .cat-tag {
+      font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 6px;
+      max-width: 130px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .cat-arrow { flex-shrink: 0; transition: transform .15s; }
+    .cat-card:hover .cat-arrow { transform: translateX(3px); }
+
+    /* ── Level 2 ── */
+    .level2 { display: none; padding: 40px; }
+    .level2.active { display: block; }
+    .back-row { display: flex; align-items: center; gap: 16px; margin-bottom: 28px; }
+    .back-btn {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 13px; font-weight: 700; color: #9ca3af; border: none;
+      background: none; cursor: pointer; transition: color .15s;
+    }
+    .back-btn:hover { color: #374151; }
+    .divider { width: 1px; height: 16px; background: #e5e7eb; }
+    .level2-title { display: flex; align-items: center; gap: 8px; }
+    .level2-icon {
+      width: 28px; height: 28px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .level2-icon svg { width: 14px; height: 14px; stroke: white; fill: none; stroke-width: 2; }
+    .level2-title h1 { font-size: 20px; font-weight: 800; color: #1a1a1a; }
+    .level2-count {
+      font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 99px;
+    }
+    .item-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .item-card {
+      background: white; border-radius: 12px; border: 1px solid #e5e7eb;
+      padding: 18px; cursor: pointer;
+      box-shadow: 0 1px 3px rgba(0,0,0,.04);
+      transition: transform .15s, box-shadow .15s;
+    }
+    .item-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,.06); }
+    .item-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+    .item-card-name { font-weight: 700; font-size: 13px; color: #1a1a1a; line-height: 1.4; }
+    .item-card-desc { font-size: 12px; color: #6b7280; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .item-card-tags { margin-top: 10px; display: flex; gap: 6px; flex-wrap: wrap; }
+    .freq-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 99px; white-space: nowrap;
+    }
+    .freq-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+    .consequence-row { display: flex; align-items: flex-start; gap: 8px; padding-top: 10px; border-top: 1px solid #f3f4f6; margin-top: 10px; }
+    .consequence-row svg { flex-shrink: 0; width: 13px; height: 13px; margin-top: 2px; }
+    .consequence-text { font-size: 11px; color: #9ca3af; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+
+    /* ── Slide panel ── */
+    .backdrop {
+      display: none; position: fixed; inset: 0; z-index: 200;
+      background: rgba(0,0,0,.2); backdrop-filter: blur(4px);
+    }
+    .backdrop.open { display: block; }
+    .panel {
+      position: fixed; top: 56px; right: 0; bottom: 0; z-index: 201;
+      width: 100%; max-width: 520px; background: white;
+      border-left: 1px solid #e5e7eb; box-shadow: -4px 0 24px rgba(0,0,0,.08);
+      overflow-y: auto; transform: translateX(100%); transition: transform .25s ease;
+    }
+    .panel.open { transform: translateX(0); }
+    .panel-header {
+      position: sticky; top: 0; background: white; border-bottom: 1px solid #f3f4f6;
+      padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; z-index: 10;
+    }
+    .panel-label { font-size: 11px; font-weight: 700; color: #9ca3af; text-transform: uppercase; letter-spacing: .08em; }
+    .close-btn {
+      width: 28px; height: 28px; border-radius: 8px; border: none;
+      background: none; cursor: pointer; color: #9ca3af; display: flex; align-items: center; justify-content: center;
+      transition: background .15s, color .15s;
+    }
+    .close-btn:hover { background: #f3f4f6; color: #374151; }
+    .panel-body { padding: 32px; }
+    .panel-badge {
+      display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; padding: 4px 10px; border-radius: 99px; margin-bottom: 12px;
+    }
+    .panel-title { font-size: 22px; font-weight: 800; color: #1a1a1a; line-height: 1.3; margin-bottom: 24px; }
+
+    /* Field blocks */
+    .field-desc { border-radius: 12px; border: 1px solid #d4eef5; overflow: hidden; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(12,162,194,.06); }
+    .field-desc-header { background: #eaf6fa; padding: 10px 20px; display: flex; align-items: center; gap: 8px; }
+    .field-desc-header span { font-size: 11px; font-weight: 700; color: #0887a3; text-transform: uppercase; letter-spacing: .08em; }
+    .field-desc-body { background: white; padding: 16px 20px; font-size: 13px; color: #374151; line-height: 1.8; }
+    .field-highlight { border-radius: 12px; border: 1px solid #fde68a; overflow: hidden; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(254,167,6,.1); }
+    .field-highlight-header { background: #fffbeb; padding: 10px 20px; display: flex; align-items: center; gap: 8px; }
+    .field-highlight-header span { font-size: 11px; font-weight: 700; color: #b45309; text-transform: uppercase; letter-spacing: .08em; }
+    .field-highlight-body { background: #fffdf5; padding: 16px 20px; font-size: 13px; color: #374151; line-height: 1.7; font-style: italic; }
+    .field-plain { border-radius: 12px; border: 1px solid #f3f4f6; overflow: hidden; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,.04); }
+    .field-plain-header { background: white; border-bottom: 1px solid #f9fafb; padding: 8px 20px; display: flex; align-items: center; gap: 6px; }
+    .field-plain-dot { width: 6px; height: 6px; border-radius: 50%; background: #0ca2c2; flex-shrink: 0; }
+    .field-plain-label { font-size: 11px; font-weight: 700; color: #9ca3af; text-transform: uppercase; letter-spacing: .08em; }
+    .field-plain-body { background: white; padding: 14px 20px; font-size: 13px; color: #4b5563; line-height: 1.7; }
+    .field-list { background: white; padding: 12px 20px; display: flex; flex-wrap: wrap; gap: 8px; }
+    .field-chip { font-size: 12px; font-weight: 600; padding: 5px 12px; border-radius: 8px; background: #f4f4f5; color: #3f3f46; }
+    .field-bullets { background: white; padding: 12px 20px; }
+    .bullet-item { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: #4b5563; line-height: 1.6; margin-bottom: 8px; }
+    .bullet-dot { width: 6px; height: 6px; border-radius: 50%; background: #fea706; flex-shrink: 0; margin-top: 7px; }
+
+    /* Relations */
+    .relations-sep { display: flex; align-items: center; gap: 12px; margin: 24px 0 20px; }
+    .relations-line { flex: 1; height: 1px; background: #e8f7fa; }
+    .relations-label { font-size: 11px; font-weight: 700; color: #0ca2c2; text-transform: uppercase; letter-spacing: .1em; }
+    .relation-group { margin-bottom: 18px; }
+    .relation-group-label { font-size: 11px; font-weight: 700; color: #9ca3af; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+    .relation-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .relation-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 12px; font-weight: 600; padding: 6px 12px; border-radius: 8px;
+      cursor: pointer; transition: opacity .15s;
+    }
+    .relation-tag:hover { opacity: .75; }
+    .relation-tag svg { width: 11px; height: 11px; flex-shrink: 0; opacity: .6; }
+
+    /* Chat page */
+    .chat-page { display: flex; flex-direction: column; height: calc(100vh - 56px); max-width: 720px; margin: 0 auto; }
+    .chat-header { padding: 16px 24px; border-bottom: 1px solid #f3f4f6; background: white; display: flex; align-items: center; gap: 12px; }
+    .chat-avatar { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #0ca2c2, #fea706); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .chat-avatar svg { width: 18px; height: 18px; stroke: white; fill: none; stroke-width: 2; }
+    .chat-header-info h2 { font-size: 13px; font-weight: 700; color: #1a1a1a; }
+    .chat-header-info p { font-size: 12px; color: #9ca3af; }
+    .chat-messages { flex: 1; overflow-y: auto; padding: 24px 16px; background: #f8f9fb; display: flex; flex-direction: column; gap: 16px; }
+    .chat-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; gap: 16px; }
+    .chat-empty-icon { width: 64px; height: 64px; border-radius: 20px; background: linear-gradient(135deg, #e8f7fa, #fff7e6); display: flex; align-items: center; justify-content: center; }
+    .chat-empty-icon svg { width: 30px; height: 30px; stroke: #0ca2c2; fill: none; stroke-width: 1.5; }
+    .chat-empty h2 { font-size: 15px; font-weight: 700; color: #374151; }
+    .chat-empty p { font-size: 13px; color: #9ca3af; text-align: center; max-width: 300px; line-height: 1.6; }
+    .chat-suggestions { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 8px; }
+    .chat-suggestion {
+      font-size: 12px; padding: 8px 12px; border-radius: 8px;
+      border: 1px solid #e5e7eb; background: white; color: #4b5563;
+      cursor: pointer; transition: border-color .15s, color .15s;
+    }
+    .chat-suggestion:hover { border-color: #0ca2c2; color: #0ca2c2; }
+    .message { display: flex; }
+    .message.user { justify-content: flex-end; }
+    .message.assistant { justify-content: flex-start; }
+    .msg-avatar { width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, #0ca2c2, #0887a3); display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-right: 8px; margin-top: 2px; }
+    .msg-avatar svg { width: 14px; height: 14px; fill: white; }
+    .msg-bubble { max-width: 440px; padding: 12px 16px; border-radius: 16px; font-size: 13px; line-height: 1.7; }
+    .message.user .msg-bubble { background: #0ca2c2; color: white; border-bottom-right-radius: 4px; }
+    .message.assistant .msg-bubble { background: white; color: #374151; border: 1px solid #f3f4f6; box-shadow: 0 1px 3px rgba(0,0,0,.04); border-bottom-left-radius: 4px; }
+    .chat-input-area { padding: 16px; background: white; border-top: 1px solid #f3f4f6; }
+    .chat-input-wrap { display: flex; gap: 8px; align-items: flex-end; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 12px; padding: 8px; }
+    .chat-input-wrap:focus-within { border-color: #0ca2c2; box-shadow: 0 0 0 2px rgba(12,162,194,.1); }
+    .chat-input { flex: 1; background: transparent; border: none; outline: none; font-family: 'Raleway', sans-serif; font-size: 13px; color: #1a1a1a; resize: none; padding: 4px 8px; line-height: 1.5; }
+    .chat-input::placeholder { color: #9ca3af; }
+    .chat-send { width: 32px; height: 32px; border-radius: 8px; background: #0ca2c2; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: opacity .15s; }
+    .chat-send:hover { opacity: .85; }
+    .chat-send svg { width: 14px; height: 14px; stroke: white; fill: none; stroke-width: 2.5; }
+    .chat-hint { text-align: center; font-size: 11px; color: #d1d5db; margin-top: 8px; }
+  </style>
+</head>
+<body>
+
+<!-- ═══ NAVBAR ═══ -->
+<nav>
+  <a class="logo" href="#">
+    <div class="logo-icon">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M13 10V3L4 14h7v7l9-11h-7z" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <span class="logo-text">Sales <span>Academy</span></span>
+  </a>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showTab('industries', this)">Industries</button>
+    <button class="nav-tab" onclick="showTab('painpoints', this)">Pain points</button>
+    <button class="nav-tab" onclick="showTab('capacites', this)">Capacités produit</button>
+  </div>
+  <button class="nav-chat" id="chatBtn" onclick="showTab('chat', null)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    Chat IA
+  </button>
+</nav>
+
+<main>
+
+<!-- ═══════════════════════════════════
+     PAGE : INDUSTRIES
+═══════════════════════════════════ -->
+<div class="page active" id="page-industries">
+  <!-- Level 1 : Categories -->
+  <div id="ind-level1">
+    <div class="page-header">
+      <h1>Industries cibles</h1>
+      <p>7 catégories · 18 industries</p>
+    </div>
+    <div class="grid">
+      <!-- Finance & Location -->
+      <div class="cat-card" onclick="showLevel2('ind', 'finance')">
+        <div class="cat-card-header" style="background:#e8f7fa">
+          <div class="cat-icon" style="background:#0ca2c2"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg></div>
+          <div><div class="cat-title">Finance & Location</div><div class="cat-desc">Sociétés de leasing, LLD/LCD, financeurs de véhicules</div></div>
+        </div>
+        <div class="cat-footer">
+          <div class="cat-tags">
+            <span class="cat-tag" style="background:#e8f7fa;color:#0887a3">LLD - Location Longue…</span>
+            <span class="cat-tag" style="background:#e8f7fa;color:#0887a3">LCD - Location Courte…</span>
+            <span class="cat-tag" style="background:#f3f4f6;color:#9ca3af">+1</span>
+          </div>
+          <svg class="cat-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0887a3" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+      </div>
+      <!-- Mobilité & Livraison -->
+      <div class="cat-card" onclick="showLevel2('ind', 'mobilite')">
+        <div class="cat-card-header" style="background:#fff7e6">
+          <div class="cat-icon" style="background:#fea706"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
+          <div><div class="cat-title">Mobilité & Livraison</div><div class="cat-desc">Transport, logistique, livraison du dernier kilomètre</div></div>
+        </div>
+        <div class="cat-footer">
+          <div class="cat-tags">
+            <span class="cat-tag" style="background:#fff7e6;color:#b45309">Transport & Logistique</span>
+            <span class="cat-tag" style="background:#fff7e6;color:#b45309">Livraison dernier km</span>
+            <span class="cat-tag" style="background:#f3f4f6;color:#9ca3af">+2</span>
+          </div>
+          <svg class="cat-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+      </div>
+      <!-- Terrain & Energie -->
+      <div class="cat-card" onclick="showLevel2('ind', 'terrain')">
+        <div class="cat-card-header" style="background:#f0fdf4">
+          <div class="cat-icon" style="background:#22c55e"><svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
+          <div><div class="cat-title">Terrain & Énergie</div><div class="cat-desc">BTP, services terrain, maintenance infrastructure</div></div>
+        </div>
+        <div class="cat-footer">
+          <div class="cat-tags">
+            <span class="cat-tag" style="background:#f0fdf4;color:#15803d">Services terrain</span>
+            <span class="cat-tag" style="background:#f0fdf4;color:#15803d">BTP & Construction</span>
+            <span class="cat-tag" style="background:#f3f4f6;color:#9ca3af">+1</span>
+          </div>
+          <svg class="cat-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+      </div>
+      <!-- Passagers & Transport -->
+      <div class="cat-card" onclick="showLevel2('ind', 'passagers')">
+        <div class="cat-card-header" style="background:#ecfeff">
+          <div class="cat-icon" style="background:#06b6d4"><svg viewBox="0 0 24 24"><path d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a2 2 0 01-2-2v-1"/><path d="M15 4H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l4-4h4a2 2 0 002-2V6a2 2 0 00-2-2z"/></svg></div>
+          <div><div class="cat-title">Passagers & Transport</div><div class="cat-desc">Transport de passagers, mobilité urbaine</div></div>
+        </div>
+        <div class="cat-footer">
+          <div class="cat-tags">
+            <span class="cat-tag" style="background:#ecfeff;color:#0e7490">Transport passagers</span>
+            <span class="cat-tag" style="background:#ecfeff;color:#0e7490">Taxis & VTC</span>
+          </div>
+          <svg class="cat-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0e7490" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+      </div>
+      <!-- Industrie & Défense -->
+      <div class="cat-card" onclick="showLevel2('ind', 'industrie')">
+        <div class="cat-card-header" style="background:#f3f4f6">
+          <div class="cat-icon" style="background:#6b7280"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          <div><div class="cat-title">Industrie & Défense</div><div class="cat-desc">Industries sensibles, sécurité privée, défense</div></div>
+        </div>
+        <div class="cat-footer">
+          <div class="cat-tags">
+            <span class="cat-tag" style="background:#f3f4f6;color:#374151">Défense & sécurité</span>
+          </div>
+          <svg class="cat-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+      </div>
+      <!-- Santé & Retail -->
+      <div class="cat-card" onclick="showLevel2('ind', 'sante')">
+        <div class="cat-card-header" style="background:#fff1f2">
+          <div class="cat-icon" style="background:#f43f5e"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+          <div><div class="cat-title">Santé & Retail</div><div class="cat-desc">Transport sanitaire, distribution, commerce de détail</div></div>
+        </div>
+        <div class="cat-footer">
+          <div class="cat-tags">
+            <span class="cat-tag" style="background:#fff1f2;color:#9f1239">Santé transport sanitaire</span>
+          </div>
+          <svg class="cat-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9f1239" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Level 2 : Industries -->
+  <div class="level2" id="ind-level2">
+    <div class="back-row">
+      <button class="back-btn" onclick="showLevel1('ind')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        Retour
+      </button>
+      <div class="divider"></div>
+      <div class="level2-title" id="ind-level2-header"></div>
+    </div>
+    <div class="item-grid" id="ind-level2-grid"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     PAGE : PAIN POINTS
+═══════════════════════════════════ -->
+<div class="page" id="page-painpoints">
+  <div id="pp-level1">
+    <div class="page-header">
+      <h1>Pain points terrain</h1>
+      <p>11 catégories · 22 pain points identifiés</p>
+    </div>
+    <div class="grid">
+      <div class="cat-card" onclick="showLevel2('pp', 'gestion')">
+        <div class="cat-card-header" style="background:#fff1f2">
+          <div class="cat-icon" style="background:#f43f5e"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+          <div><div class="cat-title">Gestion flotte</div><div class="cat-desc" style="color:#9f1239">4 pain points</div></div>
+        </div>
+        <div class="cat-footer">
+          <div class="cat-tags">
+            <span class="cat-tag" style="background:#fff1f2;color:#be123c">Sur-utilisation actifs</span>
+            <span class="cat-tag" style="background:#fff1f2;color:#be123c">Sous-utilisation</span>
+            <span class="cat-tag" style="background:#f3f4f6;color:#9ca3af">+2</span>
+          </div>
+          <svg class="cat-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#be123c" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+      </div>
+      <div class="cat-card" onclick="showLevel2('pp', 'maintenance')">
+        <div class="cat-card-header" style="background:#fff7e6">
+          <div class="cat-icon" style="background:#fea706"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          <div><div class="cat-title">Maintenance</div><div class="cat-desc" style="color:#b45309">2 pain points</div></div>
+        </div>
+        <div class="cat-footer">
+          <div class="cat-tags">
+            <span class="cat-tag" style="background:#fff7e6;color:#b45309">Indisponibilité véhicules</span>
+            <span class="cat-tag" style="background:#fff7e6;color:#b45309">Escalade coûts</span>
+          </div>
+          <svg class="cat-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+      </div>
+      <div class="cat-card" onclick="showLevel2('pp', 'carburant')">
+        <div class="cat-card-header" style="background:#e8f7fa">
+          <div class="cat-icon" style="background:#0ca2c2"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/></svg></div>
+          <div><div class="cat-title">Carburant</div><div class="cat-desc" style="color:#0887a3">3 pain points</div></div>
+        </div>
+        <div class="cat-footer">
+          <div class="cat-tags">
+            <span class="cat-tag" style="background:#e8f7fa;color:#0887a3">Vol de carburant</span>
+            <span class="cat-tag" style="background:#e8f7fa;color:#0887a3">Surconsommation</span>
+          </div>
+          <svg class="cat-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0887a3" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+      </div>
+      <div class="cat-card" onclick="showLevel2('pp', 'securite')">
+        <div class="cat-card-header" style="background:#ede9fe">
+          <div class="cat-icon" style="background:#8b5cf6"><svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
+          <div><div class="cat-title">Risque / Sécurité</div><div class="cat-desc" style="color:#5b21b6">3 pain points</div></div>
+        </div>
+        <div class="cat-footer">
+          <div class="cat-tags">
+            <span class="cat-tag" style="background:#ede9fe;color:#5b21b6">Conduite dangereuse</span>
+            <span class="cat-tag" style="background:#ede9fe;color:#5b21b6">Accidents</span>
+          </div>
+          <svg class="cat-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5b21b6" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="level2" id="pp-level2">
+    <div class="back-row">
+      <button class="back-btn" onclick="showLevel1('pp')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        Retour
+      </button>
+      <div class="divider"></div>
+      <div class="level2-title" id="pp-level2-header"></div>
+    </div>
+    <div class="item-grid" id="pp-level2-grid"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     PAGE : CAPACITÉS PRODUIT
+═══════════════════════════════════ -->
+<div class="page" id="page-capacites">
+  <div class="page-header">
+    <h1>Capacités produit</h1>
+    <p>18 capacités</p>
+  </div>
+  <div class="grid" id="cap-grid"></div>
+</div>
+
+<!-- ═══════════════════════════════════
+     PAGE : CHAT IA
+═══════════════════════════════════ -->
+<div class="page" id="page-chat">
+  <div class="chat-page">
+    <div class="chat-header">
+      <div class="chat-avatar"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+      <div class="chat-header-info">
+        <h2>Assistant commercial Fleeti</h2>
+        <p>Alimenté par Claude + base Notion</p>
+      </div>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="chat-empty">
+        <div class="chat-empty-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+        <h2>Comment puis-je t'aider ?</h2>
+        <p>Pose-moi une question sur les industries cibles, les pain points terrain ou les solutions Fleeti.</p>
+        <div class="chat-suggestions">
+          <button class="chat-suggestion" onclick="fillChat(this)">Quels pain points dans le transport ?</button>
+          <button class="chat-suggestion" onclick="fillChat(this)">Solution pour gestion des chauffeurs ?</button>
+          <button class="chat-suggestion" onclick="fillChat(this)">Bénéfices pour le secteur minier ?</button>
+        </div>
+      </div>
+    </div>
+    <div class="chat-input-area">
+      <div class="chat-input-wrap">
+        <textarea class="chat-input" id="chatInput" rows="1" placeholder="Pose ta question sur Fleeti..." onkeydown="chatKeydown(event)"></textarea>
+        <button class="chat-send" onclick="sendChat()">
+          <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+      <p class="chat-hint">Entrée pour envoyer · Maj+Entrée pour saut de ligne</p>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<!-- ═══ SLIDE PANEL ═══ -->
+<div class="backdrop" id="backdrop" onclick="closePanel()"></div>
+<div class="panel" id="panel">
+  <div class="panel-header">
+    <span class="panel-label" id="panelLabel">Fiche</span>
+    <button class="close-btn" onclick="closePanel()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div class="panel-body" id="panelBody"></div>
+</div>
+
+<script>
+// ─── DATA ────────────────────────────────────────────────────────────────────
+
+const industryData = {
+  finance: {
+    label: 'Finance & Location', color: '#0ca2c2', lightBg: '#e8f7fa', textColor: '#0887a3',
+    icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>',
+    items: [
+      { name: 'LLD - Location Longue Durée', desc: 'Sociétés de leasing gérant des parcs de plusieurs milliers de véhicules. La télématique leur permet de monitorer l\'usage réel du véhicule.', tags: ['véhicules de société', 'flottes mixtes VP/VUL', 'Voiture', 'Utilitaires'], painpoints: ['Sur-utilisation d\'actifs en leasing', 'Sous-utilisation d\'actifs'] },
+      { name: 'LCD - Location Courte Durée', desc: 'Agences de location courte durée gérant des flottes à fort taux de rotation, avec des besoins de disponibilité et de traçabilité maximaux.', tags: ['Voiture', 'Utilitaires', 'véhicules touristiques'], painpoints: ['Vol de carburant non détecté', 'Indisponibilité véhicules'] },
+      { name: 'Financeurs de véhicules', desc: 'Organismes de crédit et de financement adossés à des flottes d\'entreprises, cherchant à sécuriser et valoriser leurs actifs.', tags: ['flottes entreprises', 'actifs financés'], painpoints: ['Sur-utilisation d\'actifs en leasing'] },
+    ]
+  },
+  mobilite: {
+    label: 'Mobilité & Livraison', color: '#fea706', lightBg: '#fff7e6', textColor: '#b45309',
+    icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/></svg>',
+    items: [
+      { name: 'Transport & Logistique', desc: 'Transporteurs routiers et prestataires logistiques gérant des flottes de poids lourds et utilitaires sur des réseaux nationaux et régionaux.', tags: ['Camions porteurs', 'Semi-remorques', 'utilitaires légers'], painpoints: ['Détours non justifiés', 'Surconsommation carburant'] },
+      { name: 'Livraison du dernier km', desc: 'Opérateurs e-commerce et coursiers urbains avec des flottes de petits véhicules et scooters, soumis à forte pression de délais.', tags: ['scooters', 'vélos cargo', 'utilitaires légers'], painpoints: ['Retards de livraison', 'Vol de colis'] },
+    ]
+  },
+  terrain: {
+    label: 'Terrain & Énergie', color: '#22c55e', lightBg: '#f0fdf4', textColor: '#15803d',
+    icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>',
+    items: [
+      { name: 'Services terrain & maintenance', desc: 'Prestataires de services à domicile ou en entreprise : installateurs, techniciens de maintenance, sociétés de nettoyage industriel.', tags: ['Utilitaires', 'véhicules techniques'], painpoints: ['Temps d\'attente chantier', 'Tournées inefficaces'] },
+      { name: 'BTP & Construction', desc: 'Entreprises du bâtiment et des travaux publics gérant simultanément des engins de chantier, des camions de livraison et des véhicules de chefs de chantier.', tags: ['engins de chantier', 'véhicules techniques', 'Voitures lourdes'], painpoints: ['Vol d\'engins sur chantier', 'Surutilisation matériel'] },
+      { name: 'Énergie & Utilities', desc: 'Gestionnaires de réseaux (eau, gaz, électricité), opérateurs de collecte de déchets et entreprises de travaux sur infrastructures.', tags: ['Véhicules de relevé', 'camions de travaux', 'bennes à ordures'], painpoints: ['Indisponibilité véhicules', 'Escalade coûts maintenance'] },
+    ]
+  },
+  passagers: { label: 'Passagers & Transport', color: '#06b6d4', lightBg: '#ecfeff', textColor: '#0e7490', icon: '', items: [
+    { name: 'Transport de passagers', desc: 'Opérateurs de bus, minibus et navettes gérant des flocons de voyageurs avec des exigences de ponctualité et de sécurité élevées.', tags: ['Bus', 'minibus', 'navettes'], painpoints: ['Conduite dangereuse', 'Retards'] },
+  ]},
+  industrie: { label: 'Industrie & Défense', color: '#6b7280', lightBg: '#f3f4f6', textColor: '#374151', icon: '', items: [
+    { name: 'Défense & Sécurité privée', desc: 'Entreprises de sécurité privée gérant des rondes et des patrouilles avec des véhicules soumis à des contraintes de confidentialité et de fiabilité.', tags: ['véhicules sécu', '4x4'], painpoints: ['Traçabilité des rondes', 'Détournement de véhicule'] },
+  ]},
+  sante: { label: 'Santé & Retail', color: '#f43f5e', lightBg: '#fff1f2', textColor: '#9f1239', icon: '', items: [
+    { name: 'Santé & Transport sanitaire', desc: 'Ambulanciers, transporteurs de patients et de médicaments avec des contraintes réglementaires strictes sur les délais et la chaîne du froid.', tags: ['ambulances', 'VSL', 'véhicules réfrigérés'], painpoints: ['Non-conformité chaîne froid', 'Retards urgences'] },
+  ]},
+};
+
+const painpointData = {
+  gestion: {
+    label: 'Gestion flotte', color: '#f43f5e', lightBg: '#fff1f2', textColor: '#be123c',
+    icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>',
+    items: [
+      { name: 'Sur-utilisation d\'actifs en leasing', freq: 'Fréquent', freqStyle: 'high', desc: 'Certains véhicules dépassent les limites contractuelles (kilométrage ou usage), générant des pénalités en fin de contrat.', consequence: 'Surfacturation à la restitution · Litiges loueur · Perte de marge', question: 'Comment s\'assurer que vos véhicules en leasing restent dans les limites contractuelles pour éviter les pénalités de fin de contrat ?', symptomes: ['Alertes kilométrage dépassé en fin de contrat', 'Litiges récurrents avec le loueur', 'Provisions insuffisantes pour pénalités'] },
+      { name: 'Sous-utilisation d\'actifs', freq: 'Fréquent', freqStyle: 'high', desc: 'Une partie de la flotte reste immobilisée sans visibilité claire sur les raisons.', consequence: 'Coût fixe sans retour · CAPEX immobilisé · Optimisation impossible', question: 'Quel pourcentage de votre flotte est réellement actif chaque jour, et comment identifiez-vous les véhicules sous-utilisés ?', symptomes: ['Véhicules garés sans activité', 'Impossibilité de réallouer les actifs', 'Coûts d\'assurance sur flotte inactive'] },
+      { name: 'Actifs productifs vs non-productifs', freq: 'Très fréquent', freqStyle: 'high', desc: 'Absence de vision consolidée sur le temps de production réel vs les temps morts de la flotte.', consequence: 'Décisions d\'achat non optimisées · Surévaluation des besoins', question: 'Disposez-vous d\'un tableau de bord temps réel distinguant vos véhicules en mission de ceux immobilisés ?', symptomes: ['Pas de KPI de taux d\'utilisation', 'Achats de véhicules non justifiés'] },
+    ]
+  },
+  maintenance: {
+    label: 'Maintenance', color: '#fea706', lightBg: '#fff7e6', textColor: '#b45309',
+    icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+    items: [
+      { name: 'Indisponibilité liée à la maintenance', freq: 'Fréquent', freqStyle: 'medium', desc: 'Les véhicules tombent en panne sans préavis, bloquant les opérations et nécessitant des interventions d\'urgence coûteuses.', consequence: 'Perte de CA · Clients mécontents · Coûts de dépannage élevés', question: 'Combien de fois par mois un véhicule tombe-t-il en panne de façon imprévue dans votre flotte ?', symptomes: ['Pannes fréquentes', 'Entretien correctif dominant', 'Pas d\'alertes préventives'] },
+      { name: 'Escalade imprévisible des coûts de maintenance', freq: 'Moyen', freqStyle: 'medium', desc: 'Les budgets de maintenance explosent en cours d\'année sans possibilité d\'anticipation ou de contrôle.', consequence: 'Dépassement budgétaire · Arbitrages difficiles en cours d\'année', question: 'Quel est votre taux d\'écart entre budget maintenance prévu et réel en fin d\'année ?', symptomes: ['Budget maintenance régulièrement dépassé', 'Absence de prévisionnel de maintenance'] },
+    ]
+  },
+  carburant: {
+    label: 'Carburant', color: '#0ca2c2', lightBg: '#e8f7fa', textColor: '#0887a3',
+    icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/></svg>',
+    items: [
+      { name: 'Vol de carburant non détecté', freq: 'Très fréquent', freqStyle: 'high', desc: 'Détournement de carburant par les conducteurs ou à la pompe, invisible sans système de contrôle.', consequence: 'Pertes directes de 5-15% du budget carburant · Comportements frauduleux', question: 'Comment détectez-vous actuellement les anomalies entre le carburant facturé et le carburant consommé ?', symptomes: ['Écarts inexpliqués entre factures et consommation réelle', 'Pleins réalisés hors des horaires habituels'] },
+      { name: 'Surconsommation liée au comportement', freq: 'Fréquent', freqStyle: 'medium', desc: 'Les comportements de conduite (freinage brusque, accélération forte, ralenti excessif) génèrent une surconsommation de 10-25%.', consequence: 'Surcoût carburant · Usure prématurée des véhicules · Empreinte CO2 augmentée', question: 'Savez-vous quels conducteurs coûtent le plus cher en carburant et pourquoi ?', symptomes: ['Consommation hétérogène entre véhicules similaires', 'Pas de reporting conduite individuel'] },
+    ]
+  },
+  securite: {
+    label: 'Risque / Sécurité', color: '#8b5cf6', lightBg: '#ede9fe', textColor: '#5b21b6',
+    icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>',
+    items: [
+      { name: 'Conduite dangereuse non détectée', freq: 'Fréquent', freqStyle: 'high', desc: 'Les excès de vitesse, freinages brusques et virages dangereux passent inaperçus, exposant l\'entreprise à des risques d\'accidents.', consequence: 'Accidents · Coûts assurance · Responsabilité employeur', question: 'Disposez-vous d\'un système d\'alerte temps réel sur les comportements de conduite risqués ?', symptomes: ['Taux d\'accidentologie élevé', 'Primes d\'assurance en hausse', 'Absence de scoring conducteur'] },
+    ]
+  },
+};
+
+const capaciteData = [
+  { name: 'Détection des anomalies et fraudes', desc: 'Identifie les écarts anormaux entre les niveaux de carburant attendus et mesurés, et signale les comportements suspects.', color: '#0ca2c2', lightBg: '#e8f7fa', textColor: '#0887a3', painpoints: ['Vol de carburant non détecté', 'Vérification manuelle impossible'], solutions: ['Monitoring carburant temps réel'] },
+  { name: 'Gestion des temps de service et conformité sociale', desc: 'Suit les temps de conduite et de repos pour garantir la conformité avec la réglementation du transport routier.', color: '#fea706', lightBg: '#fff7e6', textColor: '#b45309', painpoints: ['Infractions réglementaires'], solutions: ['Conformité social automatisée'] },
+  { name: 'Localisation en temps réel des véhicules et engins', desc: 'Permet de savoir à tout moment où se trouvent les véhicules, engins et équipements, avec historique des trajets.', color: '#8b5cf6', lightBg: '#ede9fe', textColor: '#5b21b6', painpoints: ['Dispersion géographique incontrôlée', 'Localisation des conducteurs'], solutions: ['GPS Fleet Management'] },
+  { name: 'Alertes et planification de la maintenance préventive', desc: 'Génère des alertes basées sur le kilométrage, les heures moteur ou les données OBD pour anticiper les interventions.', color: '#22c55e', lightBg: '#f0fdf4', textColor: '#15803d', painpoints: ['Escalade imprévisible coûts maintenance', 'Indisponibilité liée à maintenance'], solutions: ['Maintenance prédictive'] },
+  { name: 'Scoring et coaching conducteur', desc: 'Évalue le comportement de conduite (vitesse, freinage, accélération) et fournit des recommandations personnalisées.', color: '#f43f5e', lightBg: '#fff1f2', textColor: '#9f1239', painpoints: ['Conduite dangereuse non détectée', 'Surconsommation liée au comportement'], solutions: ['Programme éco-conduite'] },
+  { name: 'Optimisation des tournées et dispatching', desc: 'Calcule les itinéraires optimaux en temps réel et affecte les missions aux conducteurs les plus proches et disponibles.', color: '#06b6d4', lightBg: '#ecfeff', textColor: '#0e7490', painpoints: ['Détours non justifiés', 'Temps d\'attente chantier'], solutions: ['Optimisation opérationnelle'] },
+];
+
+// ─── NAVIGATION ──────────────────────────────────────────────────────────────
+
+function showTab(tab, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + tab).classList.add('active');
+  if (btn) btn.classList.add('active');
+  const chatBtn = document.getElementById('chatBtn');
+  chatBtn.classList.toggle('active', tab === 'chat');
+  chatBtn.style.background = tab === 'chat' ? '#0ca2c2' : '#fea706';
+  closePanel();
+}
+
+// ─── LEVEL 2 ─────────────────────────────────────────────────────────────────
+
+function showLevel2(type, key) {
+  const data = type === 'ind' ? industryData[key] : painpointData[key];
+  if (!data) return;
+  document.getElementById(type + '-level1').style.display = 'none';
+  const l2 = document.getElementById(type + '-level2');
+  l2.classList.add('active');
+  // Header
+  document.getElementById(type + '-level2-header').innerHTML =
+    `<div class="level2-icon" style="background:${data.color}">${data.icon}</div>
+     <h1>${data.label}</h1>
+     <span class="level2-count" style="background:${data.lightBg};color:${data.textColor}">${data.items.length}</span>`;
+  // Items
+  const grid = document.getElementById(type + '-level2-grid');
+  grid.innerHTML = data.items.map((item, i) => {
+    if (type === 'ind') {
+      return `<div class="item-card" onclick="openPanel('ind','${key}',${i})" style="--accent:${data.color}">
+        <div class="item-card-top">
+          <div class="item-card-name">${item.name}</div>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${data.textColor}" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+        <div class="item-card-desc">${item.desc}</div>
+        <div class="item-card-tags">${item.tags.map(t => `<span class="cat-tag" style="background:${data.lightBg};color:${data.textColor}">${t}</span>`).join('')}</div>
+      </div>`;
+    } else {
+      const freqColors = { high: {bg:'#fff1f2',text:'#be123c',dot:'#f43f5e'}, medium: {bg:'#fff7e6',text:'#b45309',dot:'#fea706'} };
+      const fc = freqColors[item.freqStyle] || {bg:'#f3f4f6',text:'#4b5563',dot:'#9ca3af'};
+      return `<div class="item-card" onclick="openPanel('pp','${key}',${i})">
+        <div class="item-card-top">
+          <div class="item-card-name">${item.name}</div>
+          <span class="freq-badge" style="background:${fc.bg};color:${fc.text}"><span class="freq-dot" style="background:${fc.dot}"></span>${item.freq}</span>
+        </div>
+        <div class="item-card-desc">${item.desc}</div>
+        ${item.consequence ? `<div class="consequence-row"><svg viewBox="0 0 24 24" fill="#fbbf24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><div class="consequence-text">${item.consequence}</div></div>` : ''}
+      </div>`;
+    }
+  }).join('');
+}
+
+function showLevel1(type) {
+  document.getElementById(type + '-level1').style.display = '';
+  document.getElementById(type + '-level2').classList.remove('active');
+  closePanel();
+}
+
+// ─── CAPACITÉS GRID ──────────────────────────────────────────────────────────
+
+(function buildCapGrid() {
+  const grid = document.getElementById('cap-grid');
+  if (!grid) return;
+  grid.innerHTML = capaciteData.map((cap, i) => `
+    <div class="cat-card" onclick="openCapPanel(${i})" style="border-color:${cap.lightBg}">
+      <div class="cat-card-header" style="background:${cap.lightBg}">
+        <div class="cat-icon" style="background:${cap.color}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <div>
+          <div class="cat-title">${cap.name}</div>
+          <div class="cat-desc" style="color:${cap.textColor}">${cap.desc.slice(0,70)}…</div>
+        </div>
+      </div>
+      <div class="cat-footer">
+        <div class="cat-tags">
+          ${cap.painpoints.map(p => `<span class="cat-tag" style="background:#fff1f2;color:#be123c">${p.length > 20 ? p.slice(0,18)+'…' : p}</span>`).join('')}
+        </div>
+        <svg class="cat-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${cap.textColor}" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+      </div>
+    </div>
+  `).join('');
+})();
+
+// ─── PANEL ───────────────────────────────────────────────────────────────────
+
+function openPanel(type, key, idx) {
+  const data = type === 'ind' ? industryData[key] : painpointData[key];
+  const item = data.items[idx];
+  document.getElementById('panelLabel').textContent = type === 'ind' ? 'Fiche industrie' : 'Fiche pain point';
+  let html = `
+    <span class="panel-badge" style="background:${data.lightBg};color:${data.textColor}">${data.label}</span>
+    <div class="panel-title">${item.name}</div>`;
+  if (type === 'ind') {
+    html += fieldDesc('Description', item.desc);
+    html += fieldPlain('Type de flotte', item.tags.map(t => `<span class="field-chip">${t}</span>`).join(''), true);
+    html += `<div class="relations-sep"><div class="relations-line"></div><span class="relations-label">Relations</span><div class="relations-line"></div></div>`;
+    html += relationGroup('Pain points liés', item.painpoints, '#fef3e2', '#c47f00');
+  } else {
+    html += fieldDesc('Description terrain', item.desc);
+    const fc = item.freqStyle === 'high' ? {bg:'#fff1f2',text:'#be123c'} : {bg:'#fff7e6',text:'#b45309'};
+    html += fieldPlain('Fréquence', `<span class="field-chip" style="background:${fc.bg};color:${fc.text}">${item.freq}</span>`, true);
+    if (item.consequence) html += fieldPlain('Conséquence business', `<p style="font-size:13px;color:#4b5563;line-height:1.7">${item.consequence}</p>`, false);
+    if (item.question) html += fieldHighlight('Question stratégique', item.question);
+    if (item.symptomes) html += fieldBullets('Symptômes', item.symptomes);
+    html += `<div class="relations-sep"><div class="relations-line"></div><span class="relations-label">Relations</span><div class="relations-line"></div></div>`;
+    html += relationGroup('Industries concernées', ['LLD - Location Longue Durée', 'Transport & Logistique'], '#e8f7fa', '#0887a3');
+    html += relationGroup('Capacités produit', ['Détection anomalies et fraudes', 'Optimisation des tournées'], '#ede9fe', '#5b21b6');
+  }
+  document.getElementById('panelBody').innerHTML = html;
+  document.getElementById('backdrop').classList.add('open');
+  document.getElementById('panel').classList.add('open');
+}
+
+function openCapPanel(idx) {
+  const cap = capaciteData[idx];
+  document.getElementById('panelLabel').textContent = 'Fiche capacité produit';
+  let html = `<div class="panel-title">${cap.name}</div>`;
+  html += fieldDesc('Description', cap.desc);
+  html += `<div class="relations-sep"><div class="relations-line"></div><span class="relations-label">Relations</span><div class="relations-line"></div></div>`;
+  html += relationGroup('Pain points liés', cap.painpoints, '#fef3e2', '#c47f00');
+  html += relationGroup('Solutions associées', cap.solutions, '#edf7ee', '#2e7d32');
+  document.getElementById('panelBody').innerHTML = html;
+  document.getElementById('backdrop').classList.add('open');
+  document.getElementById('panel').classList.add('open');
+}
+
+function closePanel() {
+  document.getElementById('backdrop').classList.remove('open');
+  document.getElementById('panel').classList.remove('open');
+}
+
+// Field helpers
+function fieldDesc(label, text) {
+  return `<div class="field-desc"><div class="field-desc-header"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0887a3" stroke-width="2.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><span>${label}</span></div><div class="field-desc-body">${text}</div></div>`;
+}
+function fieldHighlight(label, text) {
+  return `<div class="field-highlight"><div class="field-highlight-header"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2.5"><path d="M9 18h6M10 22h4M12 2a7 7 0 017 7c0 2.5-1.3 4.7-3.3 6L15 17H9l-.7-2C6.3 13.7 5 11.5 5 9a7 7 0 017-7z"/></svg><span>${label}</span></div><div class="field-highlight-body">${text}</div></div>`;
+}
+function fieldPlain(label, content, isList) {
+  return `<div class="field-plain"><div class="field-plain-header"><span class="field-plain-dot"></span><span class="field-plain-label">${label}</span></div><div class="${isList ? 'field-list' : 'field-plain-body'}">${content}</div></div>`;
+}
+function fieldBullets(label, items) {
+  return `<div class="field-plain"><div class="field-plain-header"><span class="field-plain-dot"></span><span class="field-plain-label">${label}</span></div><div class="field-bullets">${items.map(s => `<div class="bullet-item"><span class="bullet-dot"></span>${s}</div>`).join('')}</div></div>`;
+}
+function relationGroup(label, items, bg, color) {
+  return `<div class="relation-group"><div class="relation-group-label">${label}</div><div class="relation-tags">${items.map(name => `<span class="relation-tag" style="background:${bg};color:${color}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>${name}</span>`).join('')}</div></div>`;
+}
+
+// ─── CHAT ────────────────────────────────────────────────────────────────────
+
+function fillChat(btn) {
+  document.getElementById('chatInput').value = btn.textContent;
+  document.getElementById('chatInput').focus();
+}
+function chatKeydown(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChat(); }
+}
+function sendChat() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text) return;
+  const msgs = document.getElementById('chatMessages');
+  // Clear empty state
+  const empty = msgs.querySelector('.chat-empty');
+  if (empty) empty.remove();
+  // User message
+  msgs.innerHTML += `<div class="message user"><div class="msg-bubble">${text}</div></div>`;
+  input.value = '';
+  // Typing indicator
+  const typingId = 'typing-' + Date.now();
+  msgs.innerHTML += `<div class="message assistant" id="${typingId}">
+    <div class="msg-avatar"><svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15v-4H7l5-8v4h4l-5 8z"/></svg></div>
+    <div class="msg-bubble" style="padding:12px 16px"><div style="display:flex;gap:4px;align-items:center;height:18px">
+      <span style="width:8px;height:8px;border-radius:50%;background:#0ca2c2;animation:bounce 1s infinite 0ms"></span>
+      <span style="width:8px;height:8px;border-radius:50%;background:#0ca2c2;animation:bounce 1s infinite 150ms"></span>
+      <span style="width:8px;height:8px;border-radius:50%;background:#0ca2c2;animation:bounce 1s infinite 300ms"></span>
+    </div></div></div>`;
+  msgs.scrollTop = msgs.scrollHeight;
+  // Simulated reply
+  setTimeout(() => {
+    document.getElementById(typingId)?.remove();
+    const reply = getChatReply(text);
+    msgs.innerHTML += `<div class="message assistant">
+      <div class="msg-avatar"><svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15v-4H7l5-8v4h4l-5 8z"/></svg></div>
+      <div class="msg-bubble">${reply}</div></div>`;
+    msgs.scrollTop = msgs.scrollHeight;
+  }, 1800);
+}
+function getChatReply(q) {
+  q = q.toLowerCase();
+  if (q.includes('transport') || q.includes('logistique')) return 'Dans le secteur Transport & Logistique, les principaux pain points identifiés sont : <strong>la surconsommation carburant</strong> liée aux comportements de conduite, <strong>les détours non justifiés</strong> par les chauffeurs, et <strong>l\'indisponibilité des véhicules</strong> due à un manque de maintenance préventive. Ces problèmes se traduisent directement en perte de marge et en insatisfaction client.';
+  if (q.includes('chauffeur') || q.includes('conducteur')) return 'La gestion des conducteurs est un enjeu central. Fleeti adresse ce besoin via le <strong>scoring conducteur</strong> (comportement au volant, consommation, infractions), combiné à un module de <strong>coaching individualisé</strong>. Cela permet de réduire les accidents de 20-30% et la consommation carburant de 10-15% en moyenne.';
+  if (q.includes('minier') || q.includes('mine') || q.includes('bénéfice')) return 'Pour le secteur minier, les bénéfices clés de Fleeti sont : <strong>la traçabilité en temps réel des engins sur site</strong>, la <strong>détection des anomalies carburant</strong> (très exposé dans ce secteur), et l\'<strong>optimisation des cycles d\'utilisation</strong> des équipements lourds. Clients typiques : sociétés minières opérant en Afrique de l\'Ouest et Centrale.';
+  return 'Je n\'ai pas encore accès à la base Notion en mode preview. Dans la version connectée, je recherche dans les 8 bases de données Fleeti et te donne une réponse contextualisée sur les industries, pain points, solutions et capacités produit.';
+}
+
+// Bounce animation for typing dots
+const style = document.createElement('style');
+style.textContent = `@keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }`;
+document.head.appendChild(style);
+</script>
+</body>
+</html>
