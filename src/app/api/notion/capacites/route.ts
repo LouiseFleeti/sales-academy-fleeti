@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getCapacites } from "@/lib/notion";
 
-export const revalidate = 600;
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
   try {

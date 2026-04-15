@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
 import { buildChatContext } from "@/lib/notion";
 
+export const dynamic = 'force-dynamic';
+
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
 const SYSTEM_PROMPT = `Tu es l'assistant commercial de Fleeti, une solution SaaS de gestion de flotte opérant en Afrique. Tu as accès à la base de connaissance commerciale de Fleeti : industries cibles, pain points terrain, solutions produit, capacités, fonctionnalités, bénéfices et personas. Réponds de façon concise, factuelle et orientée terrain. Tu t'appuies uniquement sur les informations fournies dans le contexte, sans inventer. Si tu ne sais pas, dis-le.`;

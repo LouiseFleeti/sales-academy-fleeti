@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getIndustries } from "@/lib/notion";
 
-export const revalidate = 600;
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
   try {
