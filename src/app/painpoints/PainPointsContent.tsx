@@ -280,10 +280,10 @@ export default function PainPointsContent() {
       {/* ── Panneau slide-in ──────────────────────────────────────────────── */}
       {panelOpen && (
         <>
-          <div className="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm" onClick={closePanel} />
+          <div className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm" onClick={closePanel} />
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-6 pointer-events-none">
           <div
-            className="fixed top-14 right-0 bottom-0 z-50 w-full max-w-xl bg-white shadow-2xl overflow-y-auto"
-            style={{ borderLeft: "1px solid #e5e7eb" }}
+            className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[85vh] overflow-y-auto pointer-events-auto"
           >
             <div className="sticky top-0 bg-white border-b border-gray-100 px-6 py-3 flex items-center justify-between z-10">
               <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest">Fiche pain point</p>
@@ -317,6 +317,7 @@ export default function PainPointsContent() {
                 ]}
               />
             )}
+          </div>
           </div>
         </>
       )}
