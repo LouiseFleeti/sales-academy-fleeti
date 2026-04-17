@@ -304,18 +304,37 @@ export default function QualificationPage() {
 
         {/* ── Formulaire ── */}
         <div className="flex-1 min-w-0">
-          <div className="mb-6 flex items-center justify-between">
-            <div>
-              <h1 className="text-xl font-bold text-gray-900">Checklist de qualification</h1>
-              <p className="text-sm text-gray-400 mt-1">À remplir pendant ou après le RDV prospect</p>
+          <div className="mb-6">
+            <div className="flex items-start justify-between gap-4 mb-4">
+              <div>
+                <h1 className="text-xl font-bold text-gray-900">Checklist de qualification</h1>
+                <p className="text-sm text-gray-400 mt-1">À remplir pendant ou après le RDV prospect</p>
+              </div>
+              <div className="flex items-center gap-2 shrink-0">
+                <button
+                  onClick={() => setShowRecap(true)}
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-white transition-colors"
+                  style={{ background: "#0ca2c2" }}
+                >
+                  <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  Voir le récap
+                </button>
+                <button
+                  onClick={() => setForm(INITIAL_STATE)}
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl border border-gray-200 text-sm font-medium text-gray-500 hover:bg-gray-100 transition-colors"
+                >
+                  <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+                  Réinitialiser
+                </button>
+              </div>
             </div>
-            <button
-              onClick={() => setForm(INITIAL_STATE)}
-              className="flex items-center gap-2 px-4 py-2 rounded-xl border border-gray-200 text-sm font-medium text-gray-500 hover:bg-gray-100 transition-colors"
-            >
-              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
-              Réinitialiser
-            </button>
+            <input
+              type="text"
+              value={form.prospectNom}
+              onChange={(e) => set("prospectNom", e.target.value)}
+              placeholder="Nom du prospect / entreprise..."
+              className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 text-sm font-medium focus:outline-none focus:border-[#0ca2c2] placeholder-gray-300"
+            />
           </div>
 
           {/* Section 1 */}
@@ -586,6 +605,46 @@ export default function QualificationPage() {
           </div>
         </div>
       </div>
+
+      {/* ── Modal récap ── */}
+      {showRecap && (
+        <>
+          <div className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm" onClick={() => setShowRecap(false)} />
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-6">
+            <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[85vh] flex flex-col overflow-hidden">
+              {/* Header */}
+              <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between shrink-0">
+                <div>
+                  <h2 className="font-bold text-gray-900">Récapitulatif de qualification</h2>
+                  {form.prospectNom && <p className="text-sm text-gray-400 mt-0.5">{form.prospectNom}</p>}
+                </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={handleCopy}
+                    className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-white transition-all"
+                    style={{ background: copied ? "#15803d" : "#0ca2c2" }}
+                  >
+                    {copied ? (
+                      <><svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>Copié !</>
+                    ) : (
+                      <><svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copier</>
+                    )}
+                  </button>
+                  <button onClick={() => setShowRecap(false)} className="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:bg-gray-100 transition-colors">
+                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                  </button>
+                </div>
+              </div>
+              {/* Content */}
+              <div className="overflow-y-auto flex-1 p-6">
+                <pre className="text-xs text-gray-700 leading-relaxed whitespace-pre-wrap font-mono bg-gray-50 rounded-xl p-4 border border-gray-100">
+                  {recap}
+                </pre>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }
