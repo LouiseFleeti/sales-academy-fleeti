@@ -64,6 +64,7 @@ export default function IndustriesContent() {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [selectedItem, setSelectedItem] = useState<Industry | null>(null);
   const [panelOpen, setPanelOpen] = useState(false);
+  const [search, setSearch] = useState("");
 
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -111,9 +112,20 @@ export default function IndustriesContent() {
     router.push("/industries", { scroll: false });
   };
 
-  const currentIndustries = activeCategory
-    ? (grouped.find(([cat]) => cat === activeCategory)?.[1] ?? [])
-    : [];
+  const currentIndustries = useMemo(() => {
+    return activeCategory
+      ? (grouped.find(([cat]) => cat === activeCategory)?.[1] ?? [])
+      : [];
+  }, [activeCategory, grouped]);
+
+  const searchResults = useMemo(() => {
+    if (!search.trim()) return [];
+    const q = search.toLowerCase();
+    return items.filter((i) =>
+      i.name.toLowerCase().includes(q) ||
+      i.description?.toLowerCase().includes(q)
+    );
+  }, [items, search]);
 
   if (loading) {
     return (
@@ -126,10 +138,70 @@ export default function IndustriesContent() {
   return (
     <div className="relative min-h-[calc(100vh-56px)]" style={{ background: "#f8f9fb" }}>
 
+      {/* ── Barre de recherche globale ────────────────────────────────────── */}
+      <div className="px-10 pt-8 pb-2">
+        <div className="relative">
+          <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+            <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+          </svg>
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => { setSearch(e.target.value); setActiveCategory(null); }}
+            placeholder="Rechercher parmi toutes les industries..."
+            className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 text-sm bg-white focus:outline-none focus:border-[#0ca2c2] focus:ring-1 focus:ring-[#0ca2c2]"
+          />
+          {search && (
+            <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-400 transition-colors">
+              <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* ── Résultats de recherche ────────────────────────────────────────── */}
+      {search.trim() && (
+        <div className="px-10 py-6">
+          <p className="text-xs text-gray-400 mb-4">
+            {searchResults.length} résultat{searchResults.length !== 1 ? "s" : ""} pour &ldquo;{search}&rdquo;
+          </p>
+          {searchResults.length === 0 ? (
+            <p className="text-sm text-gray-400 italic">Aucune industrie trouvée.</p>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {searchResults.map((industry) => {
+                const cfg = CATEGORY_CONFIG[industry.typeIndustrie ?? ""] ?? DEFAULT_CONFIG;
+                return (
+                  <button
+                    key={industry.id}
+                    onClick={() => openDetail(industry)}
+                    className="text-left rounded-xl border bg-white p-5 group transition-all hover:-translate-y-0.5 hover:shadow-md"
+                    style={{ borderColor: "#e5e7eb", boxShadow: "0 1px 3px rgba(0,0,0,0.04)" }}
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <span className="text-xs font-semibold px-2 py-0.5 rounded-full mb-2 inline-block" style={{ background: cfg.lightBg, color: cfg.color }}>{industry.typeIndustrie}</span>
+                        <p className="font-bold text-sm text-gray-900 leading-snug">{industry.name}</p>
+                        {industry.description && (
+                          <p className="text-xs text-gray-400 mt-1 line-clamp-2 leading-relaxed">{industry.description}</p>
+                        )}
+                      </div>
+                      <svg className="w-4 h-4 shrink-0 mt-1 transition-transform group-hover:translate-x-0.5" style={{ color: cfg.color }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                        <path d="M9 18l6-6-6-6"/>
+                      </svg>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      )}
+
       {/* ── Level 1 : Categories ──────────────────────────────────────────── */}
-      {!activeCategory && (
-        <div className="px-10 py-10">
-          <div className="mb-8">
+      {!search.trim() && !activeCategory && (
+        <div className="px-10 py-6">
+          <div className="mb-6">
             <h1 className="text-xl font-bold text-gray-900">Industries cibles</h1>
             <p className="text-sm text-gray-400 mt-1">
               {grouped.length} catégories · {items.length} industries
@@ -197,7 +269,7 @@ export default function IndustriesContent() {
       )}
 
       {/* ── Level 2 : Industries of a category ───────────────────────────── */}
-      {activeCategory && (
+      {!search.trim() && activeCategory && (
         <div className="px-10 py-10">
           {/* Back + header */}
           <div className="mb-8 flex items-center gap-4">
@@ -297,11 +369,29 @@ export default function IndustriesContent() {
           <div
             className="fixed top-14 inset-x-0 bottom-0 z-50 bg-white overflow-y-auto"
           >
-            <div className="sticky top-0 bg-white border-b border-gray-100 px-6 py-3 flex items-center justify-between z-10">
-              <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest">Fiche industrie</p>
+            <div className="sticky top-0 bg-white border-b border-gray-100 px-6 py-4 flex items-center justify-between z-10">
+              <div className="flex items-center gap-3 min-w-0">
+                <button
+                  onClick={closePanel}
+                  className="flex items-center gap-1.5 text-sm font-semibold text-gray-400 hover:text-gray-700 transition-colors shrink-0"
+                >
+                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <path d="M19 12H5M12 5l-7 7 7 7"/>
+                  </svg>
+                  Retour
+                </button>
+                <div className="h-4 w-px bg-gray-200 shrink-0" />
+                <nav className="flex items-center gap-1.5 text-xs text-gray-400 min-w-0 truncate">
+                  <span className="shrink-0">Industries</span>
+                  <span className="shrink-0">/</span>
+                  <span className="shrink-0">{selectedItem?.typeIndustrie}</span>
+                  <span className="shrink-0">/</span>
+                  <span className="font-semibold text-gray-700 truncate">{selectedItem?.name}</span>
+                </nav>
+              </div>
               <button
                 onClick={closePanel}
-                className="w-7 h-7 rounded-lg flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors"
+                className="w-7 h-7 rounded-lg flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors shrink-0 ml-4"
               >
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                   <path d="M18 6L6 18M6 6l12 12"/>
