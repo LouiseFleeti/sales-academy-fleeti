@@ -7,6 +7,7 @@ const NAV_ITEMS = [
   { label: "Industries", href: "/industries" },
   { label: "Pain points", href: "/painpoints" },
   { label: "Capacités produit", href: "/capacites" },
+  { label: "Qualification", href: "/qualification" },
 ];
 
 export default function Navbar() {
