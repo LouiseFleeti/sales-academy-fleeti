@@ -12,6 +12,7 @@ import type {
   Fonctionnalite,
   Benefice,
   Persona,
+  Relance,
   NotionRelation,
 } from "@/types/notion";
 
@@ -319,6 +320,21 @@ export async function getPersonas(): Promise<Persona[]> {
       painPointsPrincipaux: await resolveRelations(getRelationIds(p, "Pain points principaux")),
     }))
   );
+}
+
+// ─── Relances ─────────────────────────────────────────────────────────────────
+
+export async function getRelances(): Promise<Relance[]> {
+  const pages = await queryAll(process.env.NOTION_DB_RELANCES!);
+  return pages.map((p) => ({
+    id: p.id,
+    nom: getText(p, "Nom") || getText(p, "Name") || "Sans nom",
+    produit: getText(p, "Produit") || "",
+    situation: getText(p, "Situation") || "",
+    langue: getText(p, "Langue") || "FR",
+    objet: getText(p, "Objet") || "",
+    corps: getText(p, "Corps") || "",
+  }));
 }
 
 // ─── Context builder for Chat ────────────────────────────────────────────────

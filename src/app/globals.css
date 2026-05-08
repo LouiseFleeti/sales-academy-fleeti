@@ -5,8 +5,11 @@
 @tailwind utilities;
 
 :root {
-  --fleeti-blue: #0ca2c2;
-  --fleeti-orange: #fea706;
+  --fleeti-blue: #3979C1;
+  --fleeti-blue-dark: #224873;
+  --fleeti-blue-bg: #E8F2FD;
+  --fleeti-warning: #C9820A;
+  --fleeti-warning-bg: #FFF0D6;
 }
 
 body {

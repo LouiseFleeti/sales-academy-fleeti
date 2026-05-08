@@ -89,6 +89,16 @@ export type Persona = {
   painPointsPrincipaux: NotionRelation[];
 };
 
+export type Relance = {
+  id: string;
+  nom: string;
+  produit: string;
+  situation: string;
+  langue: string;
+  objet: string;
+  corps: string;
+};
+
 export type TabKey =
   | "industries"
   | "painpoints"

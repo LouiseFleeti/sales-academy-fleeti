@@ -21,7 +21,7 @@ type Props = {
   textColor?: string;
 };
 
-export default function RelationTag({ relation, targetTab, bgColor = "#e8f7fa", textColor = "#0887a3" }: Props) {
+export default function RelationTag({ relation, targetTab, bgColor = "#E8F2FD", textColor = "#224873" }: Props) {
   const router = useRouter();
   const route = TAB_ROUTES[targetTab];
 

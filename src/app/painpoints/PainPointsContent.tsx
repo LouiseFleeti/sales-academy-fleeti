@@ -13,8 +13,8 @@ const FREQUENCE_COLORS: Record<string, { bg: string; text: string; dot: string }
   "Élevée":   { bg: "#fff1f2", text: "#be123c", dot: "#f43f5e" },
   "Haute":    { bg: "#fff1f2", text: "#be123c", dot: "#f43f5e" },
   "Forte":    { bg: "#fff1f2", text: "#be123c", dot: "#f43f5e" },
-  "Moyenne":  { bg: "#fff7e6", text: "#b45309", dot: "#fea706" },
-  "Modérée":  { bg: "#fff7e6", text: "#b45309", dot: "#fea706" },
+  "Moyenne":  { bg: "#FFF0D6", text: "#7A4A00", dot: "#C9820A" },
+  "Modérée":  { bg: "#FFF0D6", text: "#7A4A00", dot: "#C9820A" },
   "Faible":   { bg: "#f3f4f6", text: "#4b5563", dot: "#9ca3af" },
   "Basse":    { bg: "#f3f4f6", text: "#4b5563", dot: "#9ca3af" },
 };
@@ -40,8 +40,8 @@ function FrequenceBadge({ value }: { value: string }) {
 // Couleurs cycliques pour les catégories inconnues
 const PALETTE: Array<{ color: string; bg: string; lightBg: string; borderColor: string }> = [
   { color: "#be123c", bg: "#f43f5e", lightBg: "#fff1f2", borderColor: "#fecdd3" },
-  { color: "#b45309", bg: "#fea706", lightBg: "#fff7e6", borderColor: "#fdd89a" },
-  { color: "#0887a3", bg: "#0ca2c2", lightBg: "#e8f7fa", borderColor: "#b2e3ef" },
+  { color: "#7A4A00", bg: "#C9820A", lightBg: "#FFF0D6", borderColor: "#f5c97a" },
+  { color: "#224873", bg: "#3979C1", lightBg: "#E8F2FD", borderColor: "#9CC3F0" },
   { color: "#5b21b6", bg: "#8b5cf6", lightBg: "#ede9fe", borderColor: "#ddd6fe" },
   { color: "#15803d", bg: "#22c55e", lightBg: "#f0fdf4", borderColor: "#a7f3c0" },
   { color: "#0e7490", bg: "#06b6d4", lightBg: "#ecfeff", borderColor: "#a5f0fc" },
@@ -161,7 +161,7 @@ export default function PainPointsContent() {
             value={search}
             onChange={(e) => { setSearch(e.target.value); setActiveCategory(null); }}
             placeholder="Rechercher parmi tous les pain points..."
-            className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 text-sm bg-white focus:outline-none focus:border-[#0ca2c2] focus:ring-1 focus:ring-[#0ca2c2]"
+            className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 text-sm bg-white focus:outline-none focus:border-[#3979C1] focus:ring-1 focus:ring-[#3979C1]"
           />
           {search && (
             <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-400 transition-colors">

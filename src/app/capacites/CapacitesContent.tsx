@@ -9,8 +9,8 @@ import type { Capacite } from "@/types/notion";
 
 // Palette de couleurs pour les cartes (cycle)
 const CARD_COLORS = [
-  { bg: "#e8f7fa", border: "#b2e3ef", accent: "#0ca2c2", text: "#0887a3" },
-  { bg: "#fff7e6", border: "#fdd89a", accent: "#fea706", text: "#b45309" },
+  { bg: "#E8F2FD", border: "#9CC3F0", accent: "#3979C1", text: "#224873" },
+  { bg: "#FFF0D6", border: "#f5c97a", accent: "#C9820A", text: "#7A4A00" },
   { bg: "#ede9fe", border: "#ddd6fe", accent: "#8b5cf6", text: "#5b21b6" },
   { bg: "#f0fdf4", border: "#a7f3c0", accent: "#22c55e", text: "#15803d" },
   { bg: "#fff1f2", border: "#fecdd3", accent: "#f43f5e", text: "#9f1239" },
@@ -83,7 +83,7 @@ export default function CapacitesContent() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Rechercher parmi toutes les capacités..."
-            className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 text-sm bg-white focus:outline-none focus:border-[#0ca2c2] focus:ring-1 focus:ring-[#0ca2c2]"
+            className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 text-sm bg-white focus:outline-none focus:border-[#3979C1] focus:ring-1 focus:ring-[#3979C1]"
           />
           {search && (
             <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-400 transition-colors">

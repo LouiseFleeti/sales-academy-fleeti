@@ -14,12 +14,12 @@ const CATEGORY_CONFIG: Record<string, {
   icon: React.ReactNode; description: string;
 }> = {
   "Finance & Location": {
-    color: "#0887a3", bg: "#0ca2c2", lightBg: "#e8f7fa", borderColor: "#b2e3ef",
+    color: "#224873", bg: "#3979C1", lightBg: "#E8F2FD", borderColor: "#9CC3F0",
     description: "Sociétés de leasing, LLD/LCD, financeurs de véhicules",
     icon: <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>,
   },
   "Mobilité & Livraison": {
-    color: "#b45309", bg: "#fea706", lightBg: "#fff7e6", borderColor: "#fdd89a",
+    color: "#7A4A00", bg: "#C9820A", lightBg: "#FFF0D6", borderColor: "#f5c97a",
     description: "Transport, logistique, livraison du dernier kilomètre",
     icon: <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>,
   },
@@ -149,7 +149,7 @@ export default function IndustriesContent() {
             value={search}
             onChange={(e) => { setSearch(e.target.value); setActiveCategory(null); }}
             placeholder="Rechercher parmi toutes les industries..."
-            className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 text-sm bg-white focus:outline-none focus:border-[#0ca2c2] focus:ring-1 focus:ring-[#0ca2c2]"
+            className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 text-sm bg-white focus:outline-none focus:border-[#3979C1] focus:ring-1 focus:ring-[#3979C1]"
           />
           {search && (
             <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-400 transition-colors">

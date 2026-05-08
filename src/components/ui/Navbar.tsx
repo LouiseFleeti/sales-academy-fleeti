@@ -7,7 +7,9 @@ const NAV_ITEMS = [
   { label: "Industries", href: "/industries" },
   { label: "Pain points", href: "/painpoints" },
   { label: "Capacités produit", href: "/capacites" },
+  { label: "Personas", href: "/personas" },
   { label: "Qualification", href: "/qualification" },
+  { label: "Relances", href: "/relances" },
 ];
 
 export default function Navbar() {
@@ -19,13 +21,13 @@ export default function Navbar() {
       <div className="max-w-screen-xl mx-auto px-6 h-14 flex items-center gap-8">
         {/* Logo */}
         <Link href="/industries" className="flex items-center gap-2.5 shrink-0 mr-4">
-          <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: "linear-gradient(135deg, #0ca2c2 0%, #0887a3 100%)" }}>
+          <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: "linear-gradient(135deg, #3979C1 0%, #224873 100%)" }}>
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
               <path d="M13 10V3L4 14h7v7l9-11h-7z" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </div>
           <span className="font-bold text-sm tracking-tight text-gray-900">
-            Sales <span style={{ color: "#0ca2c2" }}>Academy</span>
+            Sales <span style={{ color: "#3979C1" }}>Academy</span>
           </span>
         </Link>
 
@@ -49,7 +51,7 @@ export default function Navbar() {
                 {isActive && (
                   <span
                     className="absolute bottom-0 left-3.5 right-3.5 h-0.5 rounded-full"
-                    style={{ background: "#0ca2c2" }}
+                    style={{ background: "#3979C1" }}
                   />
                 )}
               </Link>
@@ -62,11 +64,11 @@ export default function Navbar() {
           href="/chat"
           className="flex items-center gap-2 px-4 py-1.5 rounded-lg text-sm font-semibold transition-all"
           style={{
-            background: isChat ? "#0ca2c2" : "#fea706",
+            background: isChat ? "#3979C1" : "#C9820A",
             color: "white",
             boxShadow: isChat
-              ? "0 1px 4px rgba(12,162,194,0.3)"
-              : "0 1px 4px rgba(254,167,6,0.3)",
+              ? "0 1px 4px rgba(57,121,193,0.3)"
+              : "0 1px 4px rgba(201,130,10,0.3)",
           }}
         >
           <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">

@@ -55,7 +55,7 @@ export default function ChatPage() {
       <div className="px-6 py-4 border-b border-gray-200 bg-white flex items-center gap-3">
         <div
           className="w-9 h-9 rounded-xl flex items-center justify-center"
-          style={{ background: "linear-gradient(135deg, #0ca2c2, #fea706)" }}
+          style={{ background: "linear-gradient(135deg, #3979C1, #224873)" }}
         >
           <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
@@ -73,9 +73,9 @@ export default function ChatPage() {
           <div className="text-center py-16">
             <div
               className="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center"
-              style={{ background: "linear-gradient(135deg, #e8f7fa, #fff7e6)" }}
+              style={{ background: "linear-gradient(135deg, #E8F2FD, #FFF0D6)" }}
             >
-              <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="#0ca2c2" strokeWidth="1.5">
+              <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="#3979C1" strokeWidth="1.5">
                 <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
               </svg>
             </div>
@@ -109,7 +109,7 @@ export default function ChatPage() {
             {msg.role === "assistant" && (
               <div
                 className="w-7 h-7 rounded-lg mr-2 shrink-0 mt-0.5 flex items-center justify-center"
-                style={{ background: "linear-gradient(135deg, #0ca2c2, #0887a3)" }}
+                style={{ background: "linear-gradient(135deg, #3979C1, #224873)" }}
               >
                 <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15v-4H7l5-8v4h4l-5 8z"/>
@@ -124,7 +124,7 @@ export default function ChatPage() {
                   : "bg-white text-gray-800 border border-gray-100 shadow-sm rounded-bl-sm"
                 }
               `}
-              style={msg.role === "user" ? { background: "#0ca2c2" } : {}}
+              style={msg.role === "user" ? { background: "#3979C1" } : {}}
             >
               {msg.content.split("\n").map((line, j) => (
                 <span key={j}>
@@ -140,7 +140,7 @@ export default function ChatPage() {
           <div className="flex justify-start">
             <div
               className="w-7 h-7 rounded-lg mr-2 shrink-0 flex items-center justify-center"
-              style={{ background: "linear-gradient(135deg, #0ca2c2, #0887a3)" }}
+              style={{ background: "linear-gradient(135deg, #3979C1, #224873)" }}
             >
               <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15v-4H7l5-8v4h4l-5 8z"/>
@@ -148,9 +148,9 @@ export default function ChatPage() {
             </div>
             <div className="bg-white border border-gray-100 shadow-sm rounded-2xl rounded-bl-sm px-4 py-3">
               <div className="flex gap-1 items-center h-4">
-                <span className="w-2 h-2 rounded-full animate-bounce" style={{ background: "#0ca2c2", animationDelay: "0ms" }} />
-                <span className="w-2 h-2 rounded-full animate-bounce" style={{ background: "#0ca2c2", animationDelay: "150ms" }} />
-                <span className="w-2 h-2 rounded-full animate-bounce" style={{ background: "#0ca2c2", animationDelay: "300ms" }} />
+                <span className="w-2 h-2 rounded-full animate-bounce" style={{ background: "#3979C1", animationDelay: "0ms" }} />
+                <span className="w-2 h-2 rounded-full animate-bounce" style={{ background: "#3979C1", animationDelay: "150ms" }} />
+                <span className="w-2 h-2 rounded-full animate-bounce" style={{ background: "#3979C1", animationDelay: "300ms" }} />
               </div>
             </div>
           </div>
@@ -176,7 +176,7 @@ export default function ChatPage() {
             onClick={sendMessage}
             disabled={!input.trim() || loading}
             className="shrink-0 w-8 h-8 rounded-lg flex items-center justify-center transition-all disabled:opacity-40 disabled:cursor-not-allowed"
-            style={{ background: "#0ca2c2" }}
+            style={{ background: "#3979C1" }}
           >
             <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
               <line x1="22" y1="2" x2="11" y2="13"/>

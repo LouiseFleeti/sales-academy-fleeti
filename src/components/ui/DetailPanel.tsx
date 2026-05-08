@@ -21,7 +21,7 @@ type Props = {
 };
 
 const RELATION_COLORS: Record<string, [string, string]> = {
-  industries:      ["#e8f7fa", "#0887a3"],
+  industries:      ["#E8F2FD", "#224873"],
   painpoints:      ["#fef3e2", "#c47f00"],
   solutions:       ["#edf7ee", "#2e7d32"],
   capacites:       ["#ede9fe", "#5b21b6"],
@@ -40,16 +40,16 @@ function FieldContent({ field }: { field: Field }) {
     return (
       <div
         className="rounded-xl border overflow-hidden mb-5"
-        style={{ borderColor: "#d4eef5", boxShadow: "0 1px 4px rgba(12,162,194,0.06)" }}
+        style={{ borderColor: "#9CC3F0", boxShadow: "0 1px 4px rgba(57,121,193,0.06)" }}
       >
-        <div className="px-5 py-2.5 flex items-center gap-2" style={{ background: "#eaf6fa" }}>
-          <svg className="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="#0887a3" strokeWidth="2.5">
+        <div className="px-5 py-2.5 flex items-center gap-2" style={{ background: "#E8F2FD" }}>
+          <svg className="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="#224873" strokeWidth="2.5">
             <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
             <polyline points="14 2 14 8 20 8"/>
             <line x1="16" y1="13" x2="8" y2="13"/>
             <line x1="16" y1="17" x2="8" y2="17"/>
           </svg>
-          <p className="text-xs font-bold uppercase tracking-widest" style={{ color: "#0887a3" }}>
+          <p className="text-xs font-bold uppercase tracking-widest" style={{ color: "#224873" }}>
             {field.label}
           </p>
         </div>
@@ -69,7 +69,7 @@ function FieldContent({ field }: { field: Field }) {
         style={{ boxShadow: "0 1px 3px rgba(0,0,0,0.04)" }}
       >
         <div className="px-5 py-2 border-b border-gray-50 flex items-center gap-2 bg-white">
-          <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: "#0ca2c2" }} />
+          <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: "#3979C1" }} />
           <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest">{field.label}</p>
         </div>
         <div className="px-5 py-3.5 bg-white flex flex-wrap gap-2">
@@ -96,7 +96,7 @@ function FieldContent({ field }: { field: Field }) {
         style={{ boxShadow: "0 1px 3px rgba(0,0,0,0.04)" }}
       >
         <div className="px-5 py-2 border-b border-gray-50 flex items-center gap-2 bg-white">
-          <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: "#0ca2c2" }} />
+          <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: "#3979C1" }} />
           <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest">{field.label}</p>
         </div>
         <ul className="px-5 py-3.5 bg-white space-y-2">
@@ -104,7 +104,7 @@ function FieldContent({ field }: { field: Field }) {
             <li key={item} className="flex items-start gap-2.5 text-sm text-gray-700">
               <span
                 className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0"
-                style={{ background: "#fea706" }}
+                style={{ background: "#C9820A" }}
               />
               {item}
             </li>
@@ -143,7 +143,7 @@ function FieldContent({ field }: { field: Field }) {
       style={{ boxShadow: "0 1px 3px rgba(0,0,0,0.04)" }}
     >
       <div className="px-5 py-2 border-b border-gray-50 flex items-center gap-2 bg-white">
-        <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: "#0ca2c2" }} />
+        <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: "#3979C1" }} />
         <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest">{field.label}</p>
       </div>
       <div className="px-5 py-4 bg-white">
@@ -164,7 +164,7 @@ export default function DetailPanel({ name, badge, fields, relations }: Props) {
         {badge && (
           <span
             className="inline-block text-xs font-bold px-2.5 py-1 rounded-full mb-3 tracking-widest uppercase"
-            style={{ background: "#e8f7fa", color: "#0887a3" }}
+            style={{ background: "#E8F2FD", color: "#224873" }}
           >
             {badge}
           </span>
@@ -185,11 +185,11 @@ export default function DetailPanel({ name, badge, fields, relations }: Props) {
       {visibleRelations.length > 0 && (
         <div>
           <div className="flex items-center gap-3 mb-5">
-            <div className="h-px flex-1" style={{ background: "#e8f7fa" }} />
-            <span className="text-xs font-bold uppercase tracking-widest" style={{ color: "#0ca2c2" }}>
+            <div className="h-px flex-1" style={{ background: "#E8F2FD" }} />
+            <span className="text-xs font-bold uppercase tracking-widest" style={{ color: "#3979C1" }}>
               Relations
             </span>
-            <div className="h-px flex-1" style={{ background: "#e8f7fa" }} />
+            <div className="h-px flex-1" style={{ background: "#E8F2FD" }} />
           </div>
           <div className="space-y-5">
             {visibleRelations.map((group) => {
