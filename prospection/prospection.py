@@ -3,7 +3,7 @@
 Fleeti France - Prospection B2B automatisee
 SIRENE (INSEE) -> Pappers -> Scoring -> Export Excel
 """
-import argparse, json, os, sys, time
+import argparse, json, os, sys, time, pathlib
 from datetime import datetime, timedelta
 
 try:
@@ -354,6 +354,32 @@ def export_excel(prospects, path):
     print(f"OK: Export Odoo {csv_path} ({len(prospects)} contacts)")
     return path
 
+# ── MEMOIRE ──
+
+MEMORY_FILE = pathlib.Path.home() / ".fleeti_prospection_history.json"
+
+def load_memory():
+    if MEMORY_FILE.exists():
+        try:
+            return set(json.loads(MEMORY_FILE.read_text()).get("sirens", []))
+        except: pass
+    return set()
+
+def save_memory(seen_sirens, new_sirens):
+    all_sirens = list(seen_sirens | set(new_sirens))
+    MEMORY_FILE.write_text(json.dumps({
+        "sirens": all_sirens,
+        "derniere_maj": datetime.now().strftime("%Y-%m-%d %H:%M"),
+        "total": len(all_sirens)
+    }, indent=2))
+
+def filter_new(prospects, seen_sirens):
+    avant = len(prospects)
+    nouveaux = [p for p in prospects if p["siren"] not in seen_sirens]
+    if avant - len(nouveaux) > 0:
+        print(f"  Mémoire : {avant - len(nouveaux)} entreprises déjà vues → ignorées")
+    return nouveaux
+
 # ── MAIN ──
 
 def main():
@@ -368,6 +394,7 @@ def main():
     ap.add_argument("--limit", type=int, default=100)
     ap.add_argument("--enrichir-top", type=int, default=None)
     ap.add_argument("--skip-pappers", action="store_true")
+    ap.add_argument("--reset-memory", action="store_true", help="Effacer la mémoire et repartir de zéro")
     ap.add_argument("--output", default="/mnt/user-data/outputs/Prospects_Fleeti.xlsx")
     args = ap.parse_args()
 
@@ -376,11 +403,32 @@ def main():
     print("  SIRENE -> Pappers -> Scoring -> Excel")
     print("=" * 50)
 
+    # Mémoire
+    if args.reset_memory and MEMORY_FILE.exists():
+        MEMORY_FILE.unlink()
+        print("Mémoire réinitialisée.")
+    seen_sirens = load_memory()
+    if seen_sirens:
+        print(f"Mémoire : {len(seen_sirens)} entreprises déjà prospectées → seront ignorées")
+
+    # On demande plus pour compenser les filtrés
+    limit_avec_marge = args.limit + len(seen_sirens) if seen_sirens else args.limit
+    limit_avec_marge = min(limit_avec_marge, args.limit * 3)  # max x3
+
     prospects = query_sirene(args.sirene_token, args.ape, args.departements,
                              args.effectif_min, args.effectif_max,
-                             args.date_creation_apres, args.limit)
+                             args.date_creation_apres, limit_avec_marge)
     if not prospects:
         print("\nAucun prospect trouve."); sys.exit(0)
+
+    # Filtrer les déjà vus
+    prospects = filter_new(prospects, seen_sirens)
+    if not prospects:
+        print("\nToutes les entreprises ont déjà été prospectées. Lance --reset-memory pour repartir.")
+        sys.exit(0)
+
+    # Garder uniquement le nombre demandé
+    prospects = prospects[:args.limit]
 
     prospects = enrich_rne(prospects, args.enrichir_top)
     if not args.skip_pappers and args.pappers_token:
@@ -390,6 +438,11 @@ def main():
 
     prospects = score_prospects(prospects)
     export_excel(prospects, args.output)
+
+    # Sauvegarder en mémoire
+    new_sirens = [p["siren"] for p in prospects]
+    save_memory(seen_sirens, new_sirens)
+    print(f"Mémoire mise à jour : {len(seen_sirens) + len(new_sirens)} entreprises au total")
 
     print(f"\n{'='*50}\nTERMINE\n{'='*50}")
     print(f"Fichier: {args.output}")

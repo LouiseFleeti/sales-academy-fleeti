@@ -32,8 +32,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ── HEADER ──
-st.image("https://fleeti.co/wp-content/uploads/2023/02/fleeti-logo.png", width=140)
-st.title("Générateur de Leads B2B")
+st.title("🚛 Fleeti — Générateur de Leads B2B")
 st.caption("Données publiques françaises • 100% légal • Export Excel + Odoo")
 st.divider()
 
@@ -88,7 +87,7 @@ with col4:
 
 with st.expander("🔑 Clés API"):
     sirene_token = st.text_input("Token SIRENE (obligatoire)", value="4ab9e4a0-a10e-4627-8373-a9afd3a21332", type="password")
-    pappers_token = st.text_input("Token Pappers (optionnel — CA + site web)", type="password")
+    pappers_token = st.text_input("Token Pappers (optionnel — CA + site web)", value="e4ca866896619fff7b5b228022c5d5f0752ecb10366f3bd3", type="password")
 
 st.divider()
 
@@ -122,8 +121,9 @@ if st.button("🚀 Générer ma liste"):
         if departements:
             cmd += ["--departements", *departements]
 
+        script_dir = os.path.dirname(os.path.abspath(__file__))
         with st.spinner("⏳ Recherche en cours... (1-3 minutes)"):
-            result = subprocess.run(cmd, capture_output=True, text=True, cwd=os.path.dirname(__file__))
+            result = subprocess.run(cmd, capture_output=True, text=True, cwd=script_dir)
 
         if result.returncode != 0:
             st.error("Une erreur est survenue.")
