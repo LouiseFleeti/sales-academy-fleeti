@@ -175,7 +175,7 @@ export async function getPainPoints(): Promise<PainPoint[]> {
       capacitesProduit: await resolveRelations(getRelationIds(p, "Capacités produit")),
       enjeuBusiness: await resolveRelations(getRelationIds(p, "Enjeu business")),
       personas: await resolveRelations(getRelationIds(p, "Personas")),
-      solutions: await resolveRelations(getRelationIds(p, "Solutions")),
+      solutions: await resolveRelations(getRelationIds(p, "✅ Solutions")),
     }))
   );
 }
@@ -196,7 +196,7 @@ export async function getPainPoint(id: string): Promise<PainPoint | null> {
       capacitesProduit: await resolveRelations(getRelationIds(p, "Capacités produit")),
       enjeuBusiness: await resolveRelations(getRelationIds(p, "Enjeu business")),
       personas: await resolveRelations(getRelationIds(p, "Personas")),
-      solutions: await resolveRelations(getRelationIds(p, "Solutions")),
+      solutions: await resolveRelations(getRelationIds(p, "✅ Solutions")),
     };
   } catch {
     return null;
@@ -216,7 +216,7 @@ export async function getSolutions(): Promise<Solution[]> {
       benefices: await resolveRelations(getRelationIds(p, "Bénéfices")),
       capacitesProduit: await resolveRelations(getRelationIds(p, "Capacités produit")),
       enjeuBusiness: await resolveRelations(getRelationIds(p, "Enjeu business")),
-      fonctionnalites: await resolveRelations(getRelationIds(p, "Fonctionnalités")),
+      fonctionnalites: await resolveRelations(getRelationIds(p, "🪛 Fonctionnalités")),
     }))
   );
 }
@@ -232,7 +232,7 @@ export async function getSolution(id: string): Promise<Solution | null> {
       benefices: await resolveRelations(getRelationIds(p, "Bénéfices")),
       capacitesProduit: await resolveRelations(getRelationIds(p, "Capacités produit")),
       enjeuBusiness: await resolveRelations(getRelationIds(p, "Enjeu business")),
-      fonctionnalites: await resolveRelations(getRelationIds(p, "Fonctionnalités")),
+      fonctionnalites: await resolveRelations(getRelationIds(p, "🪛 Fonctionnalités")),
     };
   } catch {
     return null;

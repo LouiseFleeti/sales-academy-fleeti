@@ -203,9 +203,8 @@ export default function IndustriesContent() {
         <div className="px-10 py-6">
           <div className="mb-6">
             <h1 className="text-xl font-bold text-gray-900">Industries cibles</h1>
-            <p className="text-sm text-gray-400 mt-1">
-              {grouped.length} catégories · {items.length} industries
-            </p>
+            <p className="text-sm text-gray-500 mt-1 max-w-xl">Comprends les secteurs que Fleeti adresse, leurs types de flottes et leurs opérations terrain — le point de départ pour contextualiser chaque RDV.</p>
+            <p className="text-xs text-gray-400 mt-1">{grouped.length} catégories · {items.length} industries</p>
           </div>
 
           <div className="grid grid-cols-2 xl:grid-cols-3 gap-4">

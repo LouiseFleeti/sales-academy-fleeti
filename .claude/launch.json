@@ -2,10 +2,11 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "Next.js dev",
+      "name": "sales-academy",
       "runtimeExecutable": "/usr/local/bin/node",
-      "runtimeArgs": ["node_modules/.bin/next", "dev"],
-      "port": 3000
+      "runtimeArgs": ["/Users/louiseduplaceau/Downloads/Prospection/node_modules/.bin/next", "dev", "--cwd", "/Users/louiseduplaceau/Downloads/Prospection", "--port", "3001"],
+      "port": 3001,
+      "autoPort": false
     }
   ]
 }

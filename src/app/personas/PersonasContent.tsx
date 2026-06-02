@@ -304,7 +304,8 @@ export default function PersonasContent() {
         <div className="max-w-screen-xl mx-auto flex items-center justify-between gap-6">
           <div>
             <h1 className="text-xl font-bold" style={{ color: F.dark }}>Personas acheteurs</h1>
-            <p className="text-sm mt-1" style={{ color: F.midGrey }}>
+            <p className="text-sm mt-1 max-w-xl" style={{ color: "#6b7280" }}>Les profils d'interlocuteurs et décideurs à cibler selon le contexte client — leurs objectifs, leurs industries et les pain points qui les concernent en priorité.</p>
+            <p className="text-xs mt-1" style={{ color: F.midGrey }}>
               {loading ? "Chargement..." : `${personas.length} persona${personas.length > 1 ? "s" : ""} identifié${personas.length > 1 ? "s" : ""}`}
             </p>
           </div>

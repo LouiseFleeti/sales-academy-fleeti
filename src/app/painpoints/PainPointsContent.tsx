@@ -67,6 +67,7 @@ export default function PainPointsContent() {
   const [selectedItem, setSelectedItem] = useState<PainPoint | null>(null);
   const [panelOpen, setPanelOpen] = useState(false);
   const [search, setSearch] = useState("");
+  const [filterIndustry, setFilterIndustry] = useState<string | null>(null);
 
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -92,15 +93,32 @@ export default function PainPointsContent() {
     }
   }, [searchParams, items]);
 
+  // Industries uniques présentes dans les pain points
+  const usedIndustries = useMemo(() => {
+    const seen = new Map<string, string>();
+    items.forEach((pp) => pp.industriesConcernees.forEach((ind) => {
+      if (!seen.has(ind.id)) seen.set(ind.id, ind.name);
+    }));
+    return Array.from(seen.entries())
+      .map(([id, name]) => ({ id, name }))
+      .sort((a, b) => a.name.localeCompare(b.name));
+  }, [items]);
+
+  // Items filtrés par industrie (appliqué avant groupement et recherche)
+  const filteredByIndustry = useMemo(() => {
+    if (!filterIndustry) return items;
+    return items.filter((pp) => pp.industriesConcernees.some((ind) => ind.id === filterIndustry));
+  }, [items, filterIndustry]);
+
   const grouped = useMemo(() => {
     const map = new Map<string, PainPoint[]>();
-    items.forEach((item) => {
+    filteredByIndustry.forEach((item) => {
       const cat = item.categorie || "Autre";
       if (!map.has(cat)) map.set(cat, []);
       map.get(cat)!.push(item);
     });
     return Array.from(map.entries());
-  }, [items]);
+  }, [filteredByIndustry]);
 
   // Associe chaque catégorie à une couleur/icône de la palette
   const categoryConfig = useMemo(() => {
@@ -132,12 +150,12 @@ export default function PainPointsContent() {
   const searchResults = useMemo(() => {
     if (!search.trim()) return [];
     const q = search.toLowerCase();
-    return items.filter((i) =>
+    return filteredByIndustry.filter((i) =>
       i.name.toLowerCase().includes(q) ||
       i.descriptionTerrain?.toLowerCase().includes(q) ||
       i.consequenceBusiness?.toLowerCase().includes(q)
     );
-  }, [items, search]);
+  }, [filteredByIndustry, search]);
 
   if (loading) {
     return (
@@ -218,10 +236,40 @@ export default function PainPointsContent() {
         <div className="px-10 py-6">
           <div className="mb-6">
             <h1 className="text-xl font-bold text-gray-900">Pain points terrain</h1>
-            <p className="text-sm text-gray-400 mt-1">
-              {grouped.length} catégories · {items.length} pain points identifiés
-            </p>
+            <p className="text-sm text-gray-500 mt-1 max-w-xl">Les douleurs opérationnelles identifiées sur le terrain, groupées par catégorie. Utilise-les pour valider le contexte prospect et poser les bonnes questions.</p>
+            <p className="text-xs text-gray-400 mt-1">{grouped.length} catégories · {filteredByIndustry.length} pain points identifiés</p>
           </div>
+
+          {/* Industry filter pills */}
+          {usedIndustries.length > 0 && (
+            <div className="mb-5 flex flex-wrap gap-2">
+              <button
+                onClick={() => setFilterIndustry(null)}
+                className="text-xs font-semibold px-3 py-1.5 rounded-full border transition-all"
+                style={{
+                  background: filterIndustry === null ? "#3979C1" : "white",
+                  color: filterIndustry === null ? "white" : "#6b7280",
+                  borderColor: filterIndustry === null ? "#3979C1" : "#e5e7eb",
+                }}
+              >
+                Toutes les industries
+              </button>
+              {usedIndustries.map((ind) => (
+                <button
+                  key={ind.id}
+                  onClick={() => { setFilterIndustry(filterIndustry === ind.id ? null : ind.id); setActiveCategory(null); }}
+                  className="text-xs font-semibold px-3 py-1.5 rounded-full border transition-all"
+                  style={{
+                    background: filterIndustry === ind.id ? "#224873" : "white",
+                    color: filterIndustry === ind.id ? "white" : "#6b7280",
+                    borderColor: filterIndustry === ind.id ? "#224873" : "#e5e7eb",
+                  }}
+                >
+                  {ind.name}
+                </button>
+              ))}
+            </div>
+          )}
 
           <div className="grid grid-cols-2 xl:grid-cols-3 gap-4">
             {grouped.map(([category, painpoints]) => {
