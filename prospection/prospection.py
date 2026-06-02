@@ -20,6 +20,39 @@ except ImportError:
 SIRENE_BASE = "https://api.insee.fr/api-sirene/3.11"
 PAPPERS_BASE = "https://api.pappers.fr/v2"
 
+APE_SECTEUR = {
+    "49.41A":"Transport routier de fret interurbain",
+    "49.41B":"Transport routier de fret de proximité",
+    "49.41C":"Location de camions avec chauffeur",
+    "49.42Z":"Déménagement",
+    "52.10B":"Entreposage et stockage",
+    "52.29A":"Messagerie et fret express",
+    "52.29B":"Affrètement et organisation des transports",
+    "49.31Z":"Transports urbains et suburbains de voyageurs",
+    "49.32Z":"Taxis",
+    "49.39A":"Transports par téléphérique",
+    "49.39B":"Transports routiers réguliers de voyageurs",
+    "49.39C":"Autres transports routiers de voyageurs",
+    "86.90A":"Ambulances",
+    "77.12Z":"Location de camions",
+    "41.20A":"Construction de maisons individuelles",
+    "41.20B":"Construction d'autres bâtiments",
+    "42.11Z":"Construction de routes et autoroutes",
+    "42.21Z":"Construction de réseaux pour fluides",
+    "42.22Z":"Construction de réseaux électriques",
+    "42.99Z":"Construction d'autres ouvrages de génie civil",
+    "43.11Z":"Travaux de démolition",
+    "43.12A":"Travaux de terrassement courants",
+    "43.12B":"Travaux de terrassement spécialisés",
+    "43.21A":"Travaux d'installation électrique",
+    "43.22A":"Travaux de plomberie",
+    "43.31Z":"Travaux de plâtrerie",
+    "43.32A":"Travaux de menuiserie bois",
+    "43.34Z":"Travaux de peinture",
+    "43.91A":"Travaux de charpente",
+    "43.99C":"Travaux de maçonnerie générale",
+}
+
 TRANCHES = {
     "NN":"Non employeur","00":"0","01":"1-2","02":"3-5","03":"6-9",
     "11":"10-19","12":"20-49","21":"50-99","22":"100-199",
@@ -107,7 +140,9 @@ def parse_etab(etab):
     tr = etab.get("trancheEffectifsEtablissement","NN") or "NN"
     return {
         "siren": etab.get("siren",""), "siret": etab.get("siret",""),
-        "denomination": denom, "code_ape": per.get("activitePrincipaleUniteLegale",""),
+        "denomination": denom,
+        "code_ape": (ul.get("activitePrincipaleUniteLegale","")
+                     or per.get("activitePrincipaleUniteLegale","") or ""),
         "adresse": adresse, "code_postal": cp,
         "departement": cp[:2] if cp else "", "commune": commune,
         "tranche_code": tr, "tranche_label": TRANCHES.get(tr, tr),
@@ -287,26 +322,39 @@ def export_excel(prospects, path):
     cold = PatternFill(start_color="E3F2FD", end_color="E3F2FD", fill_type="solid")
     brd = Border(left=Side("thin","D0D0D0"), right=Side("thin","D0D0D0"),
                  top=Side("thin","D0D0D0"), bottom=Side("thin","D0D0D0"))
-    hdrs = ["Prénom","Nom","Fonction","Email estimé","Entreprise","Ville"]
+    hdrs = ["Prénom","Nom","Titre","Entreprise","Secteur d'activité","Site web","LinkedIn","Email potentiel"]
     for c, h in enumerate(hdrs, 1):
         cell = ws.cell(1, c, h)
         cell.font, cell.fill, cell.alignment, cell.border = hf, hfill, ha, brd
     for ri, p in enumerate(prospects, 2):
         sc = p["score"]
         fill = hot if sc>=5 else (warm if sc>=3 else cold)
+        prenom = p["dirigeant_prenom"] or ""
+        nom = p["dirigeant_nom"] or ""
+        secteur = APE_SECTEUR.get(p.get("code_ape",""), p.get("code_ape",""))
+        site = p.get("site_web","") or ""
+        linkedin = (f"https://www.linkedin.com/search/results/people/?keywords="
+                    f"{normalize(prenom)}+{normalize(nom)}+"
+                    f"{'+'.join(p['denomination'].split()[:2])}"
+                    if prenom and nom else "")
         row = [
-            p["dirigeant_prenom"],
-            p["dirigeant_nom"],
+            prenom,
+            nom,
             p["dirigeant_fonction"],
-            p["email_estime"],
             p["denomination"],
-            p["commune"],
+            secteur,
+            site,
+            linkedin,
+            p["email_estime"],
         ]
         for c, v in enumerate(row, 1):
             cell = ws.cell(ri, c, v)
             cell.fill, cell.border = fill, brd
             cell.alignment = Alignment(vertical="center", wrap_text=True)
-    widths = [20, 25, 30, 40, 40, 25]
+            if v and str(v).startswith("http") and c in (6,7):
+                cell.hyperlink = str(v)
+                cell.font = Font(color="0563C1", underline="single")
+    widths = [18, 22, 32, 38, 40, 35, 55, 40]
     for i, w in enumerate(widths, 1):
         ws.column_dimensions[get_column_letter(i)].width = w
     ws.freeze_panes = "A2"
@@ -339,17 +387,26 @@ def export_excel(prospects, path):
     csv_path = path.replace(".xlsx", "_odoo.csv")
     with open(csv_path, "w", newline="", encoding="utf-8-sig") as f:
         writer = csv.DictWriter(f, fieldnames=[
-            "Name", "First Name", "Job Position", "Email", "Company Name", "City"
+            "First Name", "Last Name", "Job Position", "Company Name",
+            "Industry", "Website", "LinkedIn", "Email"
         ])
         writer.writeheader()
         for p in prospects:
+            prenom = p["dirigeant_prenom"] or ""
+            nom = p["dirigeant_nom"] or ""
+            linkedin = (f"https://www.linkedin.com/search/results/people/?keywords="
+                        f"{normalize(prenom)}+{normalize(nom)}+"
+                        f"{'+'.join(p['denomination'].split()[:2])}"
+                        if prenom and nom else "")
             writer.writerow({
-                "Name": f"{p['dirigeant_prenom']} {p['dirigeant_nom']}".strip(),
-                "First Name": p["dirigeant_prenom"],
-                "Job Position": p["dirigeant_fonction"],
-                "Email": p["email_estime"] or "",
+                "First Name": prenom,
+                "Last Name": nom,
+                "Job Position": p["dirigeant_fonction"] or "",
                 "Company Name": p["denomination"],
-                "City": p["commune"],
+                "Industry": APE_SECTEUR.get(p.get("code_ape",""), p.get("code_ape","")),
+                "Website": p.get("site_web","") or "",
+                "LinkedIn": linkedin,
+                "Email": p["email_estime"] or "",
             })
     print(f"OK: Export Odoo {csv_path} ({len(prospects)} contacts)")
     return path
