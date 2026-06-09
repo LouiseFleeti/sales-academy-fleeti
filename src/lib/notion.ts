@@ -187,6 +187,7 @@ export async function getEnjeux(): Promise<Enjeu[]> {
       solutionsAssociees: await resolveRelations(getRelationIds(p, "Solutions associées")),
       fonctionnalitesAssociees: await resolveRelations(getRelationIds(p, "Fonctionnalités associées")),
       industriesConcernees: await resolveRelations(getRelationIds(p, "Industries concernées")),
+      beneficesAssocies: await resolveRelations(getRelationIds(p, "Benefices")),
     }))
   );
   });
@@ -203,6 +204,7 @@ export async function getEnjeu(id: string): Promise<Enjeu | null> {
       solutionsAssociees: await resolveRelations(getRelationIds(p, "Solutions associées")),
       fonctionnalitesAssociees: await resolveRelations(getRelationIds(p, "Fonctionnalités associées")),
       industriesConcernees: await resolveRelations(getRelationIds(p, "Industries concernées")),
+      beneficesAssocies: await resolveRelations(getRelationIds(p, "Benefices")),
     };
   } catch {
     return null;

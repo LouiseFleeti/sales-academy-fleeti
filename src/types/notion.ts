@@ -21,6 +21,7 @@ export type Enjeu = {
   solutionsAssociees: NotionRelation[];
   fonctionnalitesAssociees: NotionRelation[];
   industriesConcernees: NotionRelation[];
+  beneficesAssocies: NotionRelation[];
 };
 
 export type PainPoint = {
