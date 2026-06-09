@@ -56,7 +56,7 @@ export default function SolutionsContent() {
     router.push("/solutions", { scroll: false });
   };
 
-  // Grouped by enjeu business (solutions with multiple enjeux appear in each group)
+  // Grouped by enjeu business — only groups with ≥3 solutions, rest → "Autres"
   const grouped = useMemo(() => {
     const map = new Map<string, { id: string; name: string; solutions: Solution[] }>();
     items.forEach((item) => {
@@ -70,7 +70,25 @@ export default function SolutionsContent() {
         });
       }
     });
-    return Array.from(map.values());
+    // Keep only groups with ≥3 solutions, merge the rest into "Autres"
+    const MIN = 3;
+    const result: { id: string; name: string; solutions: Solution[] }[] = [];
+    const autres: Solution[] = [];
+    map.forEach((group) => {
+      if (group.id === "__autres__" || group.solutions.length < MIN) {
+        autres.push(...group.solutions);
+      } else {
+        result.push(group);
+      }
+    });
+    result.sort((a, b) => b.solutions.length - a.solutions.length);
+    if (autres.length > 0) {
+      // Deduplicate autres
+      const seen = new Set<string>();
+      const dedupedAutres = autres.filter((s) => { if (seen.has(s.id)) return false; seen.add(s.id); return true; });
+      result.push({ id: "__autres__", name: "Autres solutions", solutions: dedupedAutres });
+    }
+    return result;
   }, [items]);
 
   const filtered = useMemo(() => {
