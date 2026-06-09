@@ -1,8 +1,10 @@
 /**
  * Préchauffe le cache Notion au démarrage du serveur.
- * Appelé une seule fois depuis instrumentation.ts.
+ * 1. Charge toutes les pages de toutes les bases (index id→nom)
+ * 2. Puis construit les objets enrichis (sans appels réseau supplémentaires)
  */
 import {
+  preloadAllDatabases,
   getIndustries, getEnjeux, getPainPoints, getSolutions,
   getCapacites, getFonctionnalites, getBenefices, getPersonas, getRelances,
 } from "@/lib/notion";
@@ -20,12 +22,19 @@ const LOADERS = [
 ];
 
 export async function warmNotionCache() {
-  console.log("[cache] Préchauffage du cache Notion (séquentiel)...");
+  console.log("[cache] Étape 1 : index id→nom de toutes les bases...");
+  try {
+    await preloadAllDatabases();
+    console.log("[cache] ✓ Index prêt");
+  } catch (e) {
+    console.warn("[cache] ✗ Index partiel :", e);
+  }
+
+  console.log("[cache] Étape 2 : construction du cache enrichi...");
   for (const { name, fn } of LOADERS) {
     try {
       await fn();
       console.log(`[cache] ✓ ${name}`);
-      await new Promise(r => setTimeout(r, 500)); // 500ms entre chaque base
     } catch (e) {
       console.warn(`[cache] ✗ ${name} :`, e);
     }

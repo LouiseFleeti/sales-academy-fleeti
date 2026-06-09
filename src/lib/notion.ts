@@ -54,31 +54,37 @@ function getRelationIds(page: PageObjectResponse, prop: string): string[] {
   return p.relation.map((r) => r.id);
 }
 
-async function resolvePageName(id: string): Promise<string | null> {
-  if (pageNameCache.has(id)) return pageNameCache.get(id)!;
-  try {
-    const page = (await withRetry(() => notion.pages.retrieve({ page_id: id }))) as PageObjectResponse;
-    const name = getPageName(page);
-    pageNameCache.set(id, name);
-    return name;
-  } catch {
-    return null;
+function resolveRelations(ids: string[]): NotionRelation[] {
+  return ids
+    .map(id => ({ id, name: pageNameCache.get(id) }))
+    .filter((r): r is NotionRelation => !!r.name);
+}
+
+// Charge toutes les pages d'une base et indexe id → nom dans pageNameCache
+async function preloadDatabase(dbId: string): Promise<void> {
+  const pages = await queryAll(dbId);
+  for (const page of pages) {
+    pageNameCache.set(page.id, getPageName(page));
   }
 }
 
-async function resolveRelations(ids: string[]): Promise<NotionRelation[]> {
-  if (ids.length === 0) return [];
-  const results: NotionRelation[] = [];
-  for (const id of ids) {
-    // Déjà en cache → pas de requête
-    if (pageNameCache.has(id)) {
-      results.push({ id, name: pageNameCache.get(id)! });
-      continue;
-    }
-    const name = await resolvePageName(id);
-    if (name) results.push({ id, name });
+export async function preloadAllDatabases(): Promise<void> {
+  const dbs = [
+    process.env.NOTION_DB_INDUSTRIES,
+    process.env.NOTION_DB_ENJEUX,
+    process.env.NOTION_DB_PAINPOINTS,
+    process.env.NOTION_DB_SOLUTIONS,
+    process.env.NOTION_DB_CAPACITES,
+    process.env.NOTION_DB_FONCTIONNALITES,
+    process.env.NOTION_DB_BENEFICES,
+    process.env.NOTION_DB_PERSONAS,
+    process.env.NOTION_DB_RELANCES,
+  ].filter(Boolean) as string[];
+
+  for (const dbId of dbs) {
+    await preloadDatabase(dbId);
+    await sleep(300);
   }
-  return results;
 }
 
 function getPageName(page: PageObjectResponse): string {
