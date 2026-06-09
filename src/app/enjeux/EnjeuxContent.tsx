@@ -5,39 +5,33 @@ import { useSearchParams, useRouter } from "next/navigation";
 import DetailPanel from "@/components/ui/DetailPanel";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import { cachedFetch } from "@/lib/clientCache";
-import type { Enjeu, Industry } from "@/types/notion";
+import type { Enjeu } from "@/types/notion";
 
-const CARD_COLORS = [
-  { bg: "#FFF0D6", border: "#f5c97a", accent: "#C9820A", text: "#7A4A00" },
-  { bg: "#E8F2FD", border: "#9CC3F0", accent: "#3979C1", text: "#224873" },
-  { bg: "#ede9fe", border: "#ddd6fe", accent: "#8b5cf6", text: "#5b21b6" },
-  { bg: "#f0fdf4", border: "#a7f3c0", accent: "#22c55e", text: "#15803d" },
-  { bg: "#fff1f2", border: "#fecdd3", accent: "#f43f5e", text: "#9f1239" },
-  { bg: "#ecfeff", border: "#a5f0fc", accent: "#06b6d4", text: "#0e7490" },
-];
+const CAT_COLORS: Record<string, { bg: string; border: string; accent: string; text: string }> = {
+  "Financier":    { bg: "#E8F2FD", border: "#9CC3F0", accent: "#3979C1", text: "#224873" },
+  "Opérationnel": { bg: "#FFF0D6", border: "#f5c97a", accent: "#C9820A", text: "#7A4A00" },
+  "Sécurité":     { bg: "#fff1f2", border: "#fecdd3", accent: "#f43f5e", text: "#9f1239" },
+  "Conformité":   { bg: "#ede9fe", border: "#ddd6fe", accent: "#8b5cf6", text: "#5b21b6" },
+  "Client":       { bg: "#f0fdf4", border: "#a7f3c0", accent: "#22c55e", text: "#15803d" },
+  "Autre":        { bg: "#f3f4f6", border: "#d1d5db", accent: "#6b7280", text: "#374151" },
+};
+
+const CAT_ORDER = ["Opérationnel", "Financier", "Sécurité", "Conformité", "Client", "Autre"];
 
 export default function EnjeuxContent() {
   const [items, setItems] = useState<Enjeu[]>([]);
-  const [industries, setIndustries] = useState<Industry[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedItem, setSelectedItem] = useState<Enjeu | null>(null);
   const [panelOpen, setPanelOpen] = useState(false);
   const [search, setSearch] = useState("");
-  const [filterIndustry, setFilterIndustry] = useState<string | null>(null);
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
   const searchParams = useSearchParams();
   const router = useRouter();
 
   useEffect(() => {
-    Promise.all([
-      cachedFetch<Enjeu[]>("/api/notion/enjeux"),
-      cachedFetch<Industry[]>("/api/notion/industries"),
-    ])
-      .then(([enjeux, inds]) => {
-        setItems(Array.isArray(enjeux) ? enjeux : []);
-        setIndustries(Array.isArray(inds) ? inds : []);
-        setLoading(false);
-      })
+    cachedFetch<Enjeu[]>("/api/notion/enjeux")
+      .then((data) => { setItems(Array.isArray(data) ? data : []); setLoading(false); })
       .catch(() => setLoading(false));
   }, []);
 
@@ -64,29 +58,30 @@ export default function EnjeuxContent() {
     router.push("/enjeux", { scroll: false });
   };
 
-  // Industries uniques présentes dans les enjeux (triées par nom)
-  const usedIndustries = useMemo(() => {
-    const seen = new Map<string, string>();
-    items.forEach((e) => e.industriesConcernees.forEach((ind) => {
-      if (!seen.has(ind.id)) seen.set(ind.id, ind.name);
-    }));
-    return Array.from(seen.entries())
-      .map(([id, name]) => ({ id, name }))
-      .sort((a, b) => a.name.localeCompare(b.name));
+  // Grouped by catégorie
+  const grouped = useMemo(() => {
+    const map = new Map<string, Enjeu[]>();
+    items.forEach((item) => {
+      const cat = item.categorie || "Autre";
+      if (!map.has(cat)) map.set(cat, []);
+      map.get(cat)!.push(item);
+    });
+    return CAT_ORDER
+      .filter((cat) => map.has(cat))
+      .map((cat) => ({ cat, items: map.get(cat)! }));
   }, [items]);
 
   const filtered = useMemo(() => {
-    let list = items;
-    if (filterIndustry) {
-      list = list.filter((e) => e.industriesConcernees.some((ind) => ind.id === filterIndustry));
+    if (search.trim()) {
+      const q = search.toLowerCase();
+      return items.filter((e) =>
+        e.name.toLowerCase().includes(q) ||
+        (e.description || "").toLowerCase().includes(q)
+      );
     }
-    if (!search.trim()) return list;
-    const q = search.toLowerCase();
-    return list.filter((e) =>
-      e.name.toLowerCase().includes(q) ||
-      (e.description || "").toLowerCase().includes(q)
-    );
-  }, [items, search, filterIndustry]);
+    if (activeCategory) return grouped.find((g) => g.cat === activeCategory)?.items ?? [];
+    return null; // null = grouped view
+  }, [items, search, activeCategory, grouped]);
 
   if (loading) {
     return (
@@ -99,12 +94,25 @@ export default function EnjeuxContent() {
   return (
     <div className="relative min-h-[calc(100vh-56px)]" style={{ background: "#f8f9fb" }}>
       <div className="px-10 py-10">
-        <div className="mb-6">
-          <h1 className="text-xl font-bold text-gray-900">Enjeux business</h1>
-          <p className="text-sm text-gray-500 mt-1 max-w-xl">Les priorités stratégiques qui guident les décisions d'achat de tes prospects — ce qu'ils cherchent à résoudre au niveau direction.</p>
-          <p className="text-xs text-gray-400 mt-1">{filtered.length} enjeu{filtered.length > 1 ? "x" : ""}{filterIndustry ? " · filtré par industrie" : ""}</p>
+        {/* Header */}
+        <div className="mb-6 flex items-center justify-between gap-4 flex-wrap">
+          <div>
+            <h1 className="text-xl font-bold text-gray-900">Enjeux business</h1>
+            <p className="text-sm text-gray-500 mt-1 max-w-xl">Les priorités stratégiques qui guident les décisions d'achat de tes prospects — ce qu'ils cherchent à résoudre au niveau direction.</p>
+            <p className="text-xs text-gray-400 mt-1">{items.length} enjeu{items.length > 1 ? "x" : ""} · {grouped.length} catégorie{grouped.length > 1 ? "s" : ""}</p>
+          </div>
+          {(activeCategory || search) && (
+            <button
+              onClick={() => { setActiveCategory(null); setSearch(""); }}
+              className="flex items-center gap-1.5 text-sm font-semibold text-gray-400 hover:text-gray-700 transition-colors"
+            >
+              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+              Tout afficher
+            </button>
+          )}
         </div>
 
+        {/* Search */}
         <div className="mb-6 relative">
           <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
             <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
@@ -112,7 +120,7 @@ export default function EnjeuxContent() {
           <input
             type="text"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => { setSearch(e.target.value); setActiveCategory(null); }}
             placeholder="Rechercher parmi les enjeux..."
             className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 text-sm bg-white focus:outline-none focus:border-[#3979C1] focus:ring-1 focus:ring-[#3979C1]"
           />
@@ -123,89 +131,67 @@ export default function EnjeuxContent() {
           )}
         </div>
 
-        {/* Industry filter pills */}
-        {usedIndustries.length > 0 && (
-          <div className="mb-5 flex flex-wrap gap-2">
-            <button
-              onClick={() => setFilterIndustry(null)}
-              className="text-xs font-semibold px-3 py-1.5 rounded-full border transition-all"
-              style={{
-                background: filterIndustry === null ? "#3979C1" : "white",
-                color: filterIndustry === null ? "white" : "#6b7280",
-                borderColor: filterIndustry === null ? "#3979C1" : "#e5e7eb",
-              }}
-            >
-              Toutes les industries
-            </button>
-            {usedIndustries.map((ind) => (
-              <button
-                key={ind.id}
-                onClick={() => setFilterIndustry(filterIndustry === ind.id ? null : ind.id)}
-                className="text-xs font-semibold px-3 py-1.5 rounded-full border transition-all"
-                style={{
-                  background: filterIndustry === ind.id ? "#224873" : "white",
-                  color: filterIndustry === ind.id ? "white" : "#6b7280",
-                  borderColor: filterIndustry === ind.id ? "#224873" : "#e5e7eb",
-                }}
-              >
-                {ind.name}
-              </button>
-            ))}
+        {/* Category pills */}
+        {!search.trim() && !activeCategory && (
+          <div className="flex flex-wrap gap-2 mb-8">
+            {grouped.map(({ cat, items: catItems }) => {
+              const color = CAT_COLORS[cat] ?? CAT_COLORS["Autre"];
+              return (
+                <button
+                  key={cat}
+                  onClick={() => setActiveCategory(cat)}
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all hover:shadow-sm"
+                  style={{ background: color.bg, borderColor: color.border, color: color.text }}
+                >
+                  {cat}
+                  <span className="px-1.5 py-0.5 rounded-md text-xs font-bold" style={{ background: color.accent, color: "white" }}>
+                    {catItems.length}
+                  </span>
+                </button>
+              );
+            })}
           </div>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-          {filtered.map((item, i) => {
-            const color = CARD_COLORS[i % CARD_COLORS.length];
-            const isSelected = selectedItem?.id === item.id;
-            return (
-              <button
-                key={item.id}
-                onClick={() => openDetail(item)}
-                className="text-left rounded-2xl border bg-white overflow-hidden group transition-all hover:-translate-y-0.5 hover:shadow-md"
-                style={{
-                  borderColor: isSelected ? color.accent : color.border,
-                  boxShadow: isSelected
-                    ? `0 0 0 2px ${color.accent}30, 0 2px 8px rgba(0,0,0,0.06)`
-                    : "0 1px 3px rgba(0,0,0,0.04)",
-                }}
-              >
-                <div className="px-5 py-4 flex items-start gap-3" style={{ background: color.bg }}>
-                  <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 mt-0.5" style={{ background: color.accent }}>
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                      <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
-                    </svg>
+        {/* Filtered (search or category selected) */}
+        {filtered !== null ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+            {filtered.map((item, i) => {
+              const color = CAT_COLORS[item.categorie ?? "Autre"] ?? CAT_COLORS["Autre"];
+              return <EnjeuCard key={item.id} item={item} color={color} isSelected={selectedItem?.id === item.id} onClick={() => openDetail(item)} />;
+            })}
+          </div>
+        ) : (
+          /* Grouped view */
+          <div className="space-y-10">
+            {grouped.map(({ cat, items: catItems }) => {
+              const color = CAT_COLORS[cat] ?? CAT_COLORS["Autre"];
+              return (
+                <div key={cat}>
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-2.5 h-2.5 rounded-full shrink-0" style={{ background: color.accent }} />
+                    <h2 className="text-base font-bold" style={{ color: color.text }}>{cat}</h2>
+                    <span className="text-xs font-bold px-2 py-0.5 rounded-full" style={{ background: color.bg, color: color.text, border: `1px solid ${color.border}` }}>
+                      {catItems.length} enjeu{catItems.length > 1 ? "x" : ""}
+                    </span>
+                    <div className="flex-1 h-px" style={{ background: color.border }} />
+                    <button onClick={() => setActiveCategory(cat)} className="text-xs font-semibold shrink-0 transition-colors" style={{ color: color.accent }}>
+                      Voir tout →
+                    </button>
                   </div>
-                  <div className="min-w-0 flex-1">
-                    <h2 className="font-bold text-sm text-gray-900 leading-snug">{item.name}</h2>
-                    {item.description && (
-                      <p className="text-xs mt-1 leading-relaxed line-clamp-2" style={{ color: color.text }}>
-                        {item.description}
-                      </p>
-                    )}
-                  </div>
-                </div>
-                <div className="px-5 py-3 bg-white flex items-center justify-between gap-2">
-                  <div className="flex gap-1.5 flex-wrap min-w-0">
-                    {item.painpointsAssocies.slice(0, 2).map((rel) => (
-                      <span key={rel.id} className="text-xs px-2 py-0.5 rounded-md font-medium truncate max-w-[140px]" style={{ background: "#fff1f2", color: "#be123c" }}>
-                        {rel.name}
-                      </span>
+                  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                    {catItems.map((item) => (
+                      <EnjeuCard key={item.id} item={item} color={color} isSelected={selectedItem?.id === item.id} onClick={() => openDetail(item)} />
                     ))}
-                    {item.painpointsAssocies.length === 0 && (
-                      <span className="text-xs text-gray-300 italic">Aucune relation</span>
-                    )}
                   </div>
-                  <svg className="w-4 h-4 shrink-0 transition-transform group-hover:translate-x-0.5" style={{ color: color.text }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                    <path d="M9 18l6-6-6-6"/>
-                  </svg>
                 </div>
-              </button>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        )}
       </div>
 
+      {/* Detail panel */}
       {panelOpen && (
         <>
           <div className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm" onClick={closePanel} />
@@ -230,12 +216,14 @@ export default function EnjeuxContent() {
             {selectedItem && (
               <DetailPanel
                 name={selectedItem.name}
+                badge={selectedItem.categorie}
                 fields={[
                   { label: "Description", value: selectedItem.description, display: "description" },
                 ]}
                 relations={[
                   { label: "Pain points associés", relations: selectedItem.painpointsAssocies, targetTab: "painpoints" },
                   { label: "Solutions associées", relations: selectedItem.solutionsAssociees, targetTab: "solutions" },
+                  { label: "Bénéfices associés", relations: selectedItem.beneficesAssocies, targetTab: "benefices" },
                   { label: "Fonctionnalités associées", relations: selectedItem.fonctionnalitesAssociees, targetTab: "fonctionnalites" },
                   { label: "Industries concernées", relations: selectedItem.industriesConcernees, targetTab: "industries" },
                 ]}
@@ -245,5 +233,52 @@ export default function EnjeuxContent() {
         </>
       )}
     </div>
+  );
+}
+
+function EnjeuCard({ item, color, isSelected, onClick }: {
+  item: Enjeu;
+  color: { bg: string; border: string; accent: string; text: string };
+  isSelected: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className="text-left rounded-2xl border bg-white overflow-hidden group transition-all hover:-translate-y-0.5 hover:shadow-md"
+      style={{
+        borderColor: isSelected ? color.accent : color.border,
+        boxShadow: isSelected ? `0 0 0 2px ${color.accent}30, 0 2px 8px rgba(0,0,0,0.06)` : "0 1px 3px rgba(0,0,0,0.04)",
+      }}
+    >
+      <div className="px-5 py-4 flex items-start gap-3" style={{ background: color.bg }}>
+        <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 mt-0.5" style={{ background: color.accent }}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+            <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+          </svg>
+        </div>
+        <div className="min-w-0 flex-1">
+          <h2 className="font-bold text-sm text-gray-900 leading-snug">{item.name}</h2>
+          {item.description && (
+            <p className="text-xs mt-1 leading-relaxed line-clamp-2" style={{ color: color.text }}>{item.description}</p>
+          )}
+        </div>
+      </div>
+      <div className="px-5 py-3 bg-white flex items-center justify-between gap-2">
+        <div className="flex gap-1.5 flex-wrap min-w-0">
+          {item.painpointsAssocies.slice(0, 2).map((rel) => (
+            <span key={rel.id} className="text-xs px-2 py-0.5 rounded-md font-medium truncate max-w-[140px]" style={{ background: "#fff1f2", color: "#be123c" }}>
+              {rel.name}
+            </span>
+          ))}
+          {item.painpointsAssocies.length === 0 && (
+            <span className="text-xs text-gray-300 italic">Aucune relation</span>
+          )}
+        </div>
+        <svg className="w-4 h-4 shrink-0 transition-transform group-hover:translate-x-0.5" style={{ color: color.text }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+          <path d="M9 18l6-6-6-6"/>
+        </svg>
+      </div>
+    </button>
   );
 }
