@@ -54,9 +54,16 @@ function getRelationIds(page: PageObjectResponse, prop: string): string[] {
   return p.relation.map((r) => r.id);
 }
 
+// Formate un ID brut (sans tirets) au format Notion standard (avec tirets)
+function formatId(id: string): string {
+  const s = id.replace(/-/g, '');
+  if (s.length !== 32) return id;
+  return `${s.slice(0,8)}-${s.slice(8,12)}-${s.slice(12,16)}-${s.slice(16,20)}-${s.slice(20)}`;
+}
+
 function resolveRelations(ids: string[]): NotionRelation[] {
   return ids
-    .map(id => ({ id, name: pageNameCache.get(id.replace(/-/g, "")) }))
+    .map(id => ({ id: formatId(id), name: pageNameCache.get(id.replace(/-/g, '')) }))
     .filter((r): r is NotionRelation => !!r.name);
 }
 
