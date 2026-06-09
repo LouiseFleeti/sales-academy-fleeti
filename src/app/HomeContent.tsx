@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { cachedFetch } from "@/lib/clientCache";
-import type { Industry, PainPoint, Solution } from "@/types/notion";
+import type { Industry, PainPoint, Solution, Benefice } from "@/types/notion";
 
 // ─── Tokens Fleeti ────────────────────────────────────────────────────────────
 const F = { primary: "#3979C1", primaryDark: "#224873", primaryBg: "#E8F2FD", orange: "#C9820A", orangeBg: "#FFF0D6" };
@@ -107,6 +107,7 @@ export default function HomeContent() {
   const [industries, setIndustries] = useState<Industry[]>([]);
   const [allPainPoints, setAllPainPoints] = useState<PainPoint[]>([]);
   const [allSolutions, setAllSolutions] = useState<Solution[]>([]);
+  const [allBenefices, setAllBenefices] = useState<Benefice[]>([]);
   const [loading, setLoading] = useState(true);
 
   const [selectedIndustry, setSelectedIndustry] = useState<Industry | null>(null);
@@ -119,10 +120,12 @@ export default function HomeContent() {
       cachedFetch<Industry[]>("/api/notion/industries"),
       cachedFetch<PainPoint[]>("/api/notion/painpoints"),
       cachedFetch<Solution[]>("/api/notion/solutions"),
-    ]).then(([inds, pps, sols]) => {
+      cachedFetch<Benefice[]>("/api/notion/benefices"),
+    ]).then(([inds, pps, sols, bens]) => {
       setIndustries(Array.isArray(inds) ? inds : []);
       setAllPainPoints(Array.isArray(pps) ? pps : []);
       setAllSolutions(Array.isArray(sols) ? sols : []);
+      setAllBenefices(Array.isArray(bens) ? bens : []);
       setLoading(false);
     }).catch(() => setLoading(false));
   }, []);
@@ -161,11 +164,13 @@ export default function HomeContent() {
     const questions = selectedPPs.map((pp) => pp.questionStrategique).filter(Boolean) as string[];
     const personas = dedup(selectedPPs.flatMap((pp) => pp.personas));
 
-    const solutionObjs = allSolutions.filter((s) => solutionRefs.some((r) => r.id === s.id));
-    const benefices = dedup(solutionObjs.flatMap((s) => s.benefices));
+    // Bénéfices directement liés aux pain points sélectionnés (pas via les solutions)
+    const benefices = allBenefices.filter((b) =>
+      b.painPointsLies.some((pp) => selectedPPIds.has(pp.id))
+    );
 
     return { enjeux, solutionRefs, capacites, questions, personas, benefices };
-  }, [selectedPPs, allSolutions]);
+  }, [selectedPPs, selectedPPIds, allSolutions, allBenefices]);
 
   // Texte du brief complet
   const briefText = useMemo(() => {
