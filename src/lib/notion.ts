@@ -20,8 +20,20 @@ const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
 const REVALIDATE = 600; // 10 minutes
 
-// ─── Cache en mémoire (durée de vie du process serveur) ─────────────────────
+// ─── Cache en mémoire ────────────────────────────────────────────────────────
 const pageNameCache = new Map<string, string>();
+
+type CacheEntry<T> = { data: T; expiresAt: number };
+const dbCache = new Map<string, CacheEntry<unknown>>();
+
+async function withCache<T>(key: string, ttlSeconds: number, fn: () => Promise<T>): Promise<T> {
+  const now = Date.now();
+  const entry = dbCache.get(key) as CacheEntry<T> | undefined;
+  if (entry && entry.expiresAt > now) return entry.data;
+  const data = await fn();
+  dbCache.set(key, { data, expiresAt: now + ttlSeconds * 1000 });
+  return data;
+}
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
@@ -92,6 +104,7 @@ async function queryAll(databaseId: string): Promise<PageObjectResponse[]> {
 // ─── Industries ─────────────────────────────────────────────────────────────
 
 export async function getIndustries(): Promise<Industry[]> {
+  return withCache('industries', REVALIDATE, async () => {
   const pages = await queryAll(process.env.NOTION_DB_INDUSTRIES!);
   return Promise.all(
     pages.map(async (p) => ({
@@ -104,6 +117,7 @@ export async function getIndustries(): Promise<Industry[]> {
       painPoints: await resolveRelations(getRelationIds(p, "Pain points")),
     }))
   );
+  });
 }
 
 export async function getIndustry(id: string): Promise<Industry | null> {
@@ -126,6 +140,7 @@ export async function getIndustry(id: string): Promise<Industry | null> {
 // ─── Enjeux Business ────────────────────────────────────────────────────────
 
 export async function getEnjeux(): Promise<Enjeu[]> {
+  return withCache('enjeux', REVALIDATE, async () => {
   const pages = await queryAll(process.env.NOTION_DB_ENJEUX!);
   return Promise.all(
     pages.map(async (p) => ({
@@ -138,6 +153,7 @@ export async function getEnjeux(): Promise<Enjeu[]> {
       industriesConcernees: await resolveRelations(getRelationIds(p, "Industries concernées")),
     }))
   );
+  });
 }
 
 export async function getEnjeu(id: string): Promise<Enjeu | null> {
@@ -160,6 +176,7 @@ export async function getEnjeu(id: string): Promise<Enjeu | null> {
 // ─── Pain Points ─────────────────────────────────────────────────────────────
 
 export async function getPainPoints(): Promise<PainPoint[]> {
+  return withCache('painpoints', REVALIDATE, async () => {
   const pages = await queryAll(process.env.NOTION_DB_PAINPOINTS!);
   return Promise.all(
     pages.map(async (p) => ({
@@ -178,6 +195,7 @@ export async function getPainPoints(): Promise<PainPoint[]> {
       solutions: await resolveRelations(getRelationIds(p, "✅ Solutions")),
     }))
   );
+  });
 }
 
 export async function getPainPoint(id: string): Promise<PainPoint | null> {
@@ -206,6 +224,7 @@ export async function getPainPoint(id: string): Promise<PainPoint | null> {
 // ─── Solutions ───────────────────────────────────────────────────────────────
 
 export async function getSolutions(): Promise<Solution[]> {
+  return withCache('solutions', REVALIDATE, async () => {
   const pages = await queryAll(process.env.NOTION_DB_SOLUTIONS!);
   return Promise.all(
     pages.map(async (p) => ({
@@ -219,6 +238,7 @@ export async function getSolutions(): Promise<Solution[]> {
       fonctionnalites: await resolveRelations(getRelationIds(p, "🪛 Fonctionnalités")),
     }))
   );
+  });
 }
 
 export async function getSolution(id: string): Promise<Solution | null> {
@@ -242,6 +262,7 @@ export async function getSolution(id: string): Promise<Solution | null> {
 // ─── Capacités produit ────────────────────────────────────────────────────────
 
 export async function getCapacites(): Promise<Capacite[]> {
+  return withCache('capacites', REVALIDATE, async () => {
   const pages = await queryAll(process.env.NOTION_DB_CAPACITES!);
   return Promise.all(
     pages.map(async (p) => ({
@@ -253,6 +274,7 @@ export async function getCapacites(): Promise<Capacite[]> {
       painPointsLies: await resolveRelations(getRelationIds(p, "Pain points liés")),
     }))
   );
+  });
 }
 
 export async function getCapacite(id: string): Promise<Capacite | null> {
@@ -274,6 +296,7 @@ export async function getCapacite(id: string): Promise<Capacite | null> {
 // ─── Fonctionnalités ──────────────────────────────────────────────────────────
 
 export async function getFonctionnalites(): Promise<Fonctionnalite[]> {
+  return withCache('fonctionnalites', REVALIDATE, async () => {
   const pages = await queryAll(process.env.NOTION_DB_FONCTIONNALITES!);
   return Promise.all(
     pages.map(async (p) => ({
@@ -287,11 +310,13 @@ export async function getFonctionnalites(): Promise<Fonctionnalite[]> {
       enjeuBusiness: await resolveRelations(getRelationIds(p, "Enjeu business")),
     }))
   );
+  });
 }
 
 // ─── Bénéfices ────────────────────────────────────────────────────────────────
 
 export async function getBenefices(): Promise<Benefice[]> {
+  return withCache('benefices', REVALIDATE, async () => {
   const pages = await queryAll(process.env.NOTION_DB_BENEFICES!);
   return Promise.all(
     pages.map(async (p) => ({
@@ -303,11 +328,13 @@ export async function getBenefices(): Promise<Benefice[]> {
       domainerBusiness: await resolveRelations(getRelationIds(p, "Domaines business")),
     }))
   );
+  });
 }
 
 // ─── Personas ─────────────────────────────────────────────────────────────────
 
 export async function getPersonas(): Promise<Persona[]> {
+  return withCache('personas', REVALIDATE, async () => {
   const pages = await queryAll(process.env.NOTION_DB_PERSONAS!);
   return Promise.all(
     pages.map(async (p) => ({
@@ -320,11 +347,13 @@ export async function getPersonas(): Promise<Persona[]> {
       painPointsPrincipaux: await resolveRelations(getRelationIds(p, "Pain points principaux")),
     }))
   );
+  });
 }
 
 // ─── Relances ─────────────────────────────────────────────────────────────────
 
 export async function getRelances(): Promise<Relance[]> {
+  return withCache('relances', REVALIDATE, async () => {
   const pages = await queryAll(process.env.NOTION_DB_RELANCES!);
   return pages.map((p) => ({
     id: p.id,
@@ -335,6 +364,7 @@ export async function getRelances(): Promise<Relance[]> {
     objet: getText(p, "Objet") || "",
     corps: getText(p, "Corps") || "",
   }));
+  });
 }
 
 // ─── Context builder for Chat ────────────────────────────────────────────────
