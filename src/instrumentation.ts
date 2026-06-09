@@ -1,6 +1,3 @@
-export async function register() {
-  if (process.env.NEXT_RUNTIME === "nodejs") {
-    const { warmNotionCache } = await import("@/lib/warmCache");
-    await warmNotionCache();
-  }
-}
+// Instrumentation désactivée — les données sont chargées via le bouton Sync Notion
+export async function register() {}
+

@@ -1,14 +1,14 @@
 import { NextResponse } from "next/server";
+import { readData } from "@/lib/dataStore";
 import { getPersonas } from "@/lib/notion";
-
 export const dynamic = 'force-dynamic';
-
 export async function GET() {
   try {
+    const cached = await readData("personas");
+    if (cached) return NextResponse.json(cached);
     const data = await getPersonas();
     return NextResponse.json(data);
   } catch (err) {
-    console.error("Error fetching personas:", err instanceof Error ? err.message : err);
-    return NextResponse.json({ error: String(err), detail: "Failed to fetch personas" }, { status: 500 });
+    return NextResponse.json({ error: String(err) }, { status: 500 });
   }
 }

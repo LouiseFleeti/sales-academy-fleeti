@@ -187,6 +187,42 @@ function NavGroup({ group, pathname }: { group: NavGroupType; pathname: string }
   );
 }
 
+function SyncButton() {
+  const [status, setStatus] = useState<"idle"|"loading"|"ok"|"error">("idle");
+  const [syncedAt, setSyncedAt] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetch("/api/sync").then(r => r.json()).then(d => {
+      if (d.syncedAt) setSyncedAt(new Date(d.syncedAt).toLocaleDateString("fr-FR", { day:"2-digit", month:"2-digit", hour:"2-digit", minute:"2-digit" }));
+    }).catch(() => {});
+  }, []);
+
+  const sync = async () => {
+    setStatus("loading");
+    try {
+      const res = await fetch("/api/sync", { method: "POST" });
+      const data = await res.json();
+      if (data.success) { setStatus("ok"); setSyncedAt(new Date().toLocaleDateString("fr-FR", { day:"2-digit", month:"2-digit", hour:"2-digit", minute:"2-digit" })); }
+      else setStatus("error");
+    } catch { setStatus("error"); }
+    setTimeout(() => setStatus("idle"), 3000);
+  };
+
+  return (
+    <button onClick={sync} disabled={status === "loading"} title={syncedAt ? `Dernière sync : ${syncedAt}` : "Synchroniser les données Notion"}
+      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition-all disabled:opacity-50"
+      style={{ borderColor: status === "ok" ? "#16a34a" : status === "error" ? "#dc2626" : "#e5e7eb", color: status === "ok" ? "#16a34a" : status === "error" ? "#dc2626" : "#6b7280", background: "white" }}
+    >
+      {status === "loading" ? (
+        <svg className="animate-spin w-3.5 h-3.5" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" strokeDasharray="31.4" strokeLinecap="round"/></svg>
+      ) : (
+        <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+      )}
+      {status === "ok" ? "Syncé ✓" : status === "error" ? "Erreur" : "Sync Notion"}
+    </button>
+  );
+}
+
 export default function Navbar() {
   const pathname = usePathname();
   const isChat = pathname.startsWith("/chat");
@@ -212,6 +248,9 @@ export default function Navbar() {
             <NavGroup key={group.label} group={group} pathname={pathname} />
           ))}
         </div>
+
+        {/* Sync Notion */}
+        <SyncButton />
 
         {/* Global search */}
         <GlobalSearch />
