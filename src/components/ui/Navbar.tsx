@@ -67,7 +67,7 @@ const NAV_GROUPS = [
     items: [
       { label: "Qualification", href: "/qualification", description: "Scorer et qualifier un prospect" },
       { label: "Relances", href: "/relances", description: "Templates de suivi" },
-      { label: "Présentation", href: "/presentation", description: "Générer un deck personnalisé" },
+      { label: "Prez client", href: "/presentation", description: "Générer un deck à envoyer" },
     ],
   },
 ];

@@ -1,159 +1,208 @@
 #!/usr/bin/env python3
 """
-Personnalise la présentation Fleeti selon les infos client.
-Usage: python3 personalize_pptx.py --output /tmp/output.pptx --client "Acme" --sector "BTP" --vehicles 120 --logo-url "https://..."
+Génère un PPTX personnalisé à partir des slides PNG extraites du PDF Fleeti.
+Chaque slide = image PNG en fond, personnalisations superposées sur la couverture.
+
+Usage:
+  python3 personalize_pptx.py --type envoyer --client "Acme" --vehicles 85 \
+    --vehicle-types "VL,VUL" --pain-points "tco,silos" --output /tmp/out.pptx
 """
 
-import argparse
-import copy
-import io
-import os
-import sys
-import urllib.request
+import argparse, io, os, sys, urllib.request
 from datetime import datetime
 from pptx import Presentation
 from pptx.util import Inches, Pt, Emu
 from pptx.dml.color import RGBColor
 from pptx.enum.text import PP_ALIGN
 
-TEMPLATE_PATH = os.path.join(os.path.dirname(__file__), '..', 'public', 'template.pptx')
-
-SECTORS = {
-    'transport': 'Transport & Logistique',
-    'btp': 'BTP & Construction',
-    'froid': 'Chaîne du froid & Agroalimentaire',
-    'services': 'Entreprises & Services',
-    'industrie': 'Industrie & Énergie',
-}
-
-# Shapes on slide 8 that contain sector titles
-SECTOR_SHAPE_NAMES = {
-    'transport': 'Text 6',
-    'btp': 'Text 10',
-    'froid': 'Text 14',
-    'services': 'Text 18',
-    'industrie': 'Text 22',
-}
+SLIDES_DIR = os.path.join(os.path.dirname(__file__), '..', 'public')
 
 FLEETI_GREEN = RGBColor(0x1A, 0xB0, 0x8E)
+FLEETI_DARK  = RGBColor(0x1A, 0x2E, 0x44)
+WHITE        = RGBColor(0xFF, 0xFF, 0xFF)
+
+PAIN_LABELS = {
+    'silos':           'outils en silos',
+    'flotte':          'flotte hétérogène',
+    'tco':             'TCO non maîtrisé',
+    'sinistralite':    'sinistralité',
+    'contrats':        'contrats LLD/LOA dispersés',
+    'fournisseurs':    'fournisseurs non intégrés',
+    'electrification': 'électrification sans visibilité',
+    'conformite':      'conformité à risque',
+}
+
+VTYPE_SHORT = {
+    'VL': 'VL', 'VUL': 'VUL', 'PL': 'PL',
+    'engins': 'Engins', 'machines': 'Machines'
+}
 
 
-def replace_text_in_shape(shape, old, new):
-    """Replace text while preserving formatting of the first run."""
-    if not shape.has_text_frame:
-        return False
-    changed = False
-    for para in shape.text_frame.paragraphs:
-        for run in para.runs:
-            if old in run.text:
-                run.text = run.text.replace(old, new)
-                changed = True
-    return changed
+def add_text_box(slide, left_pct, top_pct, width_pct, height_pct,
+                 text, font_size, bold=True, color=WHITE,
+                 align=PP_ALIGN.LEFT, italic=False):
+    """Ajoute une zone de texte positionnée en % de la slide."""
+    W = Emu(9144000)   # 10 inches en EMU
+    H = Emu(5143500)   # 5.625 inches en EMU
+
+    txBox = slide.shapes.add_textbox(
+        Emu(int(W * left_pct)),
+        Emu(int(H * top_pct)),
+        Emu(int(W * width_pct)),
+        Emu(int(H * height_pct)),
+    )
+    tf = txBox.text_frame
+    tf.word_wrap = False
+    p = tf.paragraphs[0]
+    p.alignment = align
+    run = p.add_run()
+    run.text = text
+    run.font.size = Pt(font_size)
+    run.font.bold = bold
+    run.font.italic = italic
+    run.font.color.rgb = color
+    return txBox
 
 
-def replace_text_in_slide(slide, old, new):
-    for shape in slide.shapes:
-        replace_text_in_shape(shape, old, new)
-
-
-def highlight_sector_shape(slide, sector_key):
-    """Underline + color the sector title matching the client's sector."""
-    target_name = SECTOR_SHAPE_NAMES.get(sector_key)
-    if not target_name:
-        return
-    for shape in slide.shapes:
-        if shape.name == target_name and shape.has_text_frame:
-            for para in shape.text_frame.paragraphs:
-                for run in para.runs:
-                    run.font.color.rgb = FLEETI_GREEN
-                    run.font.bold = True
-
-
-def add_logo(slide, logo_url, prs_width, prs_height):
-    """Download logo and add it to the top-right of the slide."""
+def add_logo(slide, logo_path, left_pct=0.82, top_pct=0.04, width_pct=0.14):
     try:
-        req = urllib.request.Request(logo_url, headers={'User-Agent': 'Mozilla/5.0'})
-        with urllib.request.urlopen(req, timeout=10) as response:
-            logo_data = response.read()
-        logo_stream = io.BytesIO(logo_data)
-
-        # Top-right corner: 2.5" wide, auto height, margin from right
-        logo_width = Inches(2.2)
-        logo_left = prs_width - logo_width - Inches(0.4)
-        logo_top = Inches(0.3)
-        slide.shapes.add_picture(logo_stream, logo_left, logo_top, width=logo_width)
-        return True
+        logo_w    = Emu(int(9144000 * width_pct))
+        logo_left = Emu(int(9144000 * left_pct))
+        logo_top  = Emu(int(5143500 * top_pct))
+        slide.shapes.add_picture(logo_path, logo_left, logo_top, width=logo_w)
     except Exception as e:
-        print(f'Warning: could not add logo: {e}', file=sys.stderr)
-        return False
+        print(f'Warning: logo ignoré ({e})', file=sys.stderr)
 
 
-def personalize(client_name, sector_key, vehicles, logo_url, sales_name, output_path):
-    prs = Presentation(TEMPLATE_PATH)
+def build_pptx(slide_type, client_name, vehicles, vehicle_types, pain_points,
+               logo_path, sales_name, output_path):
 
-    slide_width = prs.slide_width
-    slide_height = prs.slide_height
+    slides_folder = os.path.join(SLIDES_DIR, f'slides-{slide_type}')
+    slide_files = sorted(f for f in os.listdir(slides_folder) if f.endswith('.png'))
 
-    # --- Slide 1: Cover ---
-    slide1 = prs.slides[0]
+    prs = Presentation()
+    prs.slide_width  = Emu(9144000)   # 10"
+    prs.slide_height = Emu(5143500)   # 5.625"
 
-    # Replace title
-    replace_text_in_slide(slide1, 'PRÉSENTATION GÉNÉRALISTE', f'PRÉSENTATION — {client_name.upper()}')
+    blank_layout = prs.slide_layouts[6]  # Layout vide
 
-    # Replace date with current month/year
-    month_fr = ['Janvier','Février','Mars','Avril','Mai','Juin',
-                 'Juillet','Août','Septembre','Octobre','Novembre','Décembre']
-    now = datetime.now()
-    date_str = f'{month_fr[now.month-1]} {now.year}'
-    replace_text_in_slide(slide1, 'Mai 2026', date_str)
+    for idx, fname in enumerate(slide_files):
+        slide = prs.slides.add_slide(blank_layout)
+        img_path = os.path.join(slides_folder, fname)
 
-    # Replace vehicle count
-    if vehicles and vehicles > 0:
-        replace_text_in_slide(slide1, 'LIVE · 247 véhicules', f'LIVE · {vehicles} véhicules')
+        # Image plein fond
+        slide.shapes.add_picture(
+            img_path, 0, 0,
+            width=prs.slide_width,
+            height=prs.slide_height
+        )
 
-    # Add client logo
-    if logo_url:
-        add_logo(slide1, logo_url, slide_width, slide_height)
+        # ── Slide pain points : index 2 pour rdv (slide 3), index 3 pour envoyer (slide 4)
+        pain_slide_idx = 3 if slide_type == 'envoyer' else 2
+        if idx == pain_slide_idx and pain_points:
+            from pptx.util import Pt
+            from pptx.oxml.ns import qn
+            from pptx.enum.shapes import MSO_SHAPE_TYPE
+            import lxml.etree as etree
 
-    # --- Slides 2-10: Replace footer "présentation généraliste" ---
-    footer_old = 'Fleeti · présentation généraliste'
-    footer_new = f'Fleeti · présentation pour {client_name}'
-    for slide in prs.slides:
-        replace_text_in_slide(slide, footer_old, footer_new)
+            # Positions extraites du PDF selon le type
+            if slide_type == 'envoyer':  # Prez développée (21 slides), slide 4
+                CARD_POSITIONS = {
+                    'silos':           (0.059, 0.303, 0.212, 0.198),
+                    'flotte':          (0.282, 0.303, 0.212, 0.198),
+                    'tco':             (0.505, 0.303, 0.212, 0.198),
+                    'sinistralite':    (0.729, 0.303, 0.212, 0.198),
+                    'contrats':        (0.059, 0.521, 0.212, 0.198),
+                    'fournisseurs':    (0.282, 0.521, 0.212, 0.198),
+                    'electrification': (0.505, 0.521, 0.212, 0.198),
+                    'conformite':      (0.729, 0.521, 0.212, 0.198),
+                }
+            else:  # Prez courte (11 slides), slide 3
+                CARD_POSITIONS = {
+                    'silos':           (0.059, 0.374, 0.212, 0.158),
+                    'flotte':          (0.283, 0.374, 0.211, 0.158),
+                    'tco':             (0.506, 0.374, 0.212, 0.158),
+                    'sinistralite':    (0.730, 0.374, 0.211, 0.158),
+                    'contrats':        (0.059, 0.553, 0.212, 0.159),
+                    'fournisseurs':    (0.283, 0.553, 0.211, 0.159),
+                    'electrification': (0.506, 0.553, 0.212, 0.159),
+                    'conformite':      (0.730, 0.553, 0.211, 0.159),
+                }
 
-    # --- Slide 8: Highlight sector ---
-    if sector_key:
-        slide8 = prs.slides[7]
-        highlight_sector_shape(slide8, sector_key)
+            W = prs.slide_width
+            H = prs.slide_height
 
-    # --- Slide 11: Contact — add sales name ---
-    slide11 = prs.slides[10]
-    if sales_name:
-        replace_text_in_slide(slide11, '+33 7 49 95 32 93', f'+33 7 49 95 32 93\n{sales_name}')
+            for pp in pain_points:
+                pos = CARD_POSITIONS.get(pp)
+                if not pos:
+                    continue
+                l, t, w, h = pos
+                shape = slide.shapes.add_shape(
+                    1,  # MSO_SHAPE_TYPE.RECTANGLE
+                    Emu(int(W * l)), Emu(int(H * t)),
+                    Emu(int(W * w)), Emu(int(H * h)),
+                )
+                shape.fill.background()  # transparent
+                shape.line.color.rgb = FLEETI_GREEN
+                shape.line.width = Pt(2.5)
+
+        # ── Personnalisations sur la slide de couverture (index 0) ────────────
+        if idx == 0 and client_name:
+
+            # Nom du client — 36pt foncé gras, aligné avec le texte du slide (5%)
+            add_text_box(slide,
+                left_pct=0.05, top_pct=0.725,
+                width_pct=0.60, height_pct=0.10,
+                text=client_name,
+                font_size=36, bold=True, color=FLEETI_DARK,
+            )
+
+            # Infos flotte — 13pt vert, même alignement
+            fleet_parts = []
+            if vehicles and vehicles > 0:
+                fleet_parts.append(f'{vehicles} véhicules')
+            if vehicle_types:
+                fleet_parts.append(' · '.join(VTYPE_SHORT[v] for v in vehicle_types))
+            if fleet_parts:
+                add_text_box(slide,
+                    left_pct=0.05, top_pct=0.845,
+                    width_pct=0.60, height_pct=0.07,
+                    text='  ·  '.join(fleet_parts),
+                    font_size=13, bold=False, color=FLEETI_GREEN,
+                )
+
+            # Pas de pain points sur la couverture — mis en avant sur slide 3
+
+            # Logo client — slide 1 (tout en bas à droite)
+            if logo_path:
+                add_logo(slide, logo_path, left_pct=0.80, top_pct=0.88, width_pct=0.14)
 
     prs.save(output_path)
-    print(f'Saved: {output_path}')
+    print(f'Saved: {output_path} ({len(slide_files)} slides)')
 
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--client', required=True)
-    parser.add_argument('--sector', default='')
-    parser.add_argument('--vehicles', type=int, default=0)
-    parser.add_argument('--logo-url', default='')
-    parser.add_argument('--sales', default='')
-    parser.add_argument('--output', required=True)
-    args = parser.parse_args()
+    p = argparse.ArgumentParser()
+    p.add_argument('--type', default='envoyer', choices=['envoyer', 'rdv'])
+    p.add_argument('--client', default='')
+    p.add_argument('--vehicles', type=int, default=0)
+    p.add_argument('--vehicle-types', default='')
+    p.add_argument('--pain-points', default='')
+    p.add_argument('--logo-path', default='')
+    p.add_argument('--sales', default='')
+    p.add_argument('--output', required=True)
+    args = p.parse_args()
 
-    personalize(
+    build_pptx(
+        slide_type=args.type,
         client_name=args.client,
-        sector_key=args.sector,
         vehicles=args.vehicles,
-        logo_url=args.logo_url,
+        vehicle_types=[v.strip() for v in args.vehicle_types.split(',') if v.strip()],
+        pain_points=[v.strip() for v in args.pain_points.split(',') if v.strip()],
+        logo_path=args.logo_path,
         sales_name=args.sales,
         output_path=args.output,
     )
-
 
 if __name__ == '__main__':
     main()

@@ -1,0 +1,1461 @@
+[
+  {
+    "slide": 1,
+    "shapes": [
+      {
+        "name": "Text 1",
+        "text": "PRÉSENTATION GÉNÉRALISTE"
+      },
+      {
+        "name": "Text 2",
+        "text": "Mai 2026"
+      },
+      {
+        "name": "Text 5",
+        "text": "TÉLÉMATIQUE · GESTION · ÉLECTRIFICATION · TCO"
+      },
+      {
+        "name": "Text 6",
+        "text": "Un seul logiciel pour piloter toute votre flotte."
+      },
+      {
+        "name": "Text 7",
+        "text": "Du véhicule léger au poids lourd, thermique ou électrique · Fleeti centralise votre télématique, votre gestion administr"
+      },
+      {
+        "name": "Text 9",
+        "text": "VL · VUL · PL"
+      },
+      {
+        "name": "Text 11",
+        "text": "BTP · INDUSTRIE"
+      },
+      {
+        "name": "Text 13",
+        "text": "THERMIQUE · ÉLECTRIQUE"
+      },
+      {
+        "name": "Text 18",
+        "text": "LIVE · 247 véhicules"
+      },
+      {
+        "name": "Text 20",
+        "text": "Économie carburant −20%"
+      },
+      {
+        "name": "Text 22",
+        "text": "3 contrats à renouveler"
+      },
+      {
+        "name": "Text 24",
+        "text": "PLATEFORME FLEETI · TCO TEMPS RÉEL"
+      },
+      {
+        "name": "Text 25",
+        "text": "Coût flotte agrégé"
+      },
+      {
+        "name": "Text 26",
+        "text": "Carburant · entretien · sinistres · loyers · amendes"
+      },
+      {
+        "name": "Text 28",
+        "text": "FLEETI · PLATEFORME DE GESTION DE FLOTTE 360°"
+      },
+      {
+        "name": "Text 29",
+        "text": "France"
+      },
+      {
+        "name": "Text 30",
+        "text": "·"
+      },
+      {
+        "name": "Text 31",
+        "text": "Europe"
+      },
+      {
+        "name": "Text 32",
+        "text": "·"
+      },
+      {
+        "name": "Text 33",
+        "text": "Afrique"
+      },
+      {
+        "name": "Text 34",
+        "text": "fleeti.co"
+      }
+    ]
+  },
+  {
+    "slide": 2,
+    "shapes": [
+      {
+        "name": "Text 1",
+        "text": "02 · QUI SOMMES-NOUS"
+      },
+      {
+        "name": "Text 2",
+        "text": "QUI SOMMES-NOUS ?"
+      },
+      {
+        "name": "Text 3",
+        "text": "Fleeti, la plateforme de gestion de flotte 360°."
+      },
+      {
+        "name": "Text 4",
+        "text": "Une solution SaaS tout-en-un qui combine télématique embarquée, gestion de flotte, électrification et pilotage financier"
+      },
+      {
+        "name": "Text 5",
+        "text": "EMPREINTE & MARCHÉS"
+      },
+      {
+        "name": "Text 6",
+        "text": "Là où d'autres outils vous obligent à jongler entre cinq logiciels, Fleeti centralise tout en un seul endroit · de la gé"
+      },
+      {
+        "name": "Text 8",
+        "text": "France · Europe"
+      },
+      {
+        "name": "Text 9",
+        "text": "Présence internationale Afrique 7+ pays"
+      },
+      {
+        "name": "Text 11",
+        "text": "4,8/5 ★"
+      },
+      {
+        "name": "Text 12",
+        "text": "Note moyenne clients sur l'ensemble de la base"
+      },
+      {
+        "name": "Text 14",
+        "text": "Transport BTP · Logistique"
+      },
+      {
+        "name": "Text 15",
+        "text": "Secteurs couverts + Industrie, Services"
+      },
+      {
+        "name": "Text 17",
+        "text": "CE · UE"
+      },
+      {
+        "name": "Text 18",
+        "text": "Fabriqué en Europe certifié, conformité RGPD"
+      },
+      {
+        "name": "Text 20",
+        "text": "NOTRE MISSION"
+      },
+      {
+        "name": "Text 21",
+        "text": "Un seul outil pour piloter chaque actif"
+      },
+      {
+        "name": "Text 22",
+        "text": "Donner aux gestionnaires de flotte français un outil unique, fiable et exhaustif · du deux-roues au 44 tonnes · sans cha"
+      },
+      {
+        "name": "Text 24",
+        "text": "NOTRE VISION"
+      },
+      {
+        "name": "Text 25",
+        "text": "La référence de la gestion mixte intelligente"
+      },
+      {
+        "name": "Text 26",
+        "text": "Devenir la référence européenne de la gestion de flotte mixte, alliant télématique temps réel, gestion administrative, p"
+      },
+      {
+        "name": "Text 28",
+        "text": "NOTRE ENGAGEMENT"
+      },
+      {
+        "name": "Text 29",
+        "text": "Réduire le TCO, maîtriser la sinistralité"
+      },
+      {
+        "name": "Text 30",
+        "text": "Fiabiliser les données et simplifier le quotidien des gestionnaires de flotte grâce à une plateforme IoT centralisée."
+      },
+      {
+        "name": "Text 31",
+        "text": "Fleeti · présentation généraliste"
+      },
+      {
+        "name": "Text 32",
+        "text": "fleeti.co"
+      }
+    ]
+  },
+  {
+    "slide": 3,
+    "shapes": [
+      {
+        "name": "Text 1",
+        "text": "03 · LE PROBLÈME"
+      },
+      {
+        "name": "Text 2",
+        "text": "LES DÉFIS DES GESTIONNAIRES DE FLOTTE"
+      },
+      {
+        "name": "Text 3",
+        "text": "Gérer une flotte mixte aujourd'hui, c'est jongler en permanence."
+      },
+      {
+        "name": "Text 4",
+        "text": "Données éparpillées, outils en silos, flotte hétérogène mal couverte, TCO inconnu, sinistralité subie. Les huit défis qu"
+      },
+      {
+        "name": "Text 6",
+        "text": "01"
+      },
+      {
+        "name": "Text 7",
+        "text": "Outils en silos"
+      },
+      {
+        "name": "Text 8",
+        "text": "Un logiciel pour la géoloc, un autre pour la maintenance, un autre pour les contrats… Aucune vision globale, des données"
+      },
+      {
+        "name": "Text 10",
+        "text": "02"
+      },
+      {
+        "name": "Text 11",
+        "text": "Flotte hétérogène mal couverte"
+      },
+      {
+        "name": "Text 12",
+        "text": "Les solutions existantes gèrent bien les VL mais ignorent les poids lourds, les engins BTP ou les machines. Une partie d"
+      },
+      {
+        "name": "Text 14",
+        "text": "03"
+      },
+      {
+        "name": "Text 15",
+        "text": "TCO non maîtrisé"
+      },
+      {
+        "name": "Text 16",
+        "text": "Sans centralisation (carburant, entretien, assurance, sinistres, loyers, amendes), le coût réel par véhicule est inconnu"
+      },
+      {
+        "name": "Text 18",
+        "text": "04"
+      },
+      {
+        "name": "Text 19",
+        "text": "Sinistralité subie"
+      },
+      {
+        "name": "Text 20",
+        "text": "Accidents mal documentés, déclarations tardives, recours perdus faute de preuves. La sinistralité pèse lourd sans qu'on "
+      },
+      {
+        "name": "Text 22",
+        "text": "05"
+      },
+      {
+        "name": "Text 23",
+        "text": "Contrats LLD/LOA dispersés"
+      },
+      {
+        "name": "Text 24",
+        "text": "Échéances suivies dans des tableurs, restitutions dans l'urgence, pénalités kilométriques découvertes trop tard."
+      },
+      {
+        "name": "Text 26",
+        "text": "06"
+      },
+      {
+        "name": "Text 27",
+        "text": "Fournisseurs non intégrés"
+      },
+      {
+        "name": "Text 28",
+        "text": "Données carburant, factures garages, péages, amendes ANTAI arrivent hors du logiciel. La réconciliation est manuelle et "
+      },
+      {
+        "name": "Text 30",
+        "text": "07"
+      },
+      {
+        "name": "Text 31",
+        "text": "Électrification sans visibilité"
+      },
+      {
+        "name": "Text 32",
+        "text": "Quels véhicules peuvent passer à l'électrique ? Quelle autonomie suffit ? Sans données, ces décisions se prennent à l'av"
+      },
+      {
+        "name": "Text 34",
+        "text": "08"
+      },
+      {
+        "name": "Text 35",
+        "text": "Conformité à risque"
+      },
+      {
+        "name": "Text 36",
+        "text": "Loi LOM, verdissement obligatoire, CSRD, permis, contrôles techniques : la conformité est complexe et source d'erreurs c"
+      },
+      {
+        "name": "Text 37",
+        "text": "Fleeti · présentation généraliste"
+      },
+      {
+        "name": "Text 38",
+        "text": "fleeti.co"
+      }
+    ]
+  },
+  {
+    "slide": 4,
+    "shapes": [
+      {
+        "name": "Text 1",
+        "text": "04 · LA SOLUTION"
+      },
+      {
+        "name": "Text 2",
+        "text": "NOTRE SOLUTION"
+      },
+      {
+        "name": "Text 3",
+        "text": "Fleeti : la plateforme complète de la télématique au TCO."
+      },
+      {
+        "name": "Text 4",
+        "text": "La force de Fleeti, c'est d'être le seul outil dont vous avez besoin · quelle que soit la composition de votre parc. VL "
+      },
+      {
+        "name": "Text 7",
+        "text": "Télématique"
+      },
+      {
+        "name": "Text 8",
+        "text": "01 → 04"
+      },
+      {
+        "name": "Text 9",
+        "text": "Géolocalisation temps réel · zones, alertes, historique\nComportement conducteur (vitesse, freinage, ralenti)\nConsommatio"
+      },
+      {
+        "name": "Text 12",
+        "text": "Gestion administrative"
+      },
+      {
+        "name": "Text 13",
+        "text": "05 → 08"
+      },
+      {
+        "name": "Text 14",
+        "text": "Parc & documents · carte grise, assurance, CT, permis\nMaintenance préventive & prédictive · réseau garages\nConducteurs ·"
+      },
+      {
+        "name": "Text 17",
+        "text": "Sinistralité"
+      },
+      {
+        "name": "Text 18",
+        "text": "09 → 12"
+      },
+      {
+        "name": "Text 19",
+        "text": "Déclaration & suivi · photos, géoloc, données du choc\nPreuves télématiques pour les recours\nAnalyse & scoring sinistrali"
+      },
+      {
+        "name": "Text 22",
+        "text": "TCO & pilotage financier"
+      },
+      {
+        "name": "Text 23",
+        "text": "13 → 16"
+      },
+      {
+        "name": "Text 24",
+        "text": "TCO temps réel · tous postes agrégés automatiquement\nBenchmarks · véhicules, sites, conducteurs\nAide à la décision de re"
+      },
+      {
+        "name": "Text 27",
+        "text": "Contrats de location"
+      },
+      {
+        "name": "Text 28",
+        "text": "17 → 20"
+      },
+      {
+        "name": "Text 29",
+        "text": "LLD / LOA / crédit-bail · centralisation multi-loueurs\nSuivi kilométrique contractuel temps réel\nAnticipation des restit"
+      },
+      {
+        "name": "Text 32",
+        "text": "Intégrations fournisseurs"
+      },
+      {
+        "name": "Text 33",
+        "text": "21 → 27"
+      },
+      {
+        "name": "Text 34",
+        "text": "Cartes carburant · TotalEnergies, BP, DKV, Fleetcor\nCartes recharge VE · Chargemap, Izivia, Freshmile\nGarages, assureurs"
+      },
+      {
+        "name": "Text 37",
+        "text": "Électrification"
+      },
+      {
+        "name": "Text 38",
+        "text": "28 → 31"
+      },
+      {
+        "name": "Text 39",
+        "text": "Analyse d'éligibilité à l'électrique data-driven\nSuivi batterie & autonomie temps réel\nGestion des recharges & optimisat"
+      },
+      {
+        "name": "Text 42",
+        "text": "Une seule plateforme"
+      },
+      {
+        "name": "Text 43",
+        "text": "100%"
+      },
+      {
+        "name": "Text 44",
+        "text": "VL thermique, VL électrique, VUL, poids lourds, engins de chantier, machines industrielles · tout sur la même interface,"
+      },
+      {
+        "name": "Text 46",
+        "text": "→ Fini les silos. Fini la double saisie."
+      },
+      {
+        "name": "Text 47",
+        "text": "Fleeti · présentation généraliste"
+      },
+      {
+        "name": "Text 48",
+        "text": "fleeti.co"
+      }
+    ]
+  },
+  {
+    "slide": 5,
+    "shapes": [
+      {
+        "name": "Text 8",
+        "text": "DÉCARBONATION FLOTTE"
+      },
+      {
+        "name": "Text 9",
+        "text": "−42% émissions an 1"
+      },
+      {
+        "name": "Text 11",
+        "text": "ÉTAPE 01"
+      },
+      {
+        "name": "Text 12",
+        "text": "Comprendre l'usage réel"
+      },
+      {
+        "name": "Text 13",
+        "text": "Pour chaque véhicule : kilométrage journalier, zones, temps d'arrêt, habitudes de recharge potentielles."
+      },
+      {
+        "name": "Text 16",
+        "text": "Télématique"
+      },
+      {
+        "name": "Text 18",
+        "text": "Données usages"
+      },
+      {
+        "name": "Text 20",
+        "text": "ÉTAPE 02"
+      },
+      {
+        "name": "Text 21",
+        "text": "Identifier les éligibles"
+      },
+      {
+        "name": "Text 22",
+        "text": "VP & VUL d'abord, VUL >3,5t selon tournées, PL en veille, engins chantier suivis sur heures moteur."
+      },
+      {
+        "name": "Text 25",
+        "text": "VP · VUL"
+      },
+      {
+        "name": "Text 27",
+        "text": "PL · BTP"
+      },
+      {
+        "name": "Text 29",
+        "text": "ÉTAPE 03"
+      },
+      {
+        "name": "Text 30",
+        "text": "Piloter la flotte mixte"
+      },
+      {
+        "name": "Text 31",
+        "text": "SOC temps réel, alertes autonomie pré-mission, comparatif coût/100km thermique vs électrique, tableau décarbonation."
+      },
+      {
+        "name": "Text 34",
+        "text": "SOC live"
+      },
+      {
+        "name": "Text 36",
+        "text": "Alertes"
+      },
+      {
+        "name": "Text 38",
+        "text": "ÉTAPE 04"
+      },
+      {
+        "name": "Text 39",
+        "text": "Gérer cartes & énergies"
+      },
+      {
+        "name": "Text 40",
+        "text": "Carburant (Total, BP, DKV) + recharge VE (Chargemap, Izivia, Belib) unifiés. Détection fraude temps réel."
+      },
+      {
+        "name": "Text 43",
+        "text": "Cartes"
+      },
+      {
+        "name": "Text 45",
+        "text": "Anti-fraude"
+      },
+      {
+        "name": "Text 47",
+        "text": "CONFORMITÉ FRANÇAISE"
+      },
+      {
+        "name": "Text 48",
+        "text": "Obligations couvertes"
+      },
+      {
+        "name": "Text 49",
+        "text": "Loi LOM · verdissement"
+      },
+      {
+        "name": "Text 50",
+        "text": "Déclaration annuelle flotte"
+      },
+      {
+        "name": "Text 51",
+        "text": "Avantages en Nature (AEN)"
+      },
+      {
+        "name": "Text 52",
+        "text": "CSRD · reporting extra-financier"
+      },
+      {
+        "name": "Text 53",
+        "text": "Fleeti · présentation généraliste"
+      },
+      {
+        "name": "Text 54",
+        "text": "fleeti.co"
+      },
+      {
+        "name": "Text 1",
+        "text": "05 · ÉLECTRIFICATION DES FLOTTES"
+      },
+      {
+        "name": "Text 2",
+        "text": "TRANSITION ÉNERGÉTIQUE"
+      },
+      {
+        "name": "Text 3",
+        "text": "Électrifier votre flotte étape par étape, par la donnée."
+      },
+      {
+        "name": "Text 4",
+        "text": "La loi LOM, Fit for 55, la CSRD imposent un calendrier. Mais la vraie question reste : par où commencer ? Fleeti répond "
+      }
+    ]
+  },
+  {
+    "slide": 6,
+    "shapes": [
+      {
+        "name": "Text 1",
+        "text": "06 · SINISTRALITÉ & TCO"
+      },
+      {
+        "name": "Text 2",
+        "text": "SINISTRALITÉ & TCO"
+      },
+      {
+        "name": "Text 3",
+        "text": "Deux leviers majeurs de coûts, enfin pilotables."
+      },
+      {
+        "name": "Text 6",
+        "text": "SINISTRALITÉ · COÛT CACHÉ"
+      },
+      {
+        "name": "Text 7",
+        "text": "Documenter, prouver, former, anticiper."
+      },
+      {
+        "name": "Text 10",
+        "text": "3-8K€"
+      },
+      {
+        "name": "Text 11",
+        "text": "coût direct moyen d'un sinistre · jusqu'au double en coûts indirects (immobilisation, primes, productivité)"
+      },
+      {
+        "name": "Text 12",
+        "text": "Sans outil dédié, ces coûts sont subis, pas pilotés . Fleeti transforme la sinistralité en variable maîtrisable."
+      },
+      {
+        "name": "Text 13",
+        "text": "Chaque sinistre documenté avec données télématiques comme preuve"
+      },
+      {
+        "name": "Text 14",
+        "text": "Scoring conducteur : identifier les profils à risque avant l'accident"
+      },
+      {
+        "name": "Text 15",
+        "text": "Suivi par véhicule : alerter sur les unités accidentogènes"
+      },
+      {
+        "name": "Text 16",
+        "text": "Recours contre tiers facilités par les données horodatées et géolocalisées"
+      },
+      {
+        "name": "Text 18",
+        "text": "Résultat : sinistralité divisée par 2 à 3 chez les clients avec scoring + formation conducteur."
+      },
+      {
+        "name": "Text 21",
+        "text": "TCO · VRAIE MESURE DE PERFORMANCE"
+      },
+      {
+        "name": "Text 22",
+        "text": "Le coût d'achat n'est que 40% du total."
+      },
+      {
+        "name": "Text 25",
+        "text": "60%"
+      },
+      {
+        "name": "Text 26",
+        "text": "du coût total est invisible si carburant, entretien, sinistres, amendes, pneus, taxes ne sont pas centralisés"
+      },
+      {
+        "name": "Text 28",
+        "text": "Loyers LLD/LOA"
+      },
+      {
+        "name": "Text 30",
+        "text": "Carburant & électricité"
+      },
+      {
+        "name": "Text 32",
+        "text": "Entretien & réparations"
+      },
+      {
+        "name": "Text 34",
+        "text": "Sinistres & franchises"
+      },
+      {
+        "name": "Text 36",
+        "text": "Amendes & péages"
+      },
+      {
+        "name": "Text 38",
+        "text": "Taxes TVS/TVTS, malus"
+      },
+      {
+        "name": "Text 40",
+        "text": "Avantages en nature"
+      },
+      {
+        "name": "Text 41",
+        "text": "Tous postes agrégés automatiquement par rapprochement télématique\nCoût réel par véhicule, par mois, par kilomètre\nDécisi"
+      },
+      {
+        "name": "Text 43",
+        "text": "Le TCO devient un indicateur de pilotage, pas un calcul de fin d'année."
+      },
+      {
+        "name": "Text 44",
+        "text": "Fleeti · présentation généraliste"
+      },
+      {
+        "name": "Text 45",
+        "text": "fleeti.co"
+      }
+    ]
+  },
+  {
+    "slide": 7,
+    "shapes": [
+      {
+        "name": "Text 1",
+        "text": "07 · NOTRE DIFFÉRENCE"
+      },
+      {
+        "name": "Text 2",
+        "text": "NOTRE DIFFÉRENCE"
+      },
+      {
+        "name": "Text 3",
+        "text": "Là où d'autres couvrent une brique, Fleeti couvre toute la chaîne."
+      },
+      {
+        "name": "Text 6",
+        "text": "Capacités"
+      },
+      {
+        "name": "Text 7",
+        "text": "10 DIMENSIONS CLÉS"
+      },
+      {
+        "name": "Text 11",
+        "text": "Fleeti"
+      },
+      {
+        "name": "Text 12",
+        "text": "PLATEFORME 360°"
+      },
+      {
+        "name": "Text 16",
+        "text": "Géoloc seule"
+      },
+      {
+        "name": "Text 17",
+        "text": "TYPE WEBFLEET, GEOTAB"
+      },
+      {
+        "name": "Text 21",
+        "text": "Gestion de parc"
+      },
+      {
+        "name": "Text 22",
+        "text": "TYPE GAC ou AVRIOS"
+      },
+      {
+        "name": "Text 26",
+        "text": "ERP généraliste"
+      },
+      {
+        "name": "Text 27",
+        "text": "SAP, ORACLE, SAGE"
+      },
+      {
+        "name": "Text 30",
+        "text": "Spécialisés"
+      },
+      {
+        "name": "Text 31",
+        "text": "1 BRIQUE = 1 OUTIL"
+      },
+      {
+        "name": "Text 35",
+        "text": "Géolocalisation temps réel"
+      },
+      {
+        "name": "Text 40",
+        "text": "✓"
+      },
+      {
+        "name": "Text 44",
+        "text": "✓"
+      },
+      {
+        "name": "Text 48",
+        "text": "×"
+      },
+      {
+        "name": "Text 52",
+        "text": "×"
+      },
+      {
+        "name": "Text 55",
+        "text": "~"
+      },
+      {
+        "name": "Text 59",
+        "text": "Gestion administrative & documents"
+      },
+      {
+        "name": "Text 64",
+        "text": "✓"
+      },
+      {
+        "name": "Text 68",
+        "text": "×"
+      },
+      {
+        "name": "Text 72",
+        "text": "✓"
+      },
+      {
+        "name": "Text 76",
+        "text": "~"
+      },
+      {
+        "name": "Text 79",
+        "text": "~"
+      },
+      {
+        "name": "Text 83",
+        "text": "Sinistralité & scoring conducteur"
+      },
+      {
+        "name": "Text 88",
+        "text": "✓"
+      },
+      {
+        "name": "Text 92",
+        "text": "~"
+      },
+      {
+        "name": "Text 96",
+        "text": "×"
+      },
+      {
+        "name": "Text 100",
+        "text": "×"
+      },
+      {
+        "name": "Text 103",
+        "text": "~"
+      },
+      {
+        "name": "Text 107",
+        "text": "TCO temps réel agrégé"
+      },
+      {
+        "name": "Text 112",
+        "text": "✓"
+      },
+      {
+        "name": "Text 116",
+        "text": "×"
+      },
+      {
+        "name": "Text 120",
+        "text": "~"
+      },
+      {
+        "name": "Text 124",
+        "text": "~"
+      },
+      {
+        "name": "Text 127",
+        "text": "×"
+      },
+      {
+        "name": "Text 131",
+        "text": "Contrats LLD / LOA multi-loueurs"
+      },
+      {
+        "name": "Text 136",
+        "text": "✓"
+      },
+      {
+        "name": "Text 140",
+        "text": "×"
+      },
+      {
+        "name": "Text 144",
+        "text": "~"
+      },
+      {
+        "name": "Text 148",
+        "text": "×"
+      },
+      {
+        "name": "Text 151",
+        "text": "~"
+      },
+      {
+        "name": "Text 155",
+        "text": "Cartes carburant intégrées"
+      },
+      {
+        "name": "Text 160",
+        "text": "✓"
+      },
+      {
+        "name": "Text 164",
+        "text": "~"
+      },
+      {
+        "name": "Text 168",
+        "text": "~"
+      },
+      {
+        "name": "Text 172",
+        "text": "×"
+      },
+      {
+        "name": "Text 175",
+        "text": "✓"
+      },
+      {
+        "name": "Text 179",
+        "text": "Cartes recharge VE & éligibilité électrique"
+      },
+      {
+        "name": "Text 184",
+        "text": "✓"
+      },
+      {
+        "name": "Text 188",
+        "text": "×"
+      },
+      {
+        "name": "Text 192",
+        "text": "×"
+      },
+      {
+        "name": "Text 196",
+        "text": "×"
+      },
+      {
+        "name": "Text 199",
+        "text": "~"
+      },
+      {
+        "name": "Text 203",
+        "text": "Engins, PL, machines industrielles"
+      },
+      {
+        "name": "Text 208",
+        "text": "✓"
+      },
+      {
+        "name": "Text 212",
+        "text": "~"
+      },
+      {
+        "name": "Text 216",
+        "text": "×"
+      },
+      {
+        "name": "Text 220",
+        "text": "×"
+      },
+      {
+        "name": "Text 223",
+        "text": "~"
+      },
+      {
+        "name": "Text 227",
+        "text": "Conformité française & RGPD Europe"
+      },
+      {
+        "name": "Text 232",
+        "text": "✓"
+      },
+      {
+        "name": "Text 236",
+        "text": "~"
+      },
+      {
+        "name": "Text 240",
+        "text": "✓"
+      },
+      {
+        "name": "Text 244",
+        "text": "~"
+      },
+      {
+        "name": "Text 247",
+        "text": "~"
+      },
+      {
+        "name": "Text 250",
+        "text": "Vision unifiée · une seule base de données"
+      },
+      {
+        "name": "Text 254",
+        "text": "✓"
+      },
+      {
+        "name": "Text 257",
+        "text": "×"
+      },
+      {
+        "name": "Text 260",
+        "text": "×"
+      },
+      {
+        "name": "Text 263",
+        "text": "~"
+      },
+      {
+        "name": "Text 265",
+        "text": "×"
+      },
+      {
+        "name": "Text 266",
+        "text": "✓"
+      },
+      {
+        "name": "Text 267",
+        "text": "Couvert nativement"
+      },
+      {
+        "name": "Text 268",
+        "text": "~"
+      },
+      {
+        "name": "Text 269",
+        "text": "Partiel ou via intégration"
+      },
+      {
+        "name": "Text 270",
+        "text": "×"
+      },
+      {
+        "name": "Text 271",
+        "text": "Non couvert"
+      },
+      {
+        "name": "Text 273",
+        "text": "Une seule plateforme remplace 4 à 5 logiciels . Données unifiées, TCO réel, décisions plus rapides."
+      },
+      {
+        "name": "Text 275",
+        "text": "TOUT-EN-UN · SANS COMPROMIS"
+      },
+      {
+        "name": "Text 276",
+        "text": "Fleeti · présentation généraliste"
+      },
+      {
+        "name": "Text 277",
+        "text": "fleeti.co"
+      }
+    ]
+  },
+  {
+    "slide": 8,
+    "shapes": [
+      {
+        "name": "Text 1",
+        "text": "08 · SECTEURS D'ACTIVITÉ"
+      },
+      {
+        "name": "Text 2",
+        "text": "SECTEURS D'ACTIVITÉ"
+      },
+      {
+        "name": "Text 3",
+        "text": "Une solution adaptée à chaque métier."
+      },
+      {
+        "name": "Text 5",
+        "text": "SECTEUR 01"
+      },
+      {
+        "name": "Text 6",
+        "text": "Transport & Logistique"
+      },
+      {
+        "name": "Text 7",
+        "text": "Flotte mixte thermique/électrique\nSuivi de tournées & optimisation\nPL, VUL électriques\nCarburant & recharge unifiés\nTCO "
+      },
+      {
+        "name": "Text 9",
+        "text": "SECTEUR 02"
+      },
+      {
+        "name": "Text 10",
+        "text": "BTP & Construction"
+      },
+      {
+        "name": "Text 11",
+        "text": "Engins, nacelles, compacteurs\nHeures moteur & utilisation\nPassage électrique/hybride anticipé\nContrats de location d'eng"
+      },
+      {
+        "name": "Text 13",
+        "text": "SECTEUR 03"
+      },
+      {
+        "name": "Text 14",
+        "text": "Chaîne du froid & Agroalimentaire"
+      },
+      {
+        "name": "Text 15",
+        "text": "Camions frigos thermiques & VE\nSurveillance température embarquée\nGestion autonomie & recharges\nSinistres & conformité s"
+      },
+      {
+        "name": "Text 17",
+        "text": "SECTEUR 04"
+      },
+      {
+        "name": "Text 18",
+        "text": "Entreprises & Services"
+      },
+      {
+        "name": "Text 19",
+        "text": "VL & VUL électriques/hybrides\nConducteurs & autopartage\nAEN & bilan CO₂\nLoi LOM, verdissement\nContrats LLD multi-loueurs"
+      },
+      {
+        "name": "Text 21",
+        "text": "SECTEUR 05"
+      },
+      {
+        "name": "Text 22",
+        "text": "Industrie & Énergie"
+      },
+      {
+        "name": "Text 23",
+        "text": "Machines & équipements industriels\nHeures et disponibilité\nMaintenance prédictive capteurs\nMotorisations alternatives"
+      },
+      {
+        "name": "Text 25",
+        "text": "\""
+      },
+      {
+        "name": "Text 26",
+        "text": "Fleeti m'a permis de réaliser -20%  sur nos coûts de carburant."
+      },
+      {
+        "name": "Text 27",
+        "text": "Malick NDIAYE"
+      },
+      {
+        "name": "Text 28",
+        "text": "Responsable flotte"
+      },
+      {
+        "name": "Text 29",
+        "text": "Fleeti · présentation généraliste"
+      },
+      {
+        "name": "Text 30",
+        "text": "fleeti.co"
+      }
+    ]
+  },
+  {
+    "slide": 9,
+    "shapes": [
+      {
+        "name": "Text 1",
+        "text": "09 · RÉSULTATS MESURÉS"
+      },
+      {
+        "name": "Text 2",
+        "text": "RÉSULTATS MESURÉS"
+      },
+      {
+        "name": "Text 3",
+        "text": "Ce que nos clients gagnent concrètement."
+      },
+      {
+        "name": "Text 5",
+        "text": "01"
+      },
+      {
+        "name": "Text 6",
+        "text": "3 ×"
+      },
+      {
+        "name": "Text 7",
+        "text": "Plus rapide"
+      },
+      {
+        "name": "Text 8",
+        "text": "Que les méthodes classiques de gestion de flotte fragmentées entre cinq outils."
+      },
+      {
+        "name": "Text 10",
+        "text": "02"
+      },
+      {
+        "name": "Text 11",
+        "text": "100 %"
+      },
+      {
+        "name": "Text 12",
+        "text": "Visibilité totale"
+      },
+      {
+        "name": "Text 13",
+        "text": "Sur toute la flotte, tous types de véhicules, sur une seule interface."
+      },
+      {
+        "name": "Text 15",
+        "text": "03"
+      },
+      {
+        "name": "Text 16",
+        "text": "−20 %"
+      },
+      {
+        "name": "Text 17",
+        "text": "Économie carburant"
+      },
+      {
+        "name": "Text 18",
+        "text": "Détectée dès les premiers mois grâce aux données rapprochées et au scoring conducteur."
+      },
+      {
+        "name": "Text 20",
+        "text": "04"
+      },
+      {
+        "name": "Text 21",
+        "text": "+15 %"
+      },
+      {
+        "name": "Text 22",
+        "text": "Productivité"
+      },
+      {
+        "name": "Text 23",
+        "text": "Gagnée par l'automatisation des tâches administratives et du reporting."
+      },
+      {
+        "name": "Text 25",
+        "text": "05"
+      },
+      {
+        "name": "Text 26",
+        "text": "−20 %"
+      },
+      {
+        "name": "Text 27",
+        "text": "CO₂ réduit"
+      },
+      {
+        "name": "Text 28",
+        "text": "Grâce aux données de conduite, d'usage et au pilotage de l'électrification."
+      },
+      {
+        "name": "Text 30",
+        "text": "06"
+      },
+      {
+        "name": "Text 31",
+        "text": "4,8 ★"
+      },
+      {
+        "name": "Text 32",
+        "text": "Satisfaction client"
+      },
+      {
+        "name": "Text 33",
+        "text": "Note moyenne sur l'ensemble de la base utilisateurs Fleeti."
+      },
+      {
+        "name": "Text 34",
+        "text": "Fleeti · présentation généraliste · moyennes pondérées post-déploiement"
+      },
+      {
+        "name": "Text 35",
+        "text": "fleeti.co"
+      }
+    ]
+  },
+  {
+    "slide": 10,
+    "shapes": [
+      {
+        "name": "Text 1",
+        "text": "10 · PRÉSENCE & ANCRAGE"
+      },
+      {
+        "name": "Text 2",
+        "text": "PRÉSENCE & ANCRAGE"
+      },
+      {
+        "name": "Text 3",
+        "text": "Une solution française, une portée internationale."
+      },
+      {
+        "name": "Text 5",
+        "text": "EMPREINTE GÉOGRAPHIQUE"
+      },
+      {
+        "name": "Text 6",
+        "text": "De la France à 20+ pays sur 2 continents."
+      },
+      {
+        "name": "Text 8",
+        "text": "FRANCE · SIÈGE"
+      },
+      {
+        "name": "Text 9",
+        "text": "Solution conçue pour les standards français · loi LOM, ANTAI, RGPD, réglementation transport, CSRD"
+      },
+      {
+        "name": "Text 11",
+        "text": "EUROPE"
+      },
+      {
+        "name": "Text 12",
+        "text": "Déploiements actifs · données hébergées en Europe · certifié CE"
+      },
+      {
+        "name": "Text 14",
+        "text": "AFRIQUE DE L'OUEST"
+      },
+      {
+        "name": "Text 15",
+        "text": "Sénégal · Côte d'Ivoire · Ghana · Burkina Faso · Togo"
+      },
+      {
+        "name": "Text 17",
+        "text": "AFRIQUE DU NORD & EST · OCÉAN INDIEN"
+      },
+      {
+        "name": "Text 18",
+        "text": "Maroc · Tanzanie · Kenya · Madagascar · Afrique du Sud · Maurice"
+      },
+      {
+        "name": "Text 20",
+        "text": "20+"
+      },
+      {
+        "name": "Text 21",
+        "text": "pays actifs"
+      },
+      {
+        "name": "Text 22",
+        "text": "2"
+      },
+      {
+        "name": "Text 23",
+        "text": "continents"
+      },
+      {
+        "name": "Text 24",
+        "text": "20+"
+      },
+      {
+        "name": "Text 25",
+        "text": "intégrations"
+      },
+      {
+        "name": "Text 26",
+        "text": "POURQUOI C'EST IMPORTANT"
+      },
+      {
+        "name": "Text 27",
+        "text": "Pour les clients français, 5 garanties concrètes."
+      },
+      {
+        "name": "Text 30",
+        "text": "€"
+      },
+      {
+        "name": "Text 31",
+        "text": "Conformité RGPD garantie · données hébergées en Europe, audit RGPD à jour."
+      },
+      {
+        "name": "Text 34",
+        "text": "FR"
+      },
+      {
+        "name": "Text 35",
+        "text": "Équipe support francophone basée en France, accompagnement et onboarding en français."
+      },
+      {
+        "name": "Text 38",
+        "text": "§"
+      },
+      {
+        "name": "Text 39",
+        "text": "Adapté aux obligations légales françaises · ANTAI, contrôle technique, loi LOM, CSRD, TVS/TVTS."
+      },
+      {
+        "name": "Text 42",
+        "text": "CE"
+      },
+      {
+        "name": "Text 43",
+        "text": "Fabriqué en Europe · certifié CE · hardware et logiciel sous standards européens."
+      },
+      {
+        "name": "Text 44",
+        "text": "Fleeti · présentation généraliste"
+      },
+      {
+        "name": "Text 45",
+        "text": "fleeti.co"
+      }
+    ]
+  },
+  {
+    "slide": 11,
+    "shapes": [
+      {
+        "name": "Text 21",
+        "text": "Du véhicule léger au poids lourd, thermique ou électrique. Télématique, gestion, contrats, sinistralité, TCO, transition"
+      },
+      {
+        "name": "Text 19",
+        "text": "PASSONS À L'ACTION"
+      },
+      {
+        "name": "Text 18",
+        "text": "FABRIQUÉ EN EUROPE · CERTIFIÉ CE"
+      },
+      {
+        "name": "Text 20",
+        "text": "Un seul logiciel pour piloter toute votre flotte."
+      },
+      {
+        "name": "Text 1",
+        "text": "Reprenez le contrôle de toute votre flotte ."
+      },
+      {
+        "name": "Text 2",
+        "text": "Ils nous font confiance"
+      },
+      {
+        "name": "Text 7",
+        "text": "WEB"
+      },
+      {
+        "name": "Text 8",
+        "text": "www.fleeti.co"
+      },
+      {
+        "name": "Text 9",
+        "text": "TÉLÉPHONE"
+      },
+      {
+        "name": "Text 10",
+        "text": "+33 7 49 95 32 93"
+      },
+      {
+        "name": "Text 11",
+        "text": "COUVERTURE"
+      },
+      {
+        "name": "Text 12",
+        "text": "France · Europe · Afrique"
+      },
+      {
+        "name": "Text 13",
+        "text": "© 2025 Fleeti SAS · L'IoT au service des opérations des entreprises africaines et européennes."
+      }
+    ]
+  }
+]
