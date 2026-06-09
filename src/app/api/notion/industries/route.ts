@@ -8,7 +8,7 @@ export async function GET() {
     const data = await getIndustries();
     return NextResponse.json(data);
   } catch (err) {
-    console.error("Error fetching industries:", err);
-    return NextResponse.json({ error: "Failed to fetch industries" }, { status: 500 });
+    console.error("Error fetching industries:", err instanceof Error ? err.message : err);
+    return NextResponse.json({ error: String(err), detail: "Failed to fetch industries" }, { status: 500 });
   }
 }

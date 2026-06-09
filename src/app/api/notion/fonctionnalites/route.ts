@@ -8,7 +8,7 @@ export async function GET() {
     const data = await getFonctionnalites();
     return NextResponse.json(data);
   } catch (err) {
-    console.error("Error fetching fonctionnalites:", err);
-    return NextResponse.json({ error: "Failed to fetch fonctionnalites" }, { status: 500 });
+    console.error("Error fetching fonctionnalites:", err instanceof Error ? err.message : err);
+    return NextResponse.json({ error: String(err), detail: "Failed to fetch fonctionnalites" }, { status: 500 });
   }
 }

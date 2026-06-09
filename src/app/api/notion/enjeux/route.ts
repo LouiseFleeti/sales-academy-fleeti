@@ -8,7 +8,7 @@ export async function GET() {
     const data = await getEnjeux();
     return NextResponse.json(data);
   } catch (err) {
-    console.error("Error fetching enjeux:", err);
-    return NextResponse.json({ error: "Failed to fetch enjeux" }, { status: 500 });
+    console.error("Error fetching enjeux:", err instanceof Error ? err.message : err);
+    return NextResponse.json({ error: String(err), detail: "Failed to fetch enjeux" }, { status: 500 });
   }
 }

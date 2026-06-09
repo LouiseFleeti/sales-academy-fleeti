@@ -8,7 +8,7 @@ export async function GET() {
     const data = await getBenefices();
     return NextResponse.json(data);
   } catch (err) {
-    console.error("Error fetching benefices:", err);
-    return NextResponse.json({ error: "Failed to fetch benefices" }, { status: 500 });
+    console.error("Error fetching benefices:", err instanceof Error ? err.message : err);
+    return NextResponse.json({ error: String(err), detail: "Failed to fetch benefices" }, { status: 500 });
   }
 }

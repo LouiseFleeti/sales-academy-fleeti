@@ -8,7 +8,7 @@ export async function GET() {
     const data = await getSolutions();
     return NextResponse.json(data);
   } catch (err) {
-    console.error("Error fetching solutions:", err);
-    return NextResponse.json({ error: "Failed to fetch solutions" }, { status: 500 });
+    console.error("Error fetching solutions:", err instanceof Error ? err.message : err);
+    return NextResponse.json({ error: String(err), detail: "Failed to fetch solutions" }, { status: 500 });
   }
 }
