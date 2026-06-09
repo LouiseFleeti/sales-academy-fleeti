@@ -68,12 +68,17 @@ async function resolvePageName(id: string): Promise<string | null> {
 
 async function resolveRelations(ids: string[]): Promise<NotionRelation[]> {
   if (ids.length === 0) return [];
-  // Tous les appels en parallèle
-  const results = await Promise.all(ids.map(async (id) => {
+  const results: NotionRelation[] = [];
+  for (const id of ids) {
+    // Déjà en cache → pas de requête
+    if (pageNameCache.has(id)) {
+      results.push({ id, name: pageNameCache.get(id)! });
+      continue;
+    }
     const name = await resolvePageName(id);
-    return name ? { id, name } : null;
-  }));
-  return results.filter(Boolean) as NotionRelation[];
+    if (name) results.push({ id, name });
+  }
+  return results;
 }
 
 function getPageName(page: PageObjectResponse): string {
