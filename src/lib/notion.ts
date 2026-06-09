@@ -55,10 +55,9 @@ function getRelationIds(page: PageObjectResponse, prop: string): string[] {
 }
 
 async function resolvePageName(id: string): Promise<string | null> {
-  // Vérifie le cache d'abord
   if (pageNameCache.has(id)) return pageNameCache.get(id)!;
   try {
-    const page = (await notion.pages.retrieve({ page_id: id })) as PageObjectResponse;
+    const page = (await withRetry(() => notion.pages.retrieve({ page_id: id }))) as PageObjectResponse;
     const name = getPageName(page);
     pageNameCache.set(id, name);
     return name;
@@ -86,15 +85,32 @@ function getPageName(page: PageObjectResponse): string {
   return "Sans nom";
 }
 
+async function sleep(ms: number) { return new Promise(r => setTimeout(r, ms)); }
+
+async function withRetry<T>(fn: () => Promise<T>, retries = 4, delay = 2000): Promise<T> {
+  for (let i = 0; i <= retries; i++) {
+    try { return await fn(); }
+    catch (e: unknown) {
+      const code = (e as { code?: string })?.code;
+      if (code === 'rate_limited' && i < retries) {
+        await sleep(delay * Math.pow(2, i)); // 2s, 4s, 8s, 16s
+        continue;
+      }
+      throw e;
+    }
+  }
+  throw new Error('Max retries reached');
+}
+
 async function queryAll(databaseId: string): Promise<PageObjectResponse[]> {
   const pages: PageObjectResponse[] = [];
   let cursor: string | undefined;
   do {
-    const res: QueryDatabaseResponse = await notion.databases.query({
+    const res: QueryDatabaseResponse = await withRetry(() => notion.databases.query({
       database_id: databaseId,
       start_cursor: cursor,
       page_size: 100,
-    });
+    }));
     pages.push(...(res.results as PageObjectResponse[]));
     cursor = res.has_more && res.next_cursor ? res.next_cursor : undefined;
   } while (cursor);
