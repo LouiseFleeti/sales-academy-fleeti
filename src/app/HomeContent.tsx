@@ -117,17 +117,17 @@ export default function HomeContent() {
 
   useEffect(() => {
     Promise.all([
-      cachedFetch<Industry[]>("/api/notion/industries"),
-      cachedFetch<PainPoint[]>("/api/notion/painpoints"),
-      cachedFetch<Solution[]>("/api/notion/solutions"),
-      cachedFetch<Benefice[]>("/api/notion/benefices"),
+      cachedFetch<Industry[]>("/api/notion/industries").catch(() => []),
+      cachedFetch<PainPoint[]>("/api/notion/painpoints").catch(() => []),
+      cachedFetch<Solution[]>("/api/notion/solutions").catch(() => []),
+      cachedFetch<Benefice[]>("/api/notion/benefices").catch(() => []),
     ]).then(([inds, pps, sols, bens]) => {
       setIndustries(Array.isArray(inds) ? inds : []);
       setAllPainPoints(Array.isArray(pps) ? pps : []);
       setAllSolutions(Array.isArray(sols) ? sols : []);
       setAllBenefices(Array.isArray(bens) ? bens : []);
       setLoading(false);
-    }).catch(() => setLoading(false));
+    });
   }, []);
 
   // Pain points de l'industrie sélectionnée
