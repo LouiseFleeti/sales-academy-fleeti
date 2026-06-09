@@ -3,7 +3,7 @@ import { writeData } from "@/lib/dataStore";
 import {
   getIndustries, getEnjeux, getPainPoints, getSolutions,
   getCapacites, getFonctionnalites, getBenefices, getPersonas, getRelances,
-  preloadAllDatabases,
+  preloadAllDatabases, clearDbCache,
 } from "@/lib/notion";
 
 export const dynamic = "force-dynamic";
@@ -25,7 +25,8 @@ export async function POST() {
   const results: Record<string, string> = {};
 
   try {
-    // 1. Charger l'index id→nom (9 appels seulement)
+    // 1. Vider le cache mémoire + charger l'index id→nom
+    clearDbCache();
     await preloadAllDatabases();
 
     // 2. Construire et sauvegarder chaque base séquentiellement

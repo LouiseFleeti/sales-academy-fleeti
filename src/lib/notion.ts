@@ -75,6 +75,8 @@ async function preloadDatabase(dbId: string): Promise<void> {
   }
 }
 
+export function clearDbCache() { dbCache.clear(); }
+
 export async function preloadAllDatabases(): Promise<void> {
   const dbs = [
     process.env.NOTION_DB_INDUSTRIES,
