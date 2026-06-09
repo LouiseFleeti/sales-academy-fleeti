@@ -56,7 +56,7 @@ function getRelationIds(page: PageObjectResponse, prop: string): string[] {
 
 function resolveRelations(ids: string[]): NotionRelation[] {
   return ids
-    .map(id => ({ id, name: pageNameCache.get(id) }))
+    .map(id => ({ id, name: pageNameCache.get(id.replace(/-/g, "")) }))
     .filter((r): r is NotionRelation => !!r.name);
 }
 
@@ -64,7 +64,7 @@ function resolveRelations(ids: string[]): NotionRelation[] {
 async function preloadDatabase(dbId: string): Promise<void> {
   const pages = await queryAll(dbId);
   for (const page of pages) {
-    pageNameCache.set(page.id, getPageName(page));
+    pageNameCache.set(page.id.replace(/-/g, ""), getPageName(page));
   }
 }
 

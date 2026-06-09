@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import GlobalSearch from "@/components/ui/GlobalSearch";
+import { clearClientCache } from "@/lib/clientCache";
 
 const NAV_GROUPS = [
   {
@@ -202,8 +203,11 @@ function SyncButton() {
     try {
       const res = await fetch("/api/sync", { method: "POST" });
       const data = await res.json();
-      if (data.success) { setStatus("ok"); setSyncedAt(new Date().toLocaleDateString("fr-FR", { day:"2-digit", month:"2-digit", hour:"2-digit", minute:"2-digit" })); }
-      else setStatus("error");
+      if (data.success) {
+        clearClientCache();
+        setStatus("ok");
+        setSyncedAt(new Date().toLocaleDateString("fr-FR", { day:"2-digit", month:"2-digit", hour:"2-digit", minute:"2-digit" }));
+      } else setStatus("error");
     } catch { setStatus("error"); }
     setTimeout(() => setStatus("idle"), 3000);
   };

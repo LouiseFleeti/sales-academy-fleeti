@@ -17,3 +17,8 @@ export async function cachedFetch<T>(url: string): Promise<T> {
   cache.set(url, { data, fetchedAt: now });
   return data as T;
 }
+
+// Vide tout le cache — appelé après un Sync Notion
+export function clearClientCache() {
+  cache.clear();
+}
