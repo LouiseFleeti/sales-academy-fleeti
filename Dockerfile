@@ -28,9 +28,9 @@ COPY --from=builder /app/public ./public
 COPY scripts ./scripts
 
 ENV NODE_ENV=production
-ENV PORT=3000
+ENV HOSTNAME=0.0.0.0
 # Python du venv
 ENV PYTHON_BIN=/opt/venv/bin/python3
 
-EXPOSE 3000
+EXPOSE 10000
 CMD ["node", "server.js"]
