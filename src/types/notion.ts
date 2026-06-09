@@ -17,6 +17,7 @@ export type Enjeu = {
   id: string;
   name: string;
   description?: string;
+  categorie?: string;
   painpointsAssocies: NotionRelation[];
   solutionsAssociees: NotionRelation[];
   fonctionnalitesAssociees: NotionRelation[];
