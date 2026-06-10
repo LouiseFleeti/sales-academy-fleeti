@@ -17,6 +17,28 @@ from pptx.enum.text import PP_ALIGN
 
 SLIDES_DIR = os.path.join(os.path.dirname(__file__), '..', 'public')
 
+# Mapping industrie → index de slide (0-based) dans chaque deck
+# Deck court (rdv, 16 slides)  : overview=idx7, puis les 5 secteurs idx 8-12
+# Deck développé (envoyer, 26 slides) : overview=idx16, puis les 5 secteurs idx 17-21
+SECTOR_SLIDES = {
+    'envoyer': {
+        'overview':     16,
+        'transport':    17,
+        'btp':          18,
+        'froid':        19,
+        'entreprises':  20,
+        'industrie':    21,
+    },
+    'rdv': {
+        'overview':     7,
+        'transport':    8,
+        'btp':          9,
+        'froid':        10,
+        'entreprises':  11,
+        'industrie':    12,
+    },
+}
+
 FLEETI_GREEN = RGBColor(0x1A, 0xB0, 0x8E)
 FLEETI_DARK  = RGBColor(0x1A, 0x2E, 0x44)
 WHITE        = RGBColor(0xFF, 0xFF, 0xFF)
@@ -75,10 +97,33 @@ def add_logo(slide, logo_path, left_pct=0.82, top_pct=0.04, width_pct=0.14):
 
 
 def build_pptx(slide_type, client_name, vehicles, vehicle_types, pain_points,
-               logo_path, sales_name, output_path):
+               logo_path, sales_name, output_path, industry=''):
 
     slides_folder = os.path.join(SLIDES_DIR, f'slides-{slide_type}')
-    slide_files = sorted(f for f in os.listdir(slides_folder) if f.endswith('.png'))
+    all_slide_files = sorted(f for f in os.listdir(slides_folder) if f.endswith('.png'))
+
+    # Filtrer les slides secteur selon l'industrie choisie
+    sector_map = SECTOR_SLIDES[slide_type]
+    sector_indices_to_remove = set()
+    if industry and industry in sector_map:
+        # Garder l'overview + la slide du secteur choisi, supprimer les autres
+        for key, idx in sector_map.items():
+            if key != 'overview' and key != industry:
+                sector_indices_to_remove.add(idx)
+    elif not industry:
+        # Aucune industrie choisie → on garde tout
+        pass
+
+    slide_files = [
+        f for i, f in enumerate(all_slide_files)
+        if i not in sector_indices_to_remove
+    ]
+
+    # Recalculer les indices après filtrage pour les personnalisations
+    filtered_indices = [
+        i for i in range(len(all_slide_files))
+        if i not in sector_indices_to_remove
+    ]
 
     prs = Presentation()
     prs.slide_width  = Emu(9144000)   # 10"
@@ -86,7 +131,7 @@ def build_pptx(slide_type, client_name, vehicles, vehicle_types, pain_points,
 
     blank_layout = prs.slide_layouts[6]  # Layout vide
 
-    for idx, fname in enumerate(slide_files):
+    for idx, (orig_idx, fname) in enumerate(zip(filtered_indices, slide_files)):
         slide = prs.slides.add_slide(blank_layout)
         img_path = os.path.join(slides_folder, fname)
 
@@ -97,9 +142,9 @@ def build_pptx(slide_type, client_name, vehicles, vehicle_types, pain_points,
             height=prs.slide_height
         )
 
-        # ── Slide pain points : index 2 pour rdv (slide 3), index 3 pour envoyer (slide 4)
+        # ── Slide pain points : orig_idx 3 pour rdv (slide 4), orig_idx 3 pour envoyer (slide 4)
         pain_slide_idx = 3 if slide_type == 'envoyer' else 2
-        if idx == pain_slide_idx and pain_points:
+        if orig_idx == pain_slide_idx and pain_points:
             from pptx.util import Pt
             from pptx.oxml.ns import qn
             from pptx.enum.shapes import MSO_SHAPE_TYPE
@@ -146,8 +191,8 @@ def build_pptx(slide_type, client_name, vehicles, vehicle_types, pain_points,
                 shape.line.color.rgb = FLEETI_GREEN
                 shape.line.width = Pt(2.5)
 
-        # ── Personnalisations sur la slide de couverture (index 0) ────────────
-        if idx == 0 and client_name:
+        # ── Personnalisations sur la slide de couverture (orig_idx 0) ─────────
+        if orig_idx == 0 and client_name:
 
             # Nom du client — 36pt foncé gras, aligné avec le texte du slide (5%)
             add_text_box(slide,
@@ -178,7 +223,7 @@ def build_pptx(slide_type, client_name, vehicles, vehicle_types, pain_points,
                 add_logo(slide, logo_path, left_pct=0.80, top_pct=0.88, width_pct=0.14)
 
     prs.save(output_path)
-    print(f'Saved: {output_path} ({len(slide_files)} slides)')
+    print(f'Saved: {output_path} ({len(slide_files)} slides, industry={industry or "toutes"})')
 
 
 def main():
@@ -190,6 +235,7 @@ def main():
     p.add_argument('--pain-points', default='')
     p.add_argument('--logo-path', default='')
     p.add_argument('--sales', default='')
+    p.add_argument('--industry', default='')
     p.add_argument('--output', required=True)
     args = p.parse_args()
 
@@ -202,6 +248,7 @@ def main():
         logo_path=args.logo_path,
         sales_name=args.sales,
         output_path=args.output,
+        industry=args.industry,
     )
 
 if __name__ == '__main__':

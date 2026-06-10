@@ -11,7 +11,7 @@ const PYTHON = process.env.PYTHON_BIN || '/Library/Frameworks/Python.framework/V
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  const { type = 'envoyer', client, vehicles, vehicleTypes, painPoints, logoB64, sales } = body;
+  const { type = 'envoyer', client, vehicles, vehicleTypes, painPoints, logoB64, sales, industry } = body;
 
   if (!client?.trim()) {
     return NextResponse.json({ error: 'Nom du client requis' }, { status: 400 });
@@ -36,7 +36,8 @@ export async function POST(request: NextRequest) {
     vehicleTypes?.length ? `--vehicle-types "${vehicleTypes.join(',')}"` : '',
     painPoints?.length   ? `--pain-points "${painPoints.join(',')}"` : '',
     logoPath ? `--logo-path "${logoPath}"` : '',
-    sales   ? `--sales "${safe(sales.trim())}"` : '',
+    sales    ? `--sales "${safe(sales.trim())}"` : '',
+    industry ? `--industry "${safe(industry)}"` : '',
     `--output "${outputPath}"`,
   ].filter(Boolean).join(' ');
 

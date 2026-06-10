@@ -3,6 +3,14 @@
 import { useState } from "react";
 import Navbar from "@/components/ui/Navbar";
 
+const INDUSTRIES = [
+  { value: "transport",   label: "Transport & Logistique", icon: "🚚" },
+  { value: "btp",         label: "BTP & Construction",     icon: "🏗️" },
+  { value: "froid",       label: "Chaîne du froid & Agro", icon: "❄️" },
+  { value: "entreprises", label: "Entreprises & Services", icon: "🏢" },
+  { value: "industrie",   label: "Industrie & Énergie",    icon: "⚙️" },
+];
+
 const VEHICLE_TYPES = [
   { value: "VL",       label: "VL",       desc: "Véhicules légers" },
   { value: "VUL",      label: "VUL",      desc: "Utilitaires légers" },
@@ -30,6 +38,7 @@ export default function PresentationPage() {
   const [logoB64, setLogoB64]           = useState("");
   const [logoName, setLogoName]         = useState("");
   const [sales, setSales]               = useState("");
+  const [industry, setIndustry]         = useState("");
   const [loadingType, setLoadingType]   = useState<"envoyer"|"rdv"|null>(null);
   const [error, setError]               = useState("");
 
@@ -44,7 +53,7 @@ export default function PresentationPage() {
       const res = await fetch("/api/presentation/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ type, client, vehicles, vehicleTypes, painPoints, logoB64, sales }),
+        body: JSON.stringify({ type, client, vehicles, vehicleTypes, painPoints, logoB64, sales, industry }),
       });
       if (!res.ok) { const d = await res.json(); throw new Error(d.error || "Erreur serveur"); }
       const blob = await res.blob();
@@ -88,6 +97,30 @@ export default function PresentationPage() {
               onChange={e => setClient(e.target.value)}
               className="w-full px-3.5 py-2.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-50 transition-all"
             />
+          </div>
+
+          {/* Industrie */}
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+            <label className="block text-sm font-semibold text-gray-800 mb-1">Secteur d&apos;activité</label>
+            <p className="text-xs text-gray-400 mb-3">Seule la slide de ce secteur sera conservée dans le deck.</p>
+            <div className="grid grid-cols-2 gap-2">
+              {INDUSTRIES.map(ind => (
+                <button key={ind.value}
+                  onClick={() => setIndustry(industry === ind.value ? "" : ind.value)}
+                  className={`flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm border text-left transition-all ${
+                    industry === ind.value
+                      ? "border-blue-500 bg-blue-50 text-blue-700 font-medium"
+                      : "border-gray-200 text-gray-600 hover:border-gray-300 hover:bg-gray-50"
+                  }`}
+                >
+                  <span className="text-base leading-none">{ind.icon}</span>
+                  <span>{ind.label}</span>
+                </button>
+              ))}
+            </div>
+            {!industry && (
+              <p className="text-xs text-gray-400 mt-2 italic">Aucun secteur → toutes les slides secteur sont conservées.</p>
+            )}
           </div>
 
           {/* Problématiques */}
