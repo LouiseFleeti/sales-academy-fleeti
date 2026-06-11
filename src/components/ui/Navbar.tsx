@@ -229,7 +229,11 @@ function SyncButton() {
 
 export default function Navbar() {
   const pathname = usePathname();
+  const isHome = pathname === "/";
   const isChat = pathname.startsWith("/chat");
+
+  // Sales Academy pages : tout sauf homepage, rdv et chat
+  const isSalesPage = !isHome && !isChat && !pathname.startsWith("/rdv");
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b" style={{ background: "rgba(255,255,255,0.96)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", borderColor: "#e8edf3", boxShadow: "0 1px 20px rgba(34,72,115,0.07)" }}>
@@ -242,16 +246,30 @@ export default function Navbar() {
             </svg>
           </div>
           <span className="font-bold text-sm tracking-tight text-gray-900">
-            Sales <span style={{ color: "#3979C1" }}>Academy</span>
+            Fleeti <span style={{ color: "#3979C1" }}>Academy</span>
           </span>
         </Link>
 
-        {/* Nav groups */}
-        <div className="flex items-center gap-1 flex-1">
-          {NAV_GROUPS.map((group) => (
-            <NavGroup key={group.label} group={group} pathname={pathname} />
-          ))}
-        </div>
+        {/* Nav groups — uniquement sur les pages Sales */}
+        {isSalesPage && (
+          <div className="flex items-center gap-1 flex-1">
+            {NAV_GROUPS.map((group) => (
+              <NavGroup key={group.label} group={group} pathname={pathname} />
+            ))}
+          </div>
+        )}
+
+        {/* Breadcrumb Sales sur les pages Sales */}
+        {isSalesPage && (
+          <div className="flex items-center gap-1.5 text-xs text-gray-400 ml-2 mr-auto">
+            <Link href="/" className="hover:text-gray-600 transition-colors">Accueil</Link>
+            <span>/</span>
+            <span className="font-semibold text-gray-600">Sales Academy</span>
+          </div>
+        )}
+
+        {/* Spacer sur homepage */}
+        {!isSalesPage && <div className="flex-1" />}
 
         {/* Sync Notion */}
         <SyncButton />
