@@ -24,7 +24,7 @@ export default function HomePage() {
           </span>
         </h1>
         <p className="text-base text-center mb-10 max-w-lg" style={{ color: "rgba(255,255,255,0.45)" }}>
-          Sales ou Ops — l'IA répond en s'appuyant sur toute la base de connaissance Fleeti en temps réel.
+          Sales, Ops ou CS — l'IA répond en s'appuyant sur toute la base de connaissance Fleeti en temps réel.
         </p>
 
         {/* CTA Chat */}
