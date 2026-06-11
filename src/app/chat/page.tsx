@@ -9,8 +9,8 @@ type Message = {
 
 type Context = "general" | "sales" | "ops" | "cs";
 
-const CONTEXTS: { id: Context; label: string; color: string; bg: string; border: string; desc: string }[] = [
-  { id: "general",  label: "Général",  color: "#6b7280", bg: "#f3f4f6", border: "#d1d5db", desc: "Toutes équipes" },
+const CONTEXTS: { id: Context; label: string; color: string; bg: string; border: string; desc: string; disabled?: boolean }[] = [
+  { id: "general",  label: "Général",  color: "#6b7280", bg: "#f3f4f6", border: "#d1d5db", desc: "Bientôt disponible", disabled: true },
   { id: "sales",    label: "Sales",    color: "#3979C1", bg: "#E8F2FD", border: "#9CC3F0", desc: "Équipe commerciale" },
   { id: "ops",      label: "Ops",      color: "#C9820A", bg: "#FFF0D6", border: "#f5c97a", desc: "Équipe opérationnelle" },
   { id: "cs",       label: "CS",       color: "#0e9f6e", bg: "#ecfdf5", border: "#6ee7b7", desc: "Customer Success" },
@@ -113,13 +113,15 @@ export default function ChatPage() {
               {CONTEXTS.map((c) => (
                 <button
                   key={c.id}
-                  onClick={() => setContext(c.id)}
-                  className="flex items-center gap-2 px-4 py-2 rounded-xl border text-sm font-semibold transition-all"
+                  onClick={() => !c.disabled && setContext(c.id)}
+                  disabled={c.disabled}
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl border text-sm font-semibold transition-all disabled:cursor-not-allowed"
                   style={{
-                    background: context === c.id ? c.bg : "white",
-                    borderColor: context === c.id ? c.color : "#e5e7eb",
-                    color: context === c.id ? c.color : "#6b7280",
-                    boxShadow: context === c.id ? `0 0 0 2px ${c.color}30` : "none",
+                    background: c.disabled ? "#f9fafb" : context === c.id ? c.bg : "white",
+                    borderColor: c.disabled ? "#e5e7eb" : context === c.id ? c.color : "#e5e7eb",
+                    color: c.disabled ? "#d1d5db" : context === c.id ? c.color : "#6b7280",
+                    boxShadow: !c.disabled && context === c.id ? `0 0 0 2px ${c.color}30` : "none",
+                    opacity: c.disabled ? 0.6 : 1,
                   }}
                 >
                   {c.label}
@@ -209,12 +211,13 @@ export default function ChatPage() {
           {CONTEXTS.map((c) => (
             <button
               key={c.id}
-              onClick={() => setContext(c.id)}
-              className="px-3 py-1 rounded-lg text-xs font-semibold border transition-all"
+              onClick={() => !c.disabled && setContext(c.id)}
+              disabled={c.disabled}
+              className="px-3 py-1 rounded-lg text-xs font-semibold border transition-all disabled:cursor-not-allowed"
               style={{
-                background: context === c.id ? c.bg : "transparent",
-                borderColor: context === c.id ? c.color : "#e5e7eb",
-                color: context === c.id ? c.color : "#9ca3af",
+                background: c.disabled ? "transparent" : context === c.id ? c.bg : "transparent",
+                borderColor: c.disabled ? "#f3f4f6" : context === c.id ? c.color : "#e5e7eb",
+                color: c.disabled ? "#d1d5db" : context === c.id ? c.color : "#9ca3af",
               }}
             >
               {c.label}
