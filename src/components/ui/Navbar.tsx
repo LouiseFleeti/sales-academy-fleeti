@@ -253,8 +253,17 @@ export default function Navbar() {
           </span>
         </Link>
 
+        {/* Nav groups — uniquement sur les pages Sales */}
+        {isSalesPage && (
+          <div className="flex items-center gap-1 flex-1">
+            {NAV_GROUPS.map((group) => (
+              <NavGroup key={group.label} group={group} pathname={pathname} />
+            ))}
+          </div>
+        )}
+
         {/* Spacer */}
-        <div className="flex-1" />
+        {!isSalesPage && <div className="flex-1" />}
 
         {/* Sync Notion */}
         <SyncButton />
