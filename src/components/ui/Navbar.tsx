@@ -233,7 +233,7 @@ export default function Navbar() {
   const isChat = pathname.startsWith("/chat");
 
   // Sales Academy pages : tout sauf homepage, rdv et chat
-  const isSalesPage = !isHome && !isChat && !pathname.startsWith("/rdv");
+  const isSalesPage = !isHome && !isChat && !pathname.startsWith("/rdv") && !pathname.startsWith("/sales-academy");
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b" style={{ background: "rgba(255,255,255,0.96)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", borderColor: "#e8edf3", boxShadow: "0 1px 20px rgba(34,72,115,0.07)" }}>

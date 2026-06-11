@@ -77,7 +77,7 @@ export default function HomePage() {
             </div>
             <div className="p-4">
               <Link
-                href="/industries"
+                href="/sales-academy"
                 className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl text-sm font-bold transition-all hover:opacity-90"
                 style={{ background: "rgba(57,121,193,0.25)", color: "#9CC3F0", border: "1px solid rgba(57,121,193,0.3)" }}
               >
