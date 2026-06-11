@@ -46,14 +46,14 @@ export default function HomePage() {
         </Link>
 
         {/* Divider */}
-        <div className="flex items-center gap-4 mt-16 mb-10 w-full max-w-2xl">
+        <div className="flex items-center gap-4 mt-16 mb-10 w-full max-w-3xl">
           <div className="flex-1 h-px" style={{ background: "rgba(255,255,255,0.08)" }} />
           <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: "rgba(255,255,255,0.25)" }}>ou accéder directement</span>
           <div className="flex-1 h-px" style={{ background: "rgba(255,255,255,0.08)" }} />
         </div>
 
         {/* ── Portails ── */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-2xl">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-3xl">
 
           {/* Sales Academy */}
           <div className="rounded-2xl overflow-hidden" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
@@ -108,6 +108,34 @@ export default function HomePage() {
               <div
                 className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl text-sm font-bold"
                 style={{ border: "1px dashed rgba(245,201,122,0.3)", color: "rgba(245,201,122,0.5)" }}
+              >
+                Bientôt disponible
+              </div>
+            </div>
+          </div>
+
+          {/* CS Academy */}
+          <div className="rounded-2xl overflow-hidden" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
+            <div className="px-6 py-5 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: "linear-gradient(135deg, #0e9f6e, #065f46)" }}>
+                  <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.22 1.2 2 2 0 012.22 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+                  </svg>
+                </div>
+                <div>
+                  <h2 className="text-sm font-black text-white">CS Academy</h2>
+                  <p className="text-xs" style={{ color: "#6ee7b7" }}>Customer Success</p>
+                </div>
+              </div>
+              <p className="text-xs leading-relaxed" style={{ color: "rgba(255,255,255,0.4)" }}>
+                Onboarding, suivi client et fidélisation.
+              </p>
+            </div>
+            <div className="p-4">
+              <div
+                className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl text-sm font-bold"
+                style={{ border: "1px dashed rgba(110,231,183,0.3)", color: "rgba(110,231,183,0.5)" }}
               >
                 Bientôt disponible
               </div>
