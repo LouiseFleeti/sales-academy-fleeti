@@ -2,14 +2,6 @@
 
 import Link from "next/link";
 
-const SALES_MODULES = [
-  { label: "Industries", href: "/industries", icon: "🏭" },
-  { label: "Personas", href: "/personas", icon: "👤" },
-  { label: "Enjeux", href: "/enjeux", icon: "💼" },
-  { label: "Pain points", href: "/painpoints", icon: "⚡" },
-  { label: "Bénéfices", href: "/benefices", icon: "⭐" },
-  { label: "Solutions", href: "/solutions", icon: "✅" },
-];
 
 export default function HomePage() {
   return (
@@ -84,26 +76,12 @@ export default function HomePage() {
               </p>
             </div>
             <div className="p-4">
-              <div className="grid grid-cols-3 gap-1.5 mb-4">
-                {SALES_MODULES.map((m) => (
-                  <Link key={m.href} href={m.href}
-                    className="flex flex-col items-center gap-1 p-2.5 rounded-xl transition-all hover:bg-white/10"
-                    style={{ background: "rgba(255,255,255,0.05)" }}
-                  >
-                    <span className="text-base">{m.icon}</span>
-                    <span className="text-xs font-semibold text-center leading-tight" style={{ color: "rgba(255,255,255,0.7)" }}>{m.label}</span>
-                  </Link>
-                ))}
-              </div>
               <Link
-                href="/rdv"
+                href="/industries"
                 className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl text-sm font-bold transition-all hover:opacity-90"
                 style={{ background: "rgba(57,121,193,0.25)", color: "#9CC3F0", border: "1px solid rgba(57,121,193,0.3)" }}
               >
-                <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                  <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                </svg>
-                Préparer un RDV
+                Accéder à la Sales Academy →
               </Link>
             </div>
           </div>
@@ -126,19 +104,9 @@ export default function HomePage() {
                 Process, procédures et base de connaissance ops.
               </p>
             </div>
-            <div className="p-4 flex flex-col gap-1.5">
-              {[
-                { icon: "🤖", label: "Poser une question à l'IA" },
-                { icon: "🎫", label: "Ouvrir un ticket" },
-                { icon: "📋", label: "Base de connaissance" },
-              ].map((item) => (
-                <div key={item.label} className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl" style={{ background: "rgba(255,255,255,0.05)" }}>
-                  <span className="text-sm">{item.icon}</span>
-                  <span className="text-xs font-semibold" style={{ color: "rgba(255,255,255,0.55)" }}>{item.label}</span>
-                </div>
-              ))}
+            <div className="p-4">
               <div
-                className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl text-xs font-bold mt-1"
+                className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl text-sm font-bold"
                 style={{ border: "1px dashed rgba(245,201,122,0.3)", color: "rgba(245,201,122,0.5)" }}
               >
                 Bientôt disponible
