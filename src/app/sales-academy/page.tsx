@@ -35,11 +35,11 @@ export default function SalesAcademyPage() {
         </p>
       </div>
 
-      {/* CTA Préparer un RDV */}
-      <div className="w-full max-w-2xl mb-10">
+      {/* CTAs principaux */}
+      <div className="w-full max-w-2xl mb-10 flex flex-col sm:flex-row gap-3">
         <Link
           href="/rdv"
-          className="flex items-center justify-center gap-3 w-full py-4 rounded-2xl text-base font-bold text-white transition-all hover:scale-[1.02] hover:shadow-lg"
+          className="flex items-center justify-center gap-3 flex-1 py-4 rounded-2xl text-base font-bold text-white transition-all hover:scale-[1.02] hover:shadow-lg"
           style={{
             background: "linear-gradient(135deg, #3979C1 0%, #224873 100%)",
             boxShadow: "0 4px 20px rgba(57,121,193,0.3)",
@@ -49,6 +49,20 @@ export default function SalesAcademyPage() {
             <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
           </svg>
           Préparer un RDV
+        </Link>
+        <Link
+          href="/presentation"
+          className="flex items-center justify-center gap-3 flex-1 py-4 rounded-2xl text-base font-bold transition-all hover:scale-[1.02] hover:shadow-lg"
+          style={{
+            background: "linear-gradient(135deg, #C9820A 0%, #7A4A00 100%)",
+            color: "white",
+            boxShadow: "0 4px 20px rgba(201,130,10,0.3)",
+          }}
+        >
+          <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+            <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>
+          </svg>
+          Générer une présentation
         </Link>
       </div>
 
