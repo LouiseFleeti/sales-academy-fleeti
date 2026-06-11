@@ -239,41 +239,22 @@ export default function Navbar() {
     <nav className="fixed top-0 left-0 right-0 z-50 border-b" style={{ background: "rgba(255,255,255,0.96)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", borderColor: "#e8edf3", boxShadow: "0 1px 20px rgba(34,72,115,0.07)" }}>
       <div className="max-w-screen-xl mx-auto px-6 h-14 flex items-center gap-2">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2.5 shrink-0 mr-6">
+        <Link href={isSalesPage ? "/sales-academy" : "/"} className="flex items-center gap-2.5 shrink-0 mr-6">
           <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: "linear-gradient(135deg, #3979C1 0%, #224873 100%)" }}>
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
               <path d="M13 10V3L4 14h7v7l9-11h-7z" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </div>
           <span className="font-bold text-sm tracking-tight text-gray-900">
-            Fleeti <span style={{ color: "#3979C1" }}>Academy</span>
+            {isSalesPage
+              ? <>Sales <span style={{ color: "#3979C1" }}>Academy</span></>
+              : <>Fleeti <span style={{ color: "#3979C1" }}>Academy</span></>
+            }
           </span>
         </Link>
 
-        {/* Nav groups — uniquement sur les pages Sales */}
-        {isSalesPage && (
-          <div className="flex items-center gap-1 flex-1">
-            {NAV_GROUPS.map((group) => (
-              <NavGroup key={group.label} group={group} pathname={pathname} />
-            ))}
-          </div>
-        )}
-
-        {/* Breadcrumb Sales sur les pages Sales */}
-        {isSalesPage && (
-          <div className="flex items-center gap-1.5 text-xs text-gray-400 ml-2 mr-auto">
-            <Link href="/" className="hover:text-gray-600 transition-colors">Accueil</Link>
-            <span>/</span>
-            <Link href="/sales-academy" className="hover:text-gray-600 transition-colors">Sales Academy</Link>
-            <span>/</span>
-            <span className="font-semibold text-gray-600 capitalize">
-              {pathname.split("/")[1]}
-            </span>
-          </div>
-        )}
-
-        {/* Spacer sur homepage */}
-        {!isSalesPage && <div className="flex-1" />}
+        {/* Spacer */}
+        <div className="flex-1" />
 
         {/* Sync Notion */}
         <SyncButton />
