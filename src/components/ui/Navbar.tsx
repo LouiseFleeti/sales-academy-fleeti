@@ -264,7 +264,11 @@ export default function Navbar() {
           <div className="flex items-center gap-1.5 text-xs text-gray-400 ml-2 mr-auto">
             <Link href="/" className="hover:text-gray-600 transition-colors">Accueil</Link>
             <span>/</span>
-            <span className="font-semibold text-gray-600">Sales Academy</span>
+            <Link href="/sales-academy" className="hover:text-gray-600 transition-colors">Sales Academy</Link>
+            <span>/</span>
+            <span className="font-semibold text-gray-600 capitalize">
+              {pathname.split("/")[1]}
+            </span>
           </div>
         )}
 
