@@ -196,7 +196,7 @@ export default function CapacitesContent() {
                 </button>
                 <div className="h-4 w-px bg-gray-200 shrink-0" />
                 <nav className="flex items-center gap-1.5 text-xs text-gray-400 min-w-0 truncate">
-                  <span className="shrink-0">Capacités produit</span>
+                  <button onClick={closePanel} className="shrink-0 hover:text-gray-700 transition-colors">Capacités produit</button>
                   <span className="shrink-0">/</span>
                   <span className="font-semibold text-gray-700 truncate">{selectedItem?.name}</span>
                 </nav>

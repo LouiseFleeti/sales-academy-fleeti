@@ -381,7 +381,7 @@ export default function IndustriesContent() {
                 </button>
                 <div className="h-4 w-px bg-gray-200 shrink-0" />
                 <nav className="flex items-center gap-1.5 text-xs text-gray-400 min-w-0 truncate">
-                  <span className="shrink-0">Industries</span>
+                  <button onClick={closePanel} className="shrink-0 hover:text-gray-700 transition-colors">Industries</button>
                   <span className="shrink-0">/</span>
                   <span className="shrink-0">{selectedItem?.typeIndustrie}</span>
                   <span className="shrink-0">/</span>
