@@ -194,8 +194,8 @@ export default function EnjeuxContent() {
       {/* Detail panel */}
       {panelOpen && (
         <>
-          <div className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm" onClick={closePanel} />
-          <div className="fixed top-14 inset-x-0 bottom-0 z-50 bg-white overflow-y-auto">
+          <div className="fixed inset-0 z-30 bg-black/40 backdrop-blur-sm" onClick={closePanel} />
+          <div className="fixed top-14 inset-x-0 bottom-0 z-40 bg-white overflow-y-auto">
             <div className="sticky top-0 bg-white border-b border-gray-100 px-6 py-4 flex items-center justify-between z-10">
               <div className="flex items-center gap-3 min-w-0">
                 <button onClick={closePanel} className="flex items-center gap-1.5 text-sm font-semibold text-gray-400 hover:text-gray-700 transition-colors shrink-0">

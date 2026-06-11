@@ -636,7 +636,7 @@ export default function QualificationPage() {
       {/* ── Modal récap ── */}
       {showRecap && (
         <>
-          <div className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm" onClick={() => setShowRecap(false)} />
+          <div className="fixed inset-0 z-30 bg-black/40 backdrop-blur-sm" onClick={() => setShowRecap(false)} />
           <div className="fixed inset-0 z-50 flex items-center justify-center p-6">
             <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[85vh] flex flex-col overflow-hidden border" style={{ borderColor: F.lightGrey }}>
               {/* Modal header */}

@@ -404,9 +404,9 @@ export default function PainPointsContent() {
       {/* ── Panneau slide-in ──────────────────────────────────────────────── */}
       {panelOpen && (
         <>
-          <div className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm" onClick={closePanel} />
+          <div className="fixed inset-0 z-30 bg-black/40 backdrop-blur-sm" onClick={closePanel} />
           <div
-            className="fixed top-14 inset-x-0 bottom-0 z-50 bg-white overflow-y-auto"
+            className="fixed top-14 inset-x-0 bottom-0 z-40 bg-white overflow-y-auto"
           >
             <div className="sticky top-0 bg-white border-b border-gray-100 px-6 py-4 flex items-center justify-between z-10">
               <div className="flex items-center gap-3 min-w-0">
