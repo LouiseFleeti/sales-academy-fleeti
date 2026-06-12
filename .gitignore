@@ -31,3 +31,8 @@ next-env.d.ts
 
 # données Notion syncées (générées au runtime)
 data/*.json
+
+# Hors périmètre Sales Academy
+prospection/
+sales-academy-preview.html
+data/
